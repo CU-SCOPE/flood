@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/zach/Documents/senior_projects/orientation/src/main.c
+stdio.h
+-
+stdlib.h
+-
+stl.h
+/home/zach/Documents/senior_projects/orientation/src/stl.h
+
+/home/zach/Documents/senior_projects/orientation/src/stl.c
+stdio.h
+-
+stdlib.h
+-
+stl.h
+/home/zach/Documents/senior_projects/orientation/src/stl.h
+stdint.h
+-
+
+/home/zach/Documents/senior_projects/orientation/src/stl.h
+stdint.h
+-
+
