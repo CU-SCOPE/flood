@@ -10,10 +10,10 @@
 #define KD_BINS      KD_NODES + 1
 
 typedef struct node{
-	float level;
+	float val;
 	uint16_t numLeft;
 	uint16_t numRight;
-	uint8_t level;
+	uint8_t dim;
 	face *binLeft;
 	face *binRight;
 	node *parent;
@@ -21,6 +21,6 @@ typedef struct node{
 	node *rChild;
 }node;
 
-void buildTree();
+void buildTree(node **root, node *parent, face *faces, uint32_t numFaces);
 
 #endif
