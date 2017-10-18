@@ -16,9 +16,9 @@ typedef struct node{
 	uint8_t dim;
 	face *binLeft;
 	face *binRight;
-	node *parent;
-	node *lChild;
-	node *rChild;
+	struct node *parent;
+	struct node *lChild;
+	struct node *rChild;
 }node;
 
 void buildTree(node **root, node *parent, face *faces, uint32_t numFaces);

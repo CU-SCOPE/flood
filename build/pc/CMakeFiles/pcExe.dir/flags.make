@@ -6,5 +6,5 @@ C_FLAGS =
 
 C_DEFINES = 
 
-C_INCLUDES = -I/home/zach/Documents/senior_projects/orientation/build/pc/inc 
+C_INCLUDES = -I/home/zach/Documents/senior_projects/flood/build/pc/inc 
 

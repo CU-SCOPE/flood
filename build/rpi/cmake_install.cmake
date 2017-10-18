@@ -1,4 +1,4 @@
-# Install script for directory: /home/zach/Documents/senior_projects/orientation/build/rpi
+# Install script for directory: /home/zach/Documents/senior_projects/flood/build/rpi
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/zach/Documents/senior_projects/orientation/build/rpi/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/zach/Documents/senior_projects/flood/build/rpi/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

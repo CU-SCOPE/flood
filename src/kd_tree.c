@@ -24,17 +24,17 @@ void buildTree(node **current, node *parent, face *faces, uint32_t numFaces) {
 	for(i=0; i<numPoints; i++) {
 		switch(dim){
 			case 0:
-				points[i*3] = faces[i].v1.x
-				points[i*3+1] = faces[i].v2.x
-				points[i*3+2] = faces[i].v3.x
+				points[i*3] = faces[i].v1.x;
+				points[i*3+1] = faces[i].v2.x;
+				points[i*3+2] = faces[i].v3.x;
 			case 1:
-				points[i*3] = faces[i].v1.y
-				points[i*3+1] = faces[i].v2.y
-				points[i*3+2] = faces[i].v3.y
+				points[i*3] = faces[i].v1.y;
+				points[i*3+1] = faces[i].v2.y;
+				points[i*3+2] = faces[i].v3.y;
 			case 2:
-				points[i*3] = faces[i].v1.z
-				points[i*3+1] = faces[i].v2.z
-				points[i*3+2] = faces[i].v3.z
+				points[i*3] = faces[i].v1.z;
+				points[i*3+1] = faces[i].v2.z;
+				points[i*3+2] = faces[i].v3.z;
 		}
 	}
 

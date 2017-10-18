@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+#define STL_FILE_NAME    "models/galileo_small.stl"
+
 typedef struct point{
 	float x;
 	float y;
@@ -15,7 +17,7 @@ typedef struct face {
 	point v3;
 }face;
 
-void loadSTL(face **faces, FILE *f);
+void loadSTL(face **faces);
 face createFace(char *buff, uint32_t ind);
 void freeModel(face *faces);
 

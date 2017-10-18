@@ -3,7 +3,8 @@
 #include "stl.h"
 #include <stdint.h>
 
-void loadSTL(face **faces, FILE *f){
+void loadSTL(face **faces){
+	FILE *f = fopen(STL_FILE_NAME, "r");
 	char header[80];
 	char buffNtri[4];
 	uint32_t numTri, i, ind, size = 50, offset = 12;
