@@ -17,7 +17,7 @@ typedef struct face {
 	point v3;
 }face;
 
-void loadSTL(face **faces);
+uint32_t loadSTL(face **faces);
 face createFace(char *buff, uint32_t ind);
 void freeModel(face *faces);
 

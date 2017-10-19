@@ -21,6 +21,8 @@ typedef struct node{
 	struct node *rChild;
 }node;
 
-void buildTree(node **root, node *parent, face *faces, uint32_t numFaces);
+void buildTree(node **root, node *parent, face *faces, uint32_t numFaces, uint8_t level);
+node *initTree(face *faces, uint32_t numFaces);
+void deleteTree(node *root, uint8_t counter);
 
 #endif

@@ -3,7 +3,7 @@
 #include "stl.h"
 #include <stdint.h>
 
-void loadSTL(face **faces){
+uint32_t loadSTL(face **faces){
 	FILE *f = fopen(STL_FILE_NAME, "r");
 	char header[80];
 	char buffNtri[4];
@@ -22,6 +22,7 @@ void loadSTL(face **faces){
 		(*faces)[i] = createFace(buff, ind);	
 	}
 	fclose(f);
+	return numTri;
 }
 
 face createFace(char *buff, uint32_t ind) {

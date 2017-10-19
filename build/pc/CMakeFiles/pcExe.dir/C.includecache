@@ -13,6 +13,8 @@ stdlib.h
 -
 stdint.h
 -
+string.h
+-
 stl.h
 /home/zach/Documents/senior_projects/flood/src/stl.h
 kd_tree.h

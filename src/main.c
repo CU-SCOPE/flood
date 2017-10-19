@@ -5,7 +5,8 @@
 
 void main() {
 	face *faces;
-	loadSTL(&faces);
-	printf("%f\n", faces[12425].v1.x);
+	uint32_t numFaces = loadSTL(&faces);
+	face *root = initTree(faces, numFaces);
 	freeModel(faces);
+	deleteTree(root,0);
 }
