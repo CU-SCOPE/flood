@@ -11,11 +11,6 @@ int floatcomp(const void* elem1, const void* elem2) {
     return *(const float*)elem1 > *(const float*)elem2;
 }
 
-node *initTree(face *faces, uint32_t numFaces) {
-	node *root = malloc(sizeof(node));
-	buildTree(&root, NULL, faces, numFaces, 0);
-	return root;
-}
 
 void buildTree(node **current, node *parent, face *faces, uint32_t numFaces, uint8_t level) {
 	float points[numFaces*3], median;
@@ -69,15 +64,17 @@ void buildTree(node **current, node *parent, face *faces, uint32_t numFaces, uin
 	(*current)->numRight = numRight;
 
 	if(level < KD_DEPTH-1) {
-		if(level) {
-			if((*current) == parent->rChild) {
-				free(parent->binLeft);
-				free(parent->binRight);	
-			}
-		}
 		buildTree(&((*current)->lChild), (*current), (*current)->binLeft, numLeft, level+1);
 		buildTree(&((*current)->rChild), (*current), (*current)->binRight, numRight, level+1);
+		free((*current)->binLeft);
+		free((*current)->binRight);
 	}
+}
+
+node *initTree(face *faces, uint32_t numFaces) {
+	node *root;
+	buildTree(&root, NULL, faces, numFaces, 0);
+	return root;
 }
 
 void deleteTree(node *root, uint8_t counter) {
