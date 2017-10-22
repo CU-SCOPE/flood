@@ -4,19 +4,18 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/home/zach/Documents/senior_projects/flood/src/kd_tree.c" "/home/zach/Documents/senior_projects/flood/build/pc/CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/kd_tree.c.o"
-  "/home/zach/Documents/senior_projects/flood/src/main.c" "/home/zach/Documents/senior_projects/flood/build/pc/CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/main.c.o"
-  "/home/zach/Documents/senior_projects/flood/src/stl.c" "/home/zach/Documents/senior_projects/flood/build/pc/CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/stl.c.o"
+  "/home/zach/Documents/senior_projects/flood/src/main.c" "/home/zach/Documents/senior_projects/flood/build/pc/CMakeFiles/pcExe.dir/src/main.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_C_TARGET_INCLUDE_PATH
-  "inc"
+  "../../src"
   )
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
+  "/home/zach/Documents/senior_projects/flood/build/pc/src/CMakeFiles/src.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

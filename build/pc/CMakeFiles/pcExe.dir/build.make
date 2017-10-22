@@ -43,7 +43,7 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/zach/Documents/senior_projects/flood/build/pc
+CMAKE_SOURCE_DIR = /home/zach/Documents/senior_projects/flood
 
 # The top-level build directory on which CMake was run.
 CMAKE_BINARY_DIR = /home/zach/Documents/senior_projects/flood/build/pc
@@ -57,103 +57,50 @@ include CMakeFiles/pcExe.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/pcExe.dir/flags.make
 
-CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/main.c.o: CMakeFiles/pcExe.dir/flags.make
-CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/main.c.o: /home/zach/Documents/senior_projects/flood/src/main.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zach/Documents/senior_projects/flood/build/pc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/main.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/main.c.o   -c /home/zach/Documents/senior_projects/flood/src/main.c
+CMakeFiles/pcExe.dir/src/main.c.o: CMakeFiles/pcExe.dir/flags.make
+CMakeFiles/pcExe.dir/src/main.c.o: ../../src/main.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zach/Documents/senior_projects/flood/build/pc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/pcExe.dir/src/main.c.o"
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/pcExe.dir/src/main.c.o   -c /home/zach/Documents/senior_projects/flood/src/main.c
 
-CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/main.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/main.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/zach/Documents/senior_projects/flood/src/main.c > CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/main.c.i
+CMakeFiles/pcExe.dir/src/main.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/pcExe.dir/src/main.c.i"
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/zach/Documents/senior_projects/flood/src/main.c > CMakeFiles/pcExe.dir/src/main.c.i
 
-CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/main.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/main.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/zach/Documents/senior_projects/flood/src/main.c -o CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/main.c.s
+CMakeFiles/pcExe.dir/src/main.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/pcExe.dir/src/main.c.s"
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/zach/Documents/senior_projects/flood/src/main.c -o CMakeFiles/pcExe.dir/src/main.c.s
 
-CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/main.c.o.requires:
+CMakeFiles/pcExe.dir/src/main.c.o.requires:
 
-.PHONY : CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/main.c.o.requires
+.PHONY : CMakeFiles/pcExe.dir/src/main.c.o.requires
 
-CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/main.c.o.provides: CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/main.c.o.requires
-	$(MAKE) -f CMakeFiles/pcExe.dir/build.make CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/main.c.o.provides.build
-.PHONY : CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/main.c.o.provides
+CMakeFiles/pcExe.dir/src/main.c.o.provides: CMakeFiles/pcExe.dir/src/main.c.o.requires
+	$(MAKE) -f CMakeFiles/pcExe.dir/build.make CMakeFiles/pcExe.dir/src/main.c.o.provides.build
+.PHONY : CMakeFiles/pcExe.dir/src/main.c.o.provides
 
-CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/main.c.o.provides.build: CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/main.c.o
-
-
-CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/stl.c.o: CMakeFiles/pcExe.dir/flags.make
-CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/stl.c.o: /home/zach/Documents/senior_projects/flood/src/stl.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zach/Documents/senior_projects/flood/build/pc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/stl.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/stl.c.o   -c /home/zach/Documents/senior_projects/flood/src/stl.c
-
-CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/stl.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/stl.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/zach/Documents/senior_projects/flood/src/stl.c > CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/stl.c.i
-
-CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/stl.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/stl.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/zach/Documents/senior_projects/flood/src/stl.c -o CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/stl.c.s
-
-CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/stl.c.o.requires:
-
-.PHONY : CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/stl.c.o.requires
-
-CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/stl.c.o.provides: CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/stl.c.o.requires
-	$(MAKE) -f CMakeFiles/pcExe.dir/build.make CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/stl.c.o.provides.build
-.PHONY : CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/stl.c.o.provides
-
-CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/stl.c.o.provides.build: CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/stl.c.o
-
-
-CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/kd_tree.c.o: CMakeFiles/pcExe.dir/flags.make
-CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/kd_tree.c.o: /home/zach/Documents/senior_projects/flood/src/kd_tree.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zach/Documents/senior_projects/flood/build/pc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/kd_tree.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/kd_tree.c.o   -c /home/zach/Documents/senior_projects/flood/src/kd_tree.c
-
-CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/kd_tree.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/kd_tree.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/zach/Documents/senior_projects/flood/src/kd_tree.c > CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/kd_tree.c.i
-
-CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/kd_tree.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/kd_tree.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/zach/Documents/senior_projects/flood/src/kd_tree.c -o CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/kd_tree.c.s
-
-CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/kd_tree.c.o.requires:
-
-.PHONY : CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/kd_tree.c.o.requires
-
-CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/kd_tree.c.o.provides: CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/kd_tree.c.o.requires
-	$(MAKE) -f CMakeFiles/pcExe.dir/build.make CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/kd_tree.c.o.provides.build
-.PHONY : CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/kd_tree.c.o.provides
-
-CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/kd_tree.c.o.provides.build: CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/kd_tree.c.o
+CMakeFiles/pcExe.dir/src/main.c.o.provides.build: CMakeFiles/pcExe.dir/src/main.c.o
 
 
 # Object files for target pcExe
 pcExe_OBJECTS = \
-"CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/main.c.o" \
-"CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/stl.c.o" \
-"CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/kd_tree.c.o"
+"CMakeFiles/pcExe.dir/src/main.c.o"
 
 # External object files for target pcExe
 pcExe_EXTERNAL_OBJECTS =
 
-/home/zach/Documents/senior_projects/flood/build/exe/pc_target/pcExe: CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/main.c.o
-/home/zach/Documents/senior_projects/flood/build/exe/pc_target/pcExe: CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/stl.c.o
-/home/zach/Documents/senior_projects/flood/build/exe/pc_target/pcExe: CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/kd_tree.c.o
-/home/zach/Documents/senior_projects/flood/build/exe/pc_target/pcExe: CMakeFiles/pcExe.dir/build.make
-/home/zach/Documents/senior_projects/flood/build/exe/pc_target/pcExe: CMakeFiles/pcExe.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/zach/Documents/senior_projects/flood/build/pc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking C executable /home/zach/Documents/senior_projects/flood/build/exe/pc_target/pcExe"
+../exe/pc_target/pcExe: CMakeFiles/pcExe.dir/src/main.c.o
+../exe/pc_target/pcExe: CMakeFiles/pcExe.dir/build.make
+../exe/pc_target/pcExe: src/libsrc.a
+../exe/pc_target/pcExe: CMakeFiles/pcExe.dir/link.txt
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/zach/Documents/senior_projects/flood/build/pc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking C executable ../exe/pc_target/pcExe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/pcExe.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
-CMakeFiles/pcExe.dir/build: /home/zach/Documents/senior_projects/flood/build/exe/pc_target/pcExe
+CMakeFiles/pcExe.dir/build: ../exe/pc_target/pcExe
 
 .PHONY : CMakeFiles/pcExe.dir/build
 
-CMakeFiles/pcExe.dir/requires: CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/main.c.o.requires
-CMakeFiles/pcExe.dir/requires: CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/stl.c.o.requires
-CMakeFiles/pcExe.dir/requires: CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/kd_tree.c.o.requires
+CMakeFiles/pcExe.dir/requires: CMakeFiles/pcExe.dir/src/main.c.o.requires
 
 .PHONY : CMakeFiles/pcExe.dir/requires
 
@@ -162,6 +109,6 @@ CMakeFiles/pcExe.dir/clean:
 .PHONY : CMakeFiles/pcExe.dir/clean
 
 CMakeFiles/pcExe.dir/depend:
-	cd /home/zach/Documents/senior_projects/flood/build/pc && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/zach/Documents/senior_projects/flood/build/pc /home/zach/Documents/senior_projects/flood/build/pc /home/zach/Documents/senior_projects/flood/build/pc /home/zach/Documents/senior_projects/flood/build/pc /home/zach/Documents/senior_projects/flood/build/pc/CMakeFiles/pcExe.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/zach/Documents/senior_projects/flood/build/pc && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/zach/Documents/senior_projects/flood /home/zach/Documents/senior_projects/flood /home/zach/Documents/senior_projects/flood/build/pc /home/zach/Documents/senior_projects/flood/build/pc /home/zach/Documents/senior_projects/flood/build/pc/CMakeFiles/pcExe.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/pcExe.dir/depend
 

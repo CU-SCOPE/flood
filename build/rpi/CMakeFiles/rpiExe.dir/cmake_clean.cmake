@@ -1,9 +1,7 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/rpiExe.dir/home/zach/Documents/senior_projects/flood/src/main.c.o"
-  "CMakeFiles/rpiExe.dir/home/zach/Documents/senior_projects/flood/src/stl.c.o"
-  "CMakeFiles/rpiExe.dir/home/zach/Documents/senior_projects/flood/src/kd_tree.c.o"
-  "/home/zach/Documents/senior_projects/flood/build/exe/rpi_target/rpiExe.pdb"
-  "/home/zach/Documents/senior_projects/flood/build/exe/rpi_target/rpiExe"
+  "CMakeFiles/rpiExe.dir/src/main.c.o"
+  "../exe/rpi_target/rpiExe.pdb"
+  "../exe/rpi_target/rpiExe"
 )
 
 # Per-language clean rules from dependency scanning.

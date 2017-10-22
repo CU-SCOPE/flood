@@ -1,1 +1,1 @@
-/usr/bin/cc     CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/main.c.o CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/stl.c.o CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/kd_tree.c.o  -o /home/zach/Documents/senior_projects/flood/build/exe/pc_target/pcExe -rdynamic 
+/usr/bin/cc     CMakeFiles/pcExe.dir/src/main.c.o  -o ../exe/pc_target/pcExe -rdynamic -lm src/libsrc.a -lm 

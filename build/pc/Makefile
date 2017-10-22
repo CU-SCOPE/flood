@@ -48,7 +48,7 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/zach/Documents/senior_projects/flood/build/pc
+CMAKE_SOURCE_DIR = /home/zach/Documents/senior_projects/flood
 
 # The top-level build directory on which CMake was run.
 CMAKE_BINARY_DIR = /home/zach/Documents/senior_projects/flood/build/pc
@@ -123,86 +123,45 @@ pcExe/fast:
 	$(MAKE) -f CMakeFiles/pcExe.dir/build.make CMakeFiles/pcExe.dir/build
 .PHONY : pcExe/fast
 
-home/zach/Documents/senior_projects/flood/src/kd_tree.o: home/zach/Documents/senior_projects/flood/src/kd_tree.c.o
+#=============================================================================
+# Target rules for targets named src
 
-.PHONY : home/zach/Documents/senior_projects/flood/src/kd_tree.o
+# Build rule for target.
+src: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 src
+.PHONY : src
 
-# target to build an object file
-home/zach/Documents/senior_projects/flood/src/kd_tree.c.o:
-	$(MAKE) -f CMakeFiles/pcExe.dir/build.make CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/kd_tree.c.o
-.PHONY : home/zach/Documents/senior_projects/flood/src/kd_tree.c.o
+# fast build rule for target.
+src/fast:
+	$(MAKE) -f src/CMakeFiles/src.dir/build.make src/CMakeFiles/src.dir/build
+.PHONY : src/fast
 
-home/zach/Documents/senior_projects/flood/src/kd_tree.i: home/zach/Documents/senior_projects/flood/src/kd_tree.c.i
+src/main.o: src/main.c.o
 
-.PHONY : home/zach/Documents/senior_projects/flood/src/kd_tree.i
-
-# target to preprocess a source file
-home/zach/Documents/senior_projects/flood/src/kd_tree.c.i:
-	$(MAKE) -f CMakeFiles/pcExe.dir/build.make CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/kd_tree.c.i
-.PHONY : home/zach/Documents/senior_projects/flood/src/kd_tree.c.i
-
-home/zach/Documents/senior_projects/flood/src/kd_tree.s: home/zach/Documents/senior_projects/flood/src/kd_tree.c.s
-
-.PHONY : home/zach/Documents/senior_projects/flood/src/kd_tree.s
-
-# target to generate assembly for a file
-home/zach/Documents/senior_projects/flood/src/kd_tree.c.s:
-	$(MAKE) -f CMakeFiles/pcExe.dir/build.make CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/kd_tree.c.s
-.PHONY : home/zach/Documents/senior_projects/flood/src/kd_tree.c.s
-
-home/zach/Documents/senior_projects/flood/src/main.o: home/zach/Documents/senior_projects/flood/src/main.c.o
-
-.PHONY : home/zach/Documents/senior_projects/flood/src/main.o
+.PHONY : src/main.o
 
 # target to build an object file
-home/zach/Documents/senior_projects/flood/src/main.c.o:
-	$(MAKE) -f CMakeFiles/pcExe.dir/build.make CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/main.c.o
-.PHONY : home/zach/Documents/senior_projects/flood/src/main.c.o
+src/main.c.o:
+	$(MAKE) -f CMakeFiles/pcExe.dir/build.make CMakeFiles/pcExe.dir/src/main.c.o
+.PHONY : src/main.c.o
 
-home/zach/Documents/senior_projects/flood/src/main.i: home/zach/Documents/senior_projects/flood/src/main.c.i
+src/main.i: src/main.c.i
 
-.PHONY : home/zach/Documents/senior_projects/flood/src/main.i
-
-# target to preprocess a source file
-home/zach/Documents/senior_projects/flood/src/main.c.i:
-	$(MAKE) -f CMakeFiles/pcExe.dir/build.make CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/main.c.i
-.PHONY : home/zach/Documents/senior_projects/flood/src/main.c.i
-
-home/zach/Documents/senior_projects/flood/src/main.s: home/zach/Documents/senior_projects/flood/src/main.c.s
-
-.PHONY : home/zach/Documents/senior_projects/flood/src/main.s
-
-# target to generate assembly for a file
-home/zach/Documents/senior_projects/flood/src/main.c.s:
-	$(MAKE) -f CMakeFiles/pcExe.dir/build.make CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/main.c.s
-.PHONY : home/zach/Documents/senior_projects/flood/src/main.c.s
-
-home/zach/Documents/senior_projects/flood/src/stl.o: home/zach/Documents/senior_projects/flood/src/stl.c.o
-
-.PHONY : home/zach/Documents/senior_projects/flood/src/stl.o
-
-# target to build an object file
-home/zach/Documents/senior_projects/flood/src/stl.c.o:
-	$(MAKE) -f CMakeFiles/pcExe.dir/build.make CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/stl.c.o
-.PHONY : home/zach/Documents/senior_projects/flood/src/stl.c.o
-
-home/zach/Documents/senior_projects/flood/src/stl.i: home/zach/Documents/senior_projects/flood/src/stl.c.i
-
-.PHONY : home/zach/Documents/senior_projects/flood/src/stl.i
+.PHONY : src/main.i
 
 # target to preprocess a source file
-home/zach/Documents/senior_projects/flood/src/stl.c.i:
-	$(MAKE) -f CMakeFiles/pcExe.dir/build.make CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/stl.c.i
-.PHONY : home/zach/Documents/senior_projects/flood/src/stl.c.i
+src/main.c.i:
+	$(MAKE) -f CMakeFiles/pcExe.dir/build.make CMakeFiles/pcExe.dir/src/main.c.i
+.PHONY : src/main.c.i
 
-home/zach/Documents/senior_projects/flood/src/stl.s: home/zach/Documents/senior_projects/flood/src/stl.c.s
+src/main.s: src/main.c.s
 
-.PHONY : home/zach/Documents/senior_projects/flood/src/stl.s
+.PHONY : src/main.s
 
 # target to generate assembly for a file
-home/zach/Documents/senior_projects/flood/src/stl.c.s:
-	$(MAKE) -f CMakeFiles/pcExe.dir/build.make CMakeFiles/pcExe.dir/home/zach/Documents/senior_projects/flood/src/stl.c.s
-.PHONY : home/zach/Documents/senior_projects/flood/src/stl.c.s
+src/main.c.s:
+	$(MAKE) -f CMakeFiles/pcExe.dir/build.make CMakeFiles/pcExe.dir/src/main.c.s
+.PHONY : src/main.c.s
 
 # Help Target
 help:
@@ -213,15 +172,10 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... pcExe"
-	@echo "... home/zach/Documents/senior_projects/flood/src/kd_tree.o"
-	@echo "... home/zach/Documents/senior_projects/flood/src/kd_tree.i"
-	@echo "... home/zach/Documents/senior_projects/flood/src/kd_tree.s"
-	@echo "... home/zach/Documents/senior_projects/flood/src/main.o"
-	@echo "... home/zach/Documents/senior_projects/flood/src/main.i"
-	@echo "... home/zach/Documents/senior_projects/flood/src/main.s"
-	@echo "... home/zach/Documents/senior_projects/flood/src/stl.o"
-	@echo "... home/zach/Documents/senior_projects/flood/src/stl.i"
-	@echo "... home/zach/Documents/senior_projects/flood/src/stl.s"
+	@echo "... src"
+	@echo "... src/main.o"
+	@echo "... src/main.i"
+	@echo "... src/main.s"
 .PHONY : help
 
 
