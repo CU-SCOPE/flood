@@ -54,7 +54,7 @@ void buildTree(node **current, node *parent, face *faces, uint32_t numFaces, uin
 			}
 			break;
 	}
-	
+
 	qsort(points, numFaces*3, sizeof(float), floatcomp);
 	median = points[numPoints/2];
 	(*current) = malloc(sizeof(node));
@@ -167,7 +167,7 @@ void kd_search(float *query, float *closestPt, float *dist, node *root) {
 	float plneDist;
 	current = traverse(current, query, closestPt, dist);
 	checked[0] = current->ind;
-	/*do {
+	do {
 		goLeft = current == current->rChild;
 		current = current->parent;
 		counter++;
@@ -185,8 +185,15 @@ void kd_search(float *query, float *closestPt, float *dist, node *root) {
 				traverse(current, query, closestPt, dist);
 			}
 		}
-	} while(current->parent);*/
+	} while(current->parent);
 	*dist = sqrt((*dist));
+}
+
+void runSearch(point4D *points, point3D *closestPts, float *minDists, node *root, uint32_t numPts) {
+	uint32_t i;
+	for(i=0; i<numPts; i++) {
+		kd_search(points[i].point, closestPts[i].point, &(minDists[i]), root);
+	}
 }
 
 void deleteTree(node *root, uint8_t counter) {

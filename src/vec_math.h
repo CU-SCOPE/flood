@@ -29,7 +29,12 @@ static inline void scalarMul3D(float scal, float *vec) {
 	vec[2] *= scal;
 }
 
-
+static inline void matMulVec4D(float mat[4][4], float *vec, float *result) {
+	result[0] = (mat[0][0]*vec[0]) + (mat[0][1]*vec[1]) + (mat[0][2]*vec[2]) + (mat[0][3]*vec[3]);
+	result[1] = (mat[1][0]*vec[0]) + (mat[1][1]*vec[1]) + (mat[1][2]*vec[2]) + (mat[1][3]*vec[3]);
+	result[2] = (mat[2][0]*vec[0]) + (mat[2][1]*vec[1]) + (mat[2][2]*vec[2]) + (mat[2][3]*vec[3]);
+	result[3] = (mat[3][0]*vec[0]) + (mat[3][1]*vec[1]) + (mat[3][2]*vec[2]) + (mat[3][3]*vec[3]);
+}
 
 static inline void triangleDist(face tri, float *point, float *dist, float *closestPt) {
 	float B[3] = {tri.v1.x, tri.v1.y, tri.v1.z};

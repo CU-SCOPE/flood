@@ -22,8 +22,17 @@ typedef struct node{
 	struct node *rChild;
 }node;
 
+typedef struct point3D {
+	float point[3];
+}point3D;
+
+typedef struct point4D {
+	float point[4];
+}point4D;
+
 node *initTree(face *faces, uint32_t numFaces);
 void deleteTree(node *root, uint8_t counter);
 void kd_search(float *query, float *closestPt, float *dist, node *root);
+void runSearch(point4D *points, point3D *closestPts, float *minDists, node *root, uint32_t numPts);
 
 #endif
