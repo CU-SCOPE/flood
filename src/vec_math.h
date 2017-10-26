@@ -36,6 +36,78 @@ static inline void matMulVec4D(float mat[4][4], float *vec, float *result) {
 	result[3] = (mat[3][0]*vec[0]) + (mat[3][1]*vec[1]) + (mat[3][2]*vec[2]) + (mat[3][3]*vec[3]);
 }
 
+static inline void matMulVec3D(float mat[3][3], float *vec, float *result) {
+	result[0] = (mat[0][0]*vec[0]) + (mat[0][1]*vec[1]) + (mat[0][2]*vec[2]) + (mat[0][3]*vec[3]);
+	result[1] = (mat[1][0]*vec[0]) + (mat[1][1]*vec[1]) + (mat[1][2]*vec[2]) + (mat[1][3]*vec[3]);
+	result[2] = (mat[2][0]*vec[0]) + (mat[2][1]*vec[1]) + (mat[2][2]*vec[2]) + (mat[2][3]*vec[3]);
+}
+
+static inline void eye4D(float mat[4][4]) {
+	mat[0][0] = 1;
+	mat[1][1] = 1;
+	mat[2][2] = 1;
+	mat[3][3] = 1;
+}
+
+static inline void meanVec(float *vec, float *mean, uint32_t numPts) {
+	uint32_t i;
+	for(i=0; i<numPts; i++) {
+		mean += vec[i];
+	}
+	mean /= numPts;
+}
+
+static inline void laderman_mul(const float a[3][3], const float b[3][3], float c[3][3]) {
+
+	float m[24]; // not off by one, just wanted to match the index from the paper
+
+	m[1 ]= (a[0][0]+a[0][1]+a[0][2]-a[1][0]-a[1][1]-a[2][1]-a[2][2])*b[1][1];
+	m[2 ]= (a[0][0]-a[1][0])*(-b[0][1]+b[1][1]);
+	m[3 ]= a[1][1]*(-b[0][0]+b[0][1]+b[1][0]-b[1][1]-b[1][2]-b[2][0]+b[2][2]);
+	m[4 ]= (-a[0][0]+a[1][0]+a[1][1])*(b[0][0]-b[0][1]+b[1][1]);
+	m[5 ]= (a[1][0]+a[1][1])*(-b[0][0]+b[0][1]);
+	m[6 ]= a[0][0]*b[0][0];
+	m[7 ]= (-a[0][0]+a[2][0]+a[2][1])*(b[0][0]-b[0][2]+b[1][2]);
+	m[8 ]= (-a[0][0]+a[2][0])*(b[0][2]-b[1][2]);
+	m[9 ]= (a[2][0]+a[2][1])*(-b[0][0]+b[0][2]);
+	m[10]= (a[0][0]+a[0][1]+a[0][2]-a[1][1]-a[1][2]-a[2][0]-a[2][1])*b[1][2];
+	m[11]= a[2][1]*(-b[0][0]+b[0][2]+b[1][0]-b[1][1]-b[1][2]-b[2][0]+b[2][1]);
+	m[12]= (-a[0][2]+a[2][1]+a[2][2])*(b[1][1]+b[2][0]-b[2][1]);
+	m[13]= (a[0][2]-a[2][2])*(b[1][1]-b[2][1]);
+	m[14]= a[0][2]*b[2][0];
+	m[15]= (a[2][1]+a[2][2])*(-b[2][0]+b[2][1]);
+	m[16]= (-a[0][2]+a[1][1]+a[1][2])*(b[1][2]+b[2][0]-b[2][2]);
+	m[17]= (a[0][2]-a[1][2])*(b[1][2]-b[2][2]);
+	m[18]= (a[1][1]+a[1][2])*(-b[2][0]+b[2][2]);
+	m[19]= a[0][1]*b[1][0];
+	m[20]= a[1][2]*b[2][1];
+	m[21]= a[1][0]*b[0][2];
+	m[22]= a[2][0]*b[0][1];
+	m[23]= a[2][2]*b[2][2];
+
+	c[0][0] = m[6]+m[14]+m[19];
+	c[0][1] = m[1]+m[4]+m[5]+m[6]+m[12]+m[14]+m[15];
+	c[0][2] = m[6]+m[7]+m[9]+m[10]+m[14]+m[16]+m[18];
+	c[1][0] = m[2]+m[3]+m[4]+m[6]+m[14]+m[16]+m[17];
+	c[1][1] = m[2]+m[4]+m[5]+m[6]+m[20];
+	c[1][2] = m[14]+m[16]+m[17]+m[18]+m[21];
+	c[2][0] = m[6]+m[7]+m[8]+m[11]+m[12]+m[13]+m[14];
+	c[2][1] = m[12]+m[13]+m[14]+m[15]+m[22];
+	c[2][2] = m[6]+m[7]+m[8]+m[9]+m[23];	
+}
+
+static inline void transpose(const float a[3][3], float aT[3][3]) {
+	aT[0][0] = a[0][0];
+	aT[0][1] = a[1][0];
+	aT[0][2] = a[2][0];
+	aT[1][0] = a[0][1];
+	aT[1][1] = a[1][1];
+	aT[1][2] = a[2][1];
+	aT[2][0] = a[0][2];
+	aT[2][1] = a[1][2];
+	aT[2][2] = a[2][2];
+}
+
 static inline void triangleDist(face tri, float *point, float *dist, float *closestPt) {
 	float B[3] = {tri.v1.x, tri.v1.y, tri.v1.z};
 	float E0[3] = {tri.v2.x - B[0], tri.v2.y - B[0], tri.v2.z - B[0]};

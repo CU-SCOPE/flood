@@ -33,6 +33,6 @@ typedef struct point4D {
 node *initTree(face *faces, uint32_t numFaces);
 void deleteTree(node *root, uint8_t counter);
 void kd_search(float *query, float *closestPt, float *dist, node *root);
-void runSearch(point4D *points, point3D *closestPts, float *minDists, node *root, uint32_t numPts);
+void runSearch(point4D *points, point4D *closestPts, float *minDists, node *root, uint32_t numPts);
 
 #endif

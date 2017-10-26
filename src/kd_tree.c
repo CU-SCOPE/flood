@@ -189,7 +189,7 @@ void kd_search(float *query, float *closestPt, float *dist, node *root) {
 	*dist = sqrt((*dist));
 }
 
-void runSearch(point4D *points, point3D *closestPts, float *minDists, node *root, uint32_t numPts) {
+void runSearch(point4D *points, point4D *closestPts, float *minDists, node *root, uint32_t numPts) {
 	uint32_t i;
 	for(i=0; i<numPts; i++) {
 		kd_search(points[i].point, closestPts[i].point, &(minDists[i]), root);
