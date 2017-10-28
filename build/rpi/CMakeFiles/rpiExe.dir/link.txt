@@ -1,1 +1,1 @@
-/home/zach/rpi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf-gcc  --sysroot=/home/zach/rpi/rootfs    CMakeFiles/rpiExe.dir/src/main.c.o  -o ../exe/rpi_target/rpiExe -rdynamic -lm src/libsrc.a -lm 
+/home/zach/rpi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf-g++  --sysroot=/home/zach/rpi/rootfs     CMakeFiles/rpiExe.dir/src/main.c.o  -o ../exe/rpi_target/rpiExe -rdynamic -lm src/libsrc.a math/libmath.a -lm 

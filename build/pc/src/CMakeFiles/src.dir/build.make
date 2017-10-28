@@ -105,19 +105,45 @@ src/CMakeFiles/src.dir/stl.c.o.provides: src/CMakeFiles/src.dir/stl.c.o.requires
 src/CMakeFiles/src.dir/stl.c.o.provides.build: src/CMakeFiles/src.dir/stl.c.o
 
 
+src/CMakeFiles/src.dir/icp.c.o: src/CMakeFiles/src.dir/flags.make
+src/CMakeFiles/src.dir/icp.c.o: ../../src/icp.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zach/Documents/senior_projects/flood/build/pc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object src/CMakeFiles/src.dir/icp.c.o"
+	cd /home/zach/Documents/senior_projects/flood/build/pc/src && /usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/src.dir/icp.c.o   -c /home/zach/Documents/senior_projects/flood/src/icp.c
+
+src/CMakeFiles/src.dir/icp.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/src.dir/icp.c.i"
+	cd /home/zach/Documents/senior_projects/flood/build/pc/src && /usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/zach/Documents/senior_projects/flood/src/icp.c > CMakeFiles/src.dir/icp.c.i
+
+src/CMakeFiles/src.dir/icp.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/src.dir/icp.c.s"
+	cd /home/zach/Documents/senior_projects/flood/build/pc/src && /usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/zach/Documents/senior_projects/flood/src/icp.c -o CMakeFiles/src.dir/icp.c.s
+
+src/CMakeFiles/src.dir/icp.c.o.requires:
+
+.PHONY : src/CMakeFiles/src.dir/icp.c.o.requires
+
+src/CMakeFiles/src.dir/icp.c.o.provides: src/CMakeFiles/src.dir/icp.c.o.requires
+	$(MAKE) -f src/CMakeFiles/src.dir/build.make src/CMakeFiles/src.dir/icp.c.o.provides.build
+.PHONY : src/CMakeFiles/src.dir/icp.c.o.provides
+
+src/CMakeFiles/src.dir/icp.c.o.provides.build: src/CMakeFiles/src.dir/icp.c.o
+
+
 # Object files for target src
 src_OBJECTS = \
 "CMakeFiles/src.dir/kd_tree.c.o" \
-"CMakeFiles/src.dir/stl.c.o"
+"CMakeFiles/src.dir/stl.c.o" \
+"CMakeFiles/src.dir/icp.c.o"
 
 # External object files for target src
 src_EXTERNAL_OBJECTS =
 
 src/libsrc.a: src/CMakeFiles/src.dir/kd_tree.c.o
 src/libsrc.a: src/CMakeFiles/src.dir/stl.c.o
+src/libsrc.a: src/CMakeFiles/src.dir/icp.c.o
 src/libsrc.a: src/CMakeFiles/src.dir/build.make
 src/libsrc.a: src/CMakeFiles/src.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/zach/Documents/senior_projects/flood/build/pc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C static library libsrc.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/zach/Documents/senior_projects/flood/build/pc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking C static library libsrc.a"
 	cd /home/zach/Documents/senior_projects/flood/build/pc/src && $(CMAKE_COMMAND) -P CMakeFiles/src.dir/cmake_clean_target.cmake
 	cd /home/zach/Documents/senior_projects/flood/build/pc/src && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/src.dir/link.txt --verbose=$(VERBOSE)
 
@@ -128,6 +154,7 @@ src/CMakeFiles/src.dir/build: src/libsrc.a
 
 src/CMakeFiles/src.dir/requires: src/CMakeFiles/src.dir/kd_tree.c.o.requires
 src/CMakeFiles/src.dir/requires: src/CMakeFiles/src.dir/stl.c.o.requires
+src/CMakeFiles/src.dir/requires: src/CMakeFiles/src.dir/icp.c.o.requires
 
 .PHONY : src/CMakeFiles/src.dir/requires
 

@@ -1,6 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/src.dir/kd_tree.c.o"
   "CMakeFiles/src.dir/stl.c.o"
+  "CMakeFiles/src.dir/icp.c.o"
   "libsrc.pdb"
   "libsrc.a"
 )

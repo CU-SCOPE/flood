@@ -1,2 +1,2 @@
-/usr/bin/ar qc libsrc.a  CMakeFiles/src.dir/kd_tree.c.o CMakeFiles/src.dir/stl.c.o
+/usr/bin/ar qc libsrc.a  CMakeFiles/src.dir/kd_tree.c.o CMakeFiles/src.dir/stl.c.o CMakeFiles/src.dir/icp.c.o
 /usr/bin/ranlib libsrc.a

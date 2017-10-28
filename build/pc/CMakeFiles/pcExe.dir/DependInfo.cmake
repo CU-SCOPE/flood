@@ -11,11 +11,13 @@ set(CMAKE_C_COMPILER_ID "GNU")
 # The include file search paths:
 set(CMAKE_C_TARGET_INCLUDE_PATH
   "../../src"
+  "../../math"
   )
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
   "/home/zach/Documents/senior_projects/flood/build/pc/src/CMakeFiles/src.dir/DependInfo.cmake"
+  "/home/zach/Documents/senior_projects/flood/build/pc/math/CMakeFiles/math.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

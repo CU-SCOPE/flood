@@ -125,6 +125,33 @@ src/fast:
 	cd /home/zach/Documents/senior_projects/flood/build/rpi && $(MAKE) -f src/CMakeFiles/src.dir/build.make src/CMakeFiles/src.dir/build
 .PHONY : src/fast
 
+icp.o: icp.c.o
+
+.PHONY : icp.o
+
+# target to build an object file
+icp.c.o:
+	cd /home/zach/Documents/senior_projects/flood/build/rpi && $(MAKE) -f src/CMakeFiles/src.dir/build.make src/CMakeFiles/src.dir/icp.c.o
+.PHONY : icp.c.o
+
+icp.i: icp.c.i
+
+.PHONY : icp.i
+
+# target to preprocess a source file
+icp.c.i:
+	cd /home/zach/Documents/senior_projects/flood/build/rpi && $(MAKE) -f src/CMakeFiles/src.dir/build.make src/CMakeFiles/src.dir/icp.c.i
+.PHONY : icp.c.i
+
+icp.s: icp.c.s
+
+.PHONY : icp.s
+
+# target to generate assembly for a file
+icp.c.s:
+	cd /home/zach/Documents/senior_projects/flood/build/rpi && $(MAKE) -f src/CMakeFiles/src.dir/build.make src/CMakeFiles/src.dir/icp.c.s
+.PHONY : icp.c.s
+
 kd_tree.o: kd_tree.c.o
 
 .PHONY : kd_tree.o
@@ -188,6 +215,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... src"
+	@echo "... icp.o"
+	@echo "... icp.i"
+	@echo "... icp.s"
 	@echo "... kd_tree.o"
 	@echo "... kd_tree.i"
 	@echo "... kd_tree.s"

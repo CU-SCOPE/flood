@@ -1,10 +1,10 @@
-#ifndef VEC_MATH_H
-#define VEC_MATH_H
+#ifndef ICP_H
+#define ICP_H
 
 #include "kd_tree.h"
 
 #define MAX_ITERATIONS		5
 
-void icp(float **scan, node *root, uint32_t numPts);
+void icp(point4D *scan, node *root, float T[4][4], uint32_t numPts);
 
 #endif

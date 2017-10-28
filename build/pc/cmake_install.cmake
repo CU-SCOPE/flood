@@ -35,6 +35,7 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/home/zach/Documents/senior_projects/flood/build/pc/src/cmake_install.cmake")
+  include("/home/zach/Documents/senior_projects/flood/build/pc/math/cmake_install.cmake")
 
 endif()
 

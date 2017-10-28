@@ -1,1 +1,1 @@
-/usr/bin/cc     CMakeFiles/pcExe.dir/src/main.c.o  -o ../exe/pc_target/pcExe -rdynamic -lm src/libsrc.a -lm 
+/usr/bin/c++      CMakeFiles/pcExe.dir/src/main.c.o  -o ../exe/pc_target/pcExe -rdynamic -lm src/libsrc.a math/libmath.a -lm 

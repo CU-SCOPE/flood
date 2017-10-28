@@ -1,37 +1,8 @@
-/**************************************************************************
-**
-**  svd3
-**
-** Quick singular value decomposition as described by: 
-** A. McAdams, A. Selle, R. Tamstorf, J. Teran and E. Sifakis, 
-** "Computing the Singular Value Decomposition of 3x3 matrices 
-** with minimal branching and elementary floating point operations",
-**  University of Wisconsin - Madison technical report TR1690, May 2011
-**  
-**	OPTIMIZED CPU VERSION
-** 	Implementation by: Eric Jang
-**	 
-**  13 Apr 2014
-**
-**************************************************************************/
+#include <stdio.h>
+#include "svd.h"
 
 
-#ifndef SVD3_H
-#define SVD3_H
 
-#define _gamma 5.828427124 // FOUR_GAMMA_SQUARED = sqrt(8)+3;
-#define _cstar 0.923879532 // cos(pi/8)
-#define _sstar 0.3826834323 // sin(p/8)
-#define EPSILON 1e-6
-
-#include <math.h>
-
-/* This is a novel and fast routine for the reciprocal square root of an
-IEEE float (single precision).
-http://www.lomont.org/Math/Papers/2003/InvSqrt.pdf
-http://playstation2-linux.com/download/p2lsd/fastrsqrt.pdf
-http://www.beyond3d.com/content/articles/8/
-*/
 inline float rsqrt(float x) {
 // int ihalf = *(int *)&x - 0x00800000; // Alternative to next line,
 // float xhalf = *(float *)&ihalf;      // for sufficiently large nos.
@@ -128,17 +99,17 @@ float &m31, float &m32, float &m33
     float y = qV[1];
     float z = qV[2];
 
-	float qxx = x*x;
-	float qyy = y*y;
-	float qzz = z*z;
-	float qxz = x*z;
-	float qxy = x*y;
-	float qyz = y*z;
-	float qwx = w*x;
-	float qwy = w*y;
-	float qwz = w*z;
+  float qxx = x*x;
+  float qyy = y*y;
+  float qzz = z*z;
+  float qxz = x*z;
+  float qxy = x*y;
+  float qyz = y*z;
+  float qwx = w*x;
+  float qwy = w*y;
+  float qwz = w*z;
 
-	 m11=1 - 2*(qyy + qzz); m12=2*(qxy - qwz); m13=2*(qxz + qwy);
+   m11=1 - 2*(qyy + qzz); m12=2*(qxy - qwz); m13=2*(qxz + qwy);
     m21=2*(qxy + qwz); m22=1 - 2*(qxx + qzz); m23=2*(qyz - qwx);
     m31=2*(qxz - qwy); m32=2*(qyz + qwx); m33=1 - 2*(qxx + qyy);
 }
@@ -166,25 +137,25 @@ inline void jacobiConjugation( const int x, const int y, const int z,
                         float &s31, float &s32, float &s33,
                         float * qV)
 {
-	float ch,sh;
+  float ch,sh;
     approximateGivensQuaternion(s11,s21,s22,ch,sh);
 
-	float scale = ch*ch+sh*sh;
+  float scale = ch*ch+sh*sh;
     float a = (ch*ch-sh*sh)/scale;
     float b = (2*sh*ch)/scale;
 
     // make temp copy of S
     float _s11 = s11;
-	float _s21 = s21; float _s22 = s22;
-	float _s31 = s31; float _s32 = s32; float _s33 = s33;
+  float _s21 = s21; float _s22 = s22;
+  float _s31 = s31; float _s32 = s32; float _s33 = s33;
 
-	// perform conjugation S = Q'*S*Q
-	// Q already implicitly solved from a, b
+  // perform conjugation S = Q'*S*Q
+  // Q already implicitly solved from a, b
     s11 =a*(a*_s11 + b*_s21) + b*(a*_s21 + b*_s22);
-    s21 =a*(-b*_s11 + a*_s21) + b*(-b*_s21 + a*_s22);	s22=-b*(-b*_s11 + a*_s21) + a*(-b*_s21 + a*_s22);
-    s31 =a*_s31 + b*_s32;								s32=-b*_s31 + a*_s32; s33=_s33;
+    s21 =a*(-b*_s11 + a*_s21) + b*(-b*_s21 + a*_s22); s22=-b*(-b*_s11 + a*_s21) + a*(-b*_s21 + a*_s22);
+    s31 =a*_s31 + b*_s32;               s32=-b*_s31 + a*_s32; s33=_s33;
 
-	// update cumulative rotation qV
+  // update cumulative rotation qV
     float tmp[3];
     tmp[0]=qV[0]*sh;
     tmp[1]=qV[1]*sh;
@@ -205,11 +176,11 @@ inline void jacobiConjugation( const int x, const int y, const int z,
 
     // re-arrange matrix for next iteration
     _s11 = s22;
-	_s21 = s32; _s22 = s33;
-	_s31 = s21; _s32 = s31; _s33 = s11;
-	s11 = _s11;
-	s21 = _s21; s22 = _s22;
-	s31 = _s31; s32 = _s32; s33 = _s33;
+  _s21 = s32; _s22 = s33;
+  _s31 = s21; _s32 = s31; _s33 = s11;
+  s11 = _s11;
+  s21 = _s21; s22 = _s22;
+  s31 = _s31; s32 = _s32; s33 = _s33;
 
 }
 
@@ -220,39 +191,39 @@ inline float dist2(float x, float y, float z)
 
 // finds transformation that diagonalizes a symmetric matrix
 inline void jacobiEigenanlysis( // symmetric matrix
-								float &s11,
-								float &s21, float &s22,
-								float &s31, float &s32, float &s33,
-								// quaternion representation of V
+                float &s11,
+                float &s21, float &s22,
+                float &s31, float &s32, float &s33,
+                // quaternion representation of V
                                 float * qV)
 {
     qV[3]=1; qV[0]=0;qV[1]=0;qV[2]=0; // follow same indexing convention as GLM
     for (int i=0;i<4;i++)
-	{
-		// we wish to eliminate the maximum off-diagonal element
+  {
+    // we wish to eliminate the maximum off-diagonal element
         // on every iteration, but cycling over all 3 possible rotations
         // in fixed order (p,q) = (1,2) , (2,3), (1,3) still retains
         //  asymptotic convergence
         jacobiConjugation(0,1,2,s11,s21,s22,s31,s32,s33,qV); // p,q = 0,1
         jacobiConjugation(1,2,0,s11,s21,s22,s31,s32,s33,qV); // p,q = 1,2
         jacobiConjugation(2,0,1,s11,s21,s22,s31,s32,s33,qV); // p,q = 0,2
-	}
+  }
 }
 
 
 inline void sortSingularValues(// matrix that we want to decompose
-							float &b11, float &b12, float &b13,
-							float &b21, float &b22, float &b23,
-							float &b31, float &b32, float &b33,
-						  // sort V simultaneously
-							float &v11, float &v12, float &v13,
-							float &v21, float &v22, float &v23,
+              float &b11, float &b12, float &b13,
+              float &b21, float &b22, float &b23,
+              float &b31, float &b32, float &b33,
+              // sort V simultaneously
+              float &v11, float &v12, float &v13,
+              float &v21, float &v22, float &v23,
                             float &v31, float &v32, float &v33)
 {
     float rho1 = dist2(b11,b21,b31);
     float rho2 = dist2(b12,b22,b32);
     float rho3 = dist2(b13,b23,b33);
-	bool c;
+  bool c;
     c = rho1 < rho2;
     condNegSwap(c,b11,b12); condNegSwap(c,v11,v12);
     condNegSwap(c,b21,b22); condNegSwap(c,v21,v22);
@@ -288,17 +259,17 @@ void QRGivensQuaternion(float a1, float a2, float &ch, float &sh)
 
 
 inline void QRDecomposition(// matrix that we want to decompose
-							float b11, float b12, float b13,
-							float b21, float b22, float b23,
-							float b31, float b32, float b33,
-							// output Q
-							float &q11, float &q12, float &q13,
-							float &q21, float &q22, float &q23,
-							float &q31, float &q32, float &q33,
-							// output R
-							float &r11, float &r12, float &r13,
-							float &r21, float &r22, float &r23,
-							float &r31, float &r32, float &r33)
+              float b11, float b12, float b13,
+              float b21, float b22, float b23,
+              float b31, float b32, float b33,
+              // output Q
+              float &q11, float &q12, float &q13,
+              float &q21, float &q22, float &q23,
+              float &q31, float &q32, float &q33,
+              // output R
+              float &r11, float &r12, float &r13,
+              float &r21, float &r22, float &r23,
+              float &r31, float &r32, float &r33)
 {    
     float ch1,sh1,ch2,sh2,ch3,sh3;
     float a,b;
@@ -352,52 +323,52 @@ inline void QRDecomposition(// matrix that we want to decompose
 }
 
 void svd(// input A
-		float a11, float a12, float a13,
-		float a21, float a22, float a23,
-		float a31, float a32, float a33,
-		// output U
-		float &u11, float &u12, float &u13,
-		float &u21, float &u22, float &u23,
-		float &u31, float &u32, float &u33,
-		// output S
-		float &s11, float &s12, float &s13,
-		float &s21, float &s22, float &s23,
+    float a11, float a12, float a13,
+    float a21, float a22, float a23,
+    float a31, float a32, float a33,
+    // output U
+    float &u11, float &u12, float &u13,
+    float &u21, float &u22, float &u23,
+    float &u31, float &u32, float &u33,
+    // output S
+    float &s11, float &s12, float &s13,
+    float &s21, float &s22, float &s23,
         float &s31, float &s32, float &s33,
-		// output V
-		float &v11, float &v12, float &v13,
-		float &v21, float &v22, float &v23,
-		float &v31, float &v32, float &v33)
+    // output V
+    float &v11, float &v12, float &v13,
+    float &v21, float &v22, float &v23,
+    float &v31, float &v32, float &v33)
 {
-	// normal equations matrix
-	float ATA11, ATA12, ATA13;
-	float ATA21, ATA22, ATA23;
-	float ATA31, ATA32, ATA33;
+  // normal equations matrix
+  float ATA11, ATA12, ATA13;
+  float ATA21, ATA22, ATA23;
+  float ATA31, ATA32, ATA33;
 
-	multAtB(a11,a12,a13,a21,a22,a23,a31,a32,a33,
+  multAtB(a11,a12,a13,a21,a22,a23,a31,a32,a33,
           a11,a12,a13,a21,a22,a23,a31,a32,a33,
           ATA11,ATA12,ATA13,ATA21,ATA22,ATA23,ATA31,ATA32,ATA33);
 
-	// symmetric eigenalysis
-	float qV[4];
+  // symmetric eigenalysis
+  float qV[4];
     jacobiEigenanlysis( ATA11,ATA21,ATA22, ATA31,ATA32,ATA33,qV);
-	quatToMat3(qV,v11,v12,v13,v21,v22,v23,v31,v32,v33);
+  quatToMat3(qV,v11,v12,v13,v21,v22,v23,v31,v32,v33);
 
-	float b11, b12, b13;
-	float b21, b22, b23;
-	float b31, b32, b33;
-	multAB(a11,a12,a13,a21,a22,a23,a31,a32,a33,
-		v11,v12,v13,v21,v22,v23,v31,v32,v33,
-		b11, b12, b13, b21, b22, b23, b31, b32, b33);
+  float b11, b12, b13;
+  float b21, b22, b23;
+  float b31, b32, b33;
+  multAB(a11,a12,a13,a21,a22,a23,a31,a32,a33,
+    v11,v12,v13,v21,v22,v23,v31,v32,v33,
+    b11, b12, b13, b21, b22, b23, b31, b32, b33);
 
-	// sort singular values and find V
-	sortSingularValues(b11, b12, b13, b21, b22, b23, b31, b32, b33,
-						v11,v12,v13,v21,v22,v23,v31,v32,v33);
+  // sort singular values and find V
+  sortSingularValues(b11, b12, b13, b21, b22, b23, b31, b32, b33,
+            v11,v12,v13,v21,v22,v23,v31,v32,v33);
 
-	// QR decomposition
-	QRDecomposition(b11, b12, b13, b21, b22, b23, b31, b32, b33,
-	u11, u12, u13, u21, u22, u23, u31, u32, u33,
-	s11, s12, s13, s21, s22, s23, s31, s32, s33
-	);
+  // QR decomposition
+  QRDecomposition(b11, b12, b13, b21, b22, b23, b31, b32, b33,
+  u11, u12, u13, u21, u22, u23, u31, u32, u33,
+  s11, s12, s13, s21, s22, s23, s31, s32, s33
+  );
 }
 
 /// polar decomposition can be reconstructed trivially from SVD result
@@ -439,4 +410,19 @@ void pd(float a11, float a12, float a13,
            u11, u12, u13, u21, u22, u23, u31, u32, u33);
 }
 
-#endif
+
+
+
+void runSVD(float W[3][3], float U[3][3], float V[3][3]) {
+	float 	s11, s12, s13, 
+			s21, s22, s23, 
+			s31, s32, s33;
+
+	svd(W[0][0], W[0][1], W[0][2], W[1][0], W[1][1], W[1][2], W[2][0], W[2][1], W[2][2],
+	    U[0][0], U[0][1], U[0][2], U[1][0], U[1][1], U[1][2], U[2][0], U[2][1], U[2][2],
+	    s11, s12, s13, s21, s22, s23, s31, s32, s33,
+	    V[0][0], V[0][1], V[0][2], V[1][0], V[1][1], V[1][2], V[2][0], V[2][1], V[2][2]);
+}
+
+
+

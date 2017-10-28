@@ -4,6 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
+  "/home/zach/Documents/senior_projects/flood/src/icp.c" "/home/zach/Documents/senior_projects/flood/build/pc/src/CMakeFiles/src.dir/icp.c.o"
   "/home/zach/Documents/senior_projects/flood/src/kd_tree.c" "/home/zach/Documents/senior_projects/flood/build/pc/src/CMakeFiles/src.dir/kd_tree.c.o"
   "/home/zach/Documents/senior_projects/flood/src/stl.c" "/home/zach/Documents/senior_projects/flood/build/pc/src/CMakeFiles/src.dir/stl.c.o"
   )
@@ -12,6 +13,7 @@ set(CMAKE_C_COMPILER_ID "GNU")
 # The include file search paths:
 set(CMAKE_C_TARGET_INCLUDE_PATH
   "../../src"
+  "../../math"
   )
 
 # Targets to which this target links.

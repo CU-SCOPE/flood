@@ -1,6 +1,7 @@
 #ifndef VEC_MATH_H
 #define VEC_MATH_H
 
+
 static inline float dot3D(float *x, float *y) {
 	return x[0] * y[0] + x[1] * y[1] + x[2] * y[2];
 }
@@ -52,9 +53,9 @@ static inline void eye4D(float mat[4][4]) {
 static inline void meanVec(float *vec, float *mean, uint32_t numPts) {
 	uint32_t i;
 	for(i=0; i<numPts; i++) {
-		mean += vec[i];
+		(*mean) += vec[i];
 	}
-	mean /= numPts;
+	(*mean) /= numPts;
 }
 
 static inline void laderman_mul(const float a[3][3], const float b[3][3], float c[3][3]) {
@@ -106,6 +107,21 @@ static inline void transpose(const float a[3][3], float aT[3][3]) {
 	aT[2][0] = a[0][2];
 	aT[2][1] = a[1][2];
 	aT[2][2] = a[2][2];
+}
+
+static inline void getMat(point4D *scan, point4D *model, float W[3][3], uint32_t numPts) {
+	uint32_t i;
+	for(i=0; i<numPts; i++) {
+		W[0][0] += scan[i].point[0] * model[i].point[0];
+		W[0][1] += scan[i].point[0] * model[i].point[1];
+		W[0][2] += scan[i].point[0] * model[i].point[2];
+		W[1][0] += scan[i].point[1] * model[i].point[0];
+		W[1][1] += scan[i].point[1] * model[i].point[1];
+		W[1][2] += scan[i].point[1] * model[i].point[2];
+		W[2][0] += scan[i].point[2] * model[i].point[0];
+		W[2][1] += scan[i].point[2] * model[i].point[1];
+		W[2][2] += scan[i].point[2] * model[i].point[2];
+	}
 }
 
 static inline void triangleDist(face tri, float *point, float *dist, float *closestPt) {

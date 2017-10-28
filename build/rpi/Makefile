@@ -136,6 +136,19 @@ src/fast:
 	$(MAKE) -f src/CMakeFiles/src.dir/build.make src/CMakeFiles/src.dir/build
 .PHONY : src/fast
 
+#=============================================================================
+# Target rules for targets named math
+
+# Build rule for target.
+math: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 math
+.PHONY : math
+
+# fast build rule for target.
+math/fast:
+	$(MAKE) -f math/CMakeFiles/math.dir/build.make math/CMakeFiles/math.dir/build
+.PHONY : math/fast
+
 src/main.o: src/main.c.o
 
 .PHONY : src/main.o
@@ -173,6 +186,7 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... rpiExe"
 	@echo "... src"
+	@echo "... math"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

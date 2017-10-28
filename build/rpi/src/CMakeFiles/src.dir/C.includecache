@@ -6,6 +6,32 @@
 
 #IncludeRegexTransform: 
 
+../../math/svd.h
+math.h
+-
+
+/home/zach/Documents/senior_projects/flood/src/icp.c
+stdio.h
+-
+stdlib.h
+-
+stdint.h
+-
+string.h
+-
+kd_tree.h
+/home/zach/Documents/senior_projects/flood/src/kd_tree.h
+svd.h
+/home/zach/Documents/senior_projects/flood/src/svd.h
+vec_math.h
+/home/zach/Documents/senior_projects/flood/src/vec_math.h
+icp.h
+/home/zach/Documents/senior_projects/flood/src/icp.h
+
+/home/zach/Documents/senior_projects/flood/src/icp.h
+kd_tree.h
+/home/zach/Documents/senior_projects/flood/src/kd_tree.h
+
 /home/zach/Documents/senior_projects/flood/src/kd_tree.c
 stdio.h
 -

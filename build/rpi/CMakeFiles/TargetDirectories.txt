@@ -4,3 +4,6 @@
 /home/zach/Documents/senior_projects/flood/build/rpi/src/CMakeFiles/edit_cache.dir
 /home/zach/Documents/senior_projects/flood/build/rpi/src/CMakeFiles/rebuild_cache.dir
 /home/zach/Documents/senior_projects/flood/build/rpi/src/CMakeFiles/src.dir
+/home/zach/Documents/senior_projects/flood/build/rpi/math/CMakeFiles/rebuild_cache.dir
+/home/zach/Documents/senior_projects/flood/build/rpi/math/CMakeFiles/edit_cache.dir
+/home/zach/Documents/senior_projects/flood/build/rpi/math/CMakeFiles/math.dir
