@@ -6,6 +6,7 @@ src/CMakeFiles/src.dir/icp.c.o
  /home/zach/Documents/senior_projects/flood/src/icp.c
  /home/zach/Documents/senior_projects/flood/src/icp.h
  /home/zach/Documents/senior_projects/flood/src/kd_tree.h
+ /home/zach/Documents/senior_projects/flood/src/quaternion.h
  /home/zach/Documents/senior_projects/flood/src/stl.h
  /home/zach/Documents/senior_projects/flood/src/vec_math.h
 src/CMakeFiles/src.dir/kd_tree.c.o

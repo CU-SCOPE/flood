@@ -5,6 +5,7 @@ src/CMakeFiles/src.dir/icp.c.o: ../../svd/svd3.h
 src/CMakeFiles/src.dir/icp.c.o: ../../src/icp.c
 src/CMakeFiles/src.dir/icp.c.o: ../../src/icp.h
 src/CMakeFiles/src.dir/icp.c.o: ../../src/kd_tree.h
+src/CMakeFiles/src.dir/icp.c.o: ../../src/quaternion.h
 src/CMakeFiles/src.dir/icp.c.o: ../../src/stl.h
 src/CMakeFiles/src.dir/icp.c.o: ../../src/vec_math.h
 

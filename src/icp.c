@@ -6,6 +6,7 @@
 #include "svd3.h"
 #include "vec_math.h"
 #include "icp.h"
+#include "quaternion.h"
 
 void transform(float T[4][4], point4D *points, uint32_t numPts) {
 	uint32_t i;
@@ -98,4 +99,7 @@ void icp(point4D *scan, node *root, float T[4][4], uint32_t numPts) {
 		}
 	}
 	calcTransform(initState, scan,T, numPts);
+	quat q;
+	trans2quat(T, &q);
+	printQuat(q);
 }
