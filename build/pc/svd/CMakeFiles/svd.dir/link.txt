@@ -1,0 +1,2 @@
+/usr/bin/ar qc libsvd.a  CMakeFiles/svd.dir/svd3.cpp.o
+/usr/bin/ranlib libsvd.a

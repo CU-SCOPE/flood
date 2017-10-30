@@ -91,7 +91,7 @@ pcExe_EXTERNAL_OBJECTS =
 ../exe/pc_target/pcExe: CMakeFiles/pcExe.dir/src/main.c.o
 ../exe/pc_target/pcExe: CMakeFiles/pcExe.dir/build.make
 ../exe/pc_target/pcExe: src/libsrc.a
-../exe/pc_target/pcExe: math/libmath.a
+../exe/pc_target/pcExe: svd/libsvd.a
 ../exe/pc_target/pcExe: CMakeFiles/pcExe.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/zach/Documents/senior_projects/flood/build/pc/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable ../exe/pc_target/pcExe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/pcExe.dir/link.txt --verbose=$(VERBOSE)

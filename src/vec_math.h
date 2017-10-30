@@ -58,46 +58,9 @@ static inline void meanVec(float *vec, float *mean, uint32_t numPts) {
 	(*mean) /= numPts;
 }
 
-static inline void laderman_mul(const float a[3][3], const float b[3][3], float c[3][3]) {
 
-	float m[24]; // not off by one, just wanted to match the index from the paper
 
-	m[1 ]= (a[0][0]+a[0][1]+a[0][2]-a[1][0]-a[1][1]-a[2][1]-a[2][2])*b[1][1];
-	m[2 ]= (a[0][0]-a[1][0])*(-b[0][1]+b[1][1]);
-	m[3 ]= a[1][1]*(-b[0][0]+b[0][1]+b[1][0]-b[1][1]-b[1][2]-b[2][0]+b[2][2]);
-	m[4 ]= (-a[0][0]+a[1][0]+a[1][1])*(b[0][0]-b[0][1]+b[1][1]);
-	m[5 ]= (a[1][0]+a[1][1])*(-b[0][0]+b[0][1]);
-	m[6 ]= a[0][0]*b[0][0];
-	m[7 ]= (-a[0][0]+a[2][0]+a[2][1])*(b[0][0]-b[0][2]+b[1][2]);
-	m[8 ]= (-a[0][0]+a[2][0])*(b[0][2]-b[1][2]);
-	m[9 ]= (a[2][0]+a[2][1])*(-b[0][0]+b[0][2]);
-	m[10]= (a[0][0]+a[0][1]+a[0][2]-a[1][1]-a[1][2]-a[2][0]-a[2][1])*b[1][2];
-	m[11]= a[2][1]*(-b[0][0]+b[0][2]+b[1][0]-b[1][1]-b[1][2]-b[2][0]+b[2][1]);
-	m[12]= (-a[0][2]+a[2][1]+a[2][2])*(b[1][1]+b[2][0]-b[2][1]);
-	m[13]= (a[0][2]-a[2][2])*(b[1][1]-b[2][1]);
-	m[14]= a[0][2]*b[2][0];
-	m[15]= (a[2][1]+a[2][2])*(-b[2][0]+b[2][1]);
-	m[16]= (-a[0][2]+a[1][1]+a[1][2])*(b[1][2]+b[2][0]-b[2][2]);
-	m[17]= (a[0][2]-a[1][2])*(b[1][2]-b[2][2]);
-	m[18]= (a[1][1]+a[1][2])*(-b[2][0]+b[2][2]);
-	m[19]= a[0][1]*b[1][0];
-	m[20]= a[1][2]*b[2][1];
-	m[21]= a[1][0]*b[0][2];
-	m[22]= a[2][0]*b[0][1];
-	m[23]= a[2][2]*b[2][2];
-
-	c[0][0] = m[6]+m[14]+m[19];
-	c[0][1] = m[1]+m[4]+m[5]+m[6]+m[12]+m[14]+m[15];
-	c[0][2] = m[6]+m[7]+m[9]+m[10]+m[14]+m[16]+m[18];
-	c[1][0] = m[2]+m[3]+m[4]+m[6]+m[14]+m[16]+m[17];
-	c[1][1] = m[2]+m[4]+m[5]+m[6]+m[20];
-	c[1][2] = m[14]+m[16]+m[17]+m[18]+m[21];
-	c[2][0] = m[6]+m[7]+m[8]+m[11]+m[12]+m[13]+m[14];
-	c[2][1] = m[12]+m[13]+m[14]+m[15]+m[22];
-	c[2][2] = m[6]+m[7]+m[8]+m[9]+m[23];	
-}
-
-static inline void transpose(const float a[3][3], float aT[3][3]) {
+static inline void transpose(float a[3][3], float aT[3][3]) {
 	aT[0][0] = a[0][0];
 	aT[0][1] = a[1][0];
 	aT[0][2] = a[2][0];
@@ -168,23 +131,23 @@ static inline void triangleDist(face tri, float *point, float *dist, float *clos
 			invDet = 1/det;
 			s *= invDet;
 			t *= invDet;
-			*dist = s * (a*s + b*t + 2*d) + t * (b*s + c*t + 2*e) + f;
+			*(dist) = s * (a*s + b*t + 2*d) + t * (b*s + c*t + 2*e) + f;
 		case 1:
 			numer = c + e - b - d;
 			if(numer <= 0) {
 				s = 0;
 				t = 1;
-				*dist = c + 2*e + f;
+				*(dist) = c + 2*e + f;
 			} else {
 				denom = a - 2*b + c;
 				if(numer >= denom) {
 					s = 1;
 					t = 0;
-					*dist = a + 2 * d + f;
+					*(dist) = a + 2 * d + f;
 				} else {
 					s = numer/denom;
 					t = 1-s;
-					*dist = s * (a*s + b*t + 2*d) + t * (b*s + c*t + 2*e) + f;
+					*(dist) = s * (a*s + b*t + 2*d) + t * (b*s + c*t + 2*e) + f;
 				}
 			}
 		case 2:
@@ -196,24 +159,24 @@ static inline void triangleDist(face tri, float *point, float *dist, float *clos
 				if(numer >= denom){
 					s = 1.0;
 					t = 0.0;
-					*dist = a + 2.0 * d + f;
+					*(dist) = a + 2.0 * d + f;
 				} else {
 					s = numer / denom;
 					t = 1 - s;
-					*dist = s * (a * s + b * t + 2 * d) + t * (b * s + c * t + 2 * e) + f;
+					*(dist) = s * (a * s + b * t + 2 * d) + t * (b * s + c * t + 2 * e) + f;
 				}
 			} else {
 				s = 0.0;
 				if(tmp1 <= 0.0) {
 					t = 1;
-					*dist = c + 2.0 * e + f;
+					*(dist) = c + 2.0 * e + f;
 				} else {
 					if(e >= 0.0){
 						t = 0.0;
-						*dist = f;
+						*(dist) = f;
 					} else {
 						t = -e / c;
-						*dist = e * t + f;
+						*(dist) = e * t + f;
 					}
 				}
 			}
@@ -221,14 +184,14 @@ static inline void triangleDist(face tri, float *point, float *dist, float *clos
 			s = 0;
 			if(e >= 0) {
 				t = 0;
-				*dist = f;
+				*(dist) = f;
 			} else {
 				if(-e >= c) {
 					t = 1;
-					*dist = c + 2.0 * e + f;
+					*(dist) = c + 2.0 * e + f;
 				} else {
 					t = -e / c;
-					*dist = e * t + f;
+					*(dist) = e * t + f;
 				}
 			}
 		case 4:
@@ -236,23 +199,23 @@ static inline void triangleDist(face tri, float *point, float *dist, float *clos
 				t = 0.0;
 				if(-d >= a) {
 					s = 1.0;
-					*dist = a + 2.0 * d + f;
+					*(dist) = a + 2.0 * d + f;
 				} else {
 					s = -d / a;
-					*dist = d * s + f;
+					*(dist) = d * s + f;
 				}
 			} else {
 				s = 0.0;
 				if(e >= 0.0) {
 					t = 0.0;
-					*dist = f;
+					*(dist) = f;
 				} else {
 					if(-e >= c) {
 						t = 1.0;
-						*dist = c + 2.0 * e + f;
+						*(dist) = c + 2.0 * e + f;
 					} else {
 						t = -e / c;
-						*dist = e * t + f;
+						*(dist) = e * t + f;
 					}
 				}
 			}
@@ -260,14 +223,14 @@ static inline void triangleDist(face tri, float *point, float *dist, float *clos
 			t = 0;
 			if(d >= 0) {
 				s = 0;
-				*dist = f;
+				*(dist) = f;
 			} else {
 				if(-d >= a) {
 					s = 1;
-					*dist = a + 2.0 * d + f;
+					*(dist) = a + 2.0 * d + f;
 				} else {
 					s = -d / a;
-					*dist = d * s + f;
+					*(dist) = d * s + f;
 				}
 			}
 		case 6:
@@ -279,24 +242,24 @@ static inline void triangleDist(face tri, float *point, float *dist, float *clos
 				if(numer >= denom) {
 					t = 1.0;
 					s = 0;
-					*dist = c + 2.0 * e + f;
+					*(dist) = c + 2.0 * e + f;
 				} else {
 					t = numer / denom;
 					s = 1 - t;
-					*dist = s * (a * s + b * t + 2.0 * d) + t * (b * s + c * t + 2.0 * e) + f;
+					*(dist) = s * (a * s + b * t + 2.0 * d) + t * (b * s + c * t + 2.0 * e) + f;
 				}
 			} else {
 				t = 0.0;
 				if(tmp1 <= 0.0) {
 					s = 1;
-					*dist = a + 2.0 * d + f;
+					*(dist) = a + 2.0 * d + f;
 				} else {
 					if(d >= 0.0) {
 						s = 0.0;
-						*dist = f;
+						*(dist) = f;
 					} else {
 						s = -d / a;
-						*dist = d * s + f;	
+						*(dist) = d * s + f;	
 					}
 				}
 			}
@@ -306,6 +269,9 @@ static inline void triangleDist(face tri, float *point, float *dist, float *clos
 	scalarMul3D(t, E1);
 	add3D(B, E0, temp);
 	add3D(temp, E1, closestPt);
+	if(*(dist) < 0) {
+		*(dist) = 0.0;
+	}
 }
 
 

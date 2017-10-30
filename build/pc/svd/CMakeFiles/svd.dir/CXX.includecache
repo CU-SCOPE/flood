@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/zach/Documents/senior_projects/flood/svd/svd3.cpp
+stdio.h
+-
+svd3.h
+/home/zach/Documents/senior_projects/flood/svd/svd3.h
+math.h
+-
+
+/home/zach/Documents/senior_projects/flood/svd/svd3.h
+

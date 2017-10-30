@@ -91,7 +91,7 @@ rpiExe_EXTERNAL_OBJECTS =
 ../exe/rpi_target/rpiExe: CMakeFiles/rpiExe.dir/src/main.c.o
 ../exe/rpi_target/rpiExe: CMakeFiles/rpiExe.dir/build.make
 ../exe/rpi_target/rpiExe: src/libsrc.a
-../exe/rpi_target/rpiExe: math/libmath.a
+../exe/rpi_target/rpiExe: svd/libsvd.a
 ../exe/rpi_target/rpiExe: CMakeFiles/rpiExe.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/zach/Documents/senior_projects/flood/build/rpi/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable ../exe/rpi_target/rpiExe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/rpiExe.dir/link.txt --verbose=$(VERBOSE)

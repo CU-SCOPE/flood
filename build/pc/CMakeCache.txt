@@ -177,6 +177,9 @@ math_LIB_DEPENDS:STATIC=general;m;
 //Dependencies for the target
 src_LIB_DEPENDS:STATIC=general;m;
 
+//Dependencies for the target
+svd_LIB_DEPENDS:STATIC=general;m;
+
 
 ########################
 # INTERNAL cache entries

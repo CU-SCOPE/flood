@@ -6,5 +6,5 @@ C_FLAGS =
 
 C_DEFINES = 
 
-C_INCLUDES = -I/home/zach/Documents/senior_projects/flood/src -I/home/zach/Documents/senior_projects/flood/math 
+C_INCLUDES = -I/home/zach/Documents/senior_projects/flood/src -I/home/zach/Documents/senior_projects/flood/svd 
 

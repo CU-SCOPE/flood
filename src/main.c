@@ -2,23 +2,27 @@
 #include <stdlib.h>
 #include "kd_tree.h"
 #include "stl.h"
+#include "frames.h"
+#include "icp.h"
+#include "vec_math.h"
 
 
 void main() {
 	face *faces;
-	float dist = 100;
-	float closestPt[3];
-	float query[3];
+	float T[4][4] = {0};
+	eye4D(T);
+	T[2][3] = 10;
+	point4D scan[MAX_POINTS];
 	int i;
+	
 	uint32_t numFaces = loadSTL(&faces);
 	node *root = initTree(faces, numFaces);
-	for(i=0; i<numFaces; i++) {
-		query[0] = faces[i].v1.x;
-		query[1] = faces[i].v1.y;
-		query[2] = faces[i].v1.z;
-		kd_search(query, closestPt, &dist, root);
-	}
-	printf("%f\n", dist);
+
+	FILE *f = fopen("trajectory1_processed/trajectory_1.csv","r");
+	uint32_t numPts = readFrame(scan, f);
+	icp(scan, root, T, numPts);
+
+
 	freeModel(faces);
 	deleteTree(root,0);
 }
