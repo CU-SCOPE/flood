@@ -162,11 +162,12 @@ node *traverse(node *root, float *query, float *closestPt, float *dist){
 
 void kd_search(float *query, float *closestPt, float *dist, node *root) {
 	node *current = root;
-	uint8_t checked[KD_DEPTH] = {0}, counter = 0;
+	uint16_t checked[KD_DEPTH] = {0}, counter = 0;
 	bool goLeft;
 	float plneDist;
 	current = traverse(current, query, closestPt, dist);
 	checked[0] = current->ind;
+	checked[KD_DEPTH-1] = -1;
 	do {
 		goLeft = current == current->rChild;
 		current = current->parent;

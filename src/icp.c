@@ -16,11 +16,13 @@ void transform(float T[4][4], point4D *points, uint32_t numPts) {
 	}
 }
 
+#ifndef NDEBUG
 void printMat3(float a[3][3]) {
     printf("%f %f %f \n", a[0][0], a[0][1], a[0][2]);
     printf("%f %f %f \n", a[1][0], a[1][1], a[1][2]);
     printf("%f %f %f \n", a[2][0], a[2][1], a[2][2]);
 }
+#endif
 
 static inline void meanBoth(point4D *points1, point4D *points2, float *mean1, float *mean2, uint32_t numPts) {
 	uint32_t i;
@@ -67,6 +69,7 @@ void calcTransform(point4D *scan, point4D *model,float T[4][4], uint32_t numPts)
 	matMul3D(V, UT, R);
 	matMulVec3D(R, centScan.point, newCent);
 	sub3D(centModel.point, newCent, t);
+	// printMat3(R);
 	T[0][0] = R[0][0];
 	T[0][1] = R[0][1];
 	T[0][2] = R[0][2];
@@ -93,11 +96,12 @@ void icp(point4D *scan, node *root, float T[4][4], uint32_t numPts) {
 		runSearch(scan, closestPts, minDists, root, numPts);
 		calcTransform(scan, closestPts, T, numPts);
 		transform(T, scan, numPts);
+#ifndef NDEBUG
 		meanVec(minDists, &error, numPts);
 		printf("%f\n", error);
-		if(error <= 0.001) {
+		if(error <= 0.001)
 			break;
-		}
+#endif
 	}
 	calcTransform(initState, scan,T, numPts);
 }
