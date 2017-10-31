@@ -88,7 +88,7 @@ void icp(point4D *scan, node *root, float T[4][4], uint32_t numPts) {
 	transform(T, scan, numPts);
 	float minDists[numPts], error;
 	point4D closestPts[numPts];
-	for(i=0; i<MAX_ITERATIONS; i++) {
+	for(i=0; i<MAX_ITERATIONS_FIND; i++) {
 		error = 0.0;
 		runSearch(scan, closestPts, minDists, root, numPts);
 		calcTransform(scan, closestPts, T, numPts);
