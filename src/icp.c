@@ -6,7 +6,6 @@
 #include "svd3.h"
 #include "vec_math.h"
 #include "icp.h"
-#include "quaternion.h"
 
 void transform(float T[4][4], point4D *points, uint32_t numPts) {
 	uint32_t i;
@@ -17,39 +16,42 @@ void transform(float T[4][4], point4D *points, uint32_t numPts) {
 	}
 }
 
-void printMat3(float a11, float a12, float a13, float a21, float a22, float a23, float a31, float a32, float a33) {
-    printf("%f %f %f \n", a11, a12, a13);
-    printf("%f %f %f \n", a21, a22, a23);
-    printf("%f %f %f \n", a31, a32, a33);
+void printMat3(float a[3][3]) {
+    printf("%f %f %f \n", a[0][0], a[0][1], a[0][2]);
+    printf("%f %f %f \n", a[1][0], a[1][1], a[1][2]);
+    printf("%f %f %f \n", a[2][0], a[2][1], a[2][2]);
 }
 
-static inline void meanBoth(point4D *points1, point4D *points2, point3D *mean1, point3D *mean2, uint32_t numPts) {
+static inline void meanBoth(point4D *points1, point4D *points2, float *mean1, float *mean2, uint32_t numPts) {
 	uint32_t i;
+	float pt1[3] = {0.0};
+	float pt2[3] = {0.0};
 	for(i=0; i<numPts; i++) {
-		mean1->point[0] += points1[i].point[0];
-		mean1->point[1] += points1[i].point[1];
-		mean1->point[2] += points1[i].point[2];
-		mean2->point[0] += points2[i].point[0];
-		mean2->point[1] += points2[i].point[1];
-		mean2->point[2] += points2[i].point[2];
+		pt1[0] += points1[i].point[0];
+		pt1[1] += points1[i].point[1];
+		pt1[2] += points1[i].point[2];
+		pt2[0] += points2[i].point[0];
+		pt2[1] += points2[i].point[1];
+		pt2[2] += points2[i].point[2];
 	}
-	mean1->point[0] /= numPts;
-	mean1->point[1] /= numPts;
-	mean1->point[2] /= numPts;
-	mean2->point[0] /= numPts;
-	mean2->point[1] /= numPts;
-	mean2->point[2] /= numPts;
+	pt1[0] /= numPts;
+	pt1[1] /= numPts;
+	pt1[2] /= numPts;
+	pt2[0] /= numPts;
+	pt2[1] /= numPts;
+	pt2[2] /= numPts;
+	memcpy(mean1, pt1, 3*sizeof(float));
+	memcpy(mean2, pt2, 3*sizeof(float));
 }
 
 
 
 void calcTransform(point4D *scan, point4D *model,float T[4][4], uint32_t numPts) {
 	uint32_t i;
-	float W[3][3] = {0};
+	float W[3][3] = {0.0};
 	point3D centScan, centModel;
 	point4D tempScan[numPts], tempModel[numPts];
-	meanBoth(scan, model, &centScan, &centModel, numPts);
-	
+	meanBoth(scan, model, centScan.point, centModel.point, numPts);
 	for(i=0; i<numPts; i++) {
 		tempScan[i].point[0] = scan[i].point[0] - centScan.point[0];
 		tempScan[i].point[1] = scan[i].point[1] - centScan.point[1];
@@ -58,7 +60,6 @@ void calcTransform(point4D *scan, point4D *model,float T[4][4], uint32_t numPts)
 		tempModel[i].point[1] = model[i].point[1] - centModel.point[1];
 		tempModel[i].point[2] = model[i].point[2] - centModel.point[2];
 	}
-
 	float U[3][3], V[3][3], UT[3][3], R[3][3], t[3], newCent[3];
 	getMat(tempScan, tempModel, W, numPts);
 	runSVD(W, U, V);
@@ -88,7 +89,7 @@ void icp(point4D *scan, node *root, float T[4][4], uint32_t numPts) {
 	float minDists[numPts], error;
 	point4D closestPts[numPts];
 	for(i=0; i<MAX_ITERATIONS; i++) {
-		error = 0;
+		error = 0.0;
 		runSearch(scan, closestPts, minDists, root, numPts);
 		calcTransform(scan, closestPts, T, numPts);
 		transform(T, scan, numPts);
@@ -99,7 +100,4 @@ void icp(point4D *scan, node *root, float T[4][4], uint32_t numPts) {
 		}
 	}
 	calcTransform(initState, scan,T, numPts);
-	quat q;
-	trans2quat(T, &q);
-	printQuat(q);
 }

@@ -37,6 +37,14 @@ icp.h
 /home/zach/Documents/senior_projects/flood/src/icp.h
 vec_math.h
 /home/zach/Documents/senior_projects/flood/src/vec_math.h
+quaternion.h
+/home/zach/Documents/senior_projects/flood/src/quaternion.h
+
+/home/zach/Documents/senior_projects/flood/src/quaternion.h
+math.h
+-
+vec_math.h
+/home/zach/Documents/senior_projects/flood/src/vec_math.h
 
 /home/zach/Documents/senior_projects/flood/src/stl.h
 stdint.h

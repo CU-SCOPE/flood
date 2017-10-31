@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#define STL_FILE_NAME    "models/galileo_small.stl"
+#define STL_FILE_NAME    "models/galileo_rot.stl"
 
 typedef struct point{
 	float x;

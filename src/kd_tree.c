@@ -162,7 +162,7 @@ node *traverse(node *root, float *query, float *closestPt, float *dist){
 
 void kd_search(float *query, float *closestPt, float *dist, node *root) {
 	node *current = root;
-	uint8_t checked[KD_DEPTH], counter = 0;
+	uint8_t checked[KD_DEPTH] = {0}, counter = 0;
 	bool goLeft;
 	float plneDist;
 	current = traverse(current, query, closestPt, dist);
@@ -192,7 +192,8 @@ void kd_search(float *query, float *closestPt, float *dist, node *root) {
 void runSearch(point4D *points, point4D *closestPts, float *minDists, node *root, uint32_t numPts) {
 	uint32_t i;
 	for(i=0; i<numPts; i++) {
-		minDists[i] = 100;
+		minDists[i] = 100.0;
+		closestPts[i].point[3] = 1.0;
 		kd_search(points[i].point, closestPts[i].point, &(minDists[i]), root);
 	}
 }

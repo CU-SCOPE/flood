@@ -5,15 +5,15 @@
 #include "frames.h"
 #include "icp.h"
 #include "vec_math.h"
+#include "quaternion.h"
 
 
 void main() {
 	face *faces;
-	float T[4][4] = {0};
+	float T[4][4] = {0.0};
 	eye4D(T);
 	T[2][3] = 10;
 	point4D scan[MAX_POINTS];
-	int i;
 	
 	uint32_t numFaces = loadSTL(&faces);
 	node *root = initTree(faces, numFaces);
@@ -22,7 +22,12 @@ void main() {
 	uint32_t numPts = readFrame(scan, f);
 	icp(scan, root, T, numPts);
 
+	quat q;
+	trans2quat(T, &q);
+	printQuat(q);
+
 
 	freeModel(faces);
 	deleteTree(root,0);
+	fclose(f);
 }

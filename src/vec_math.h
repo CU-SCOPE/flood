@@ -38,9 +38,9 @@ static inline void matMulVec4D(float mat[4][4], float *vec, float *result) {
 }
 
 static inline void matMulVec3D(float mat[3][3], float *vec, float *result) {
-	result[0] = (mat[0][0]*vec[0]) + (mat[0][1]*vec[1]) + (mat[0][2]*vec[2]) + (mat[0][3]*vec[3]);
-	result[1] = (mat[1][0]*vec[0]) + (mat[1][1]*vec[1]) + (mat[1][2]*vec[2]) + (mat[1][3]*vec[3]);
-	result[2] = (mat[2][0]*vec[0]) + (mat[2][1]*vec[1]) + (mat[2][2]*vec[2]) + (mat[2][3]*vec[3]);
+	result[0] = (mat[0][0]*vec[0]) + (mat[0][1]*vec[1]) + (mat[0][2]*vec[2]);
+	result[1] = (mat[1][0]*vec[0]) + (mat[1][1]*vec[1]) + (mat[1][2]*vec[2]);
+	result[2] = (mat[2][0]*vec[0]) + (mat[2][1]*vec[1]) + (mat[2][2]*vec[2]);
 }
 
 static inline void eye4D(float mat[4][4]) {

@@ -5,6 +5,7 @@ CMakeFiles/rpiExe.dir/src/main.c.o: ../../src/frames.h
 CMakeFiles/rpiExe.dir/src/main.c.o: ../../src/icp.h
 CMakeFiles/rpiExe.dir/src/main.c.o: ../../src/kd_tree.h
 CMakeFiles/rpiExe.dir/src/main.c.o: ../../src/main.c
+CMakeFiles/rpiExe.dir/src/main.c.o: ../../src/quaternion.h
 CMakeFiles/rpiExe.dir/src/main.c.o: ../../src/stl.h
 CMakeFiles/rpiExe.dir/src/main.c.o: ../../src/vec_math.h
 

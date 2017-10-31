@@ -5,6 +5,7 @@ CMakeFiles/pcExe.dir/src/main.c.o: ../../src/frames.h
 CMakeFiles/pcExe.dir/src/main.c.o: ../../src/icp.h
 CMakeFiles/pcExe.dir/src/main.c.o: ../../src/kd_tree.h
 CMakeFiles/pcExe.dir/src/main.c.o: ../../src/main.c
+CMakeFiles/pcExe.dir/src/main.c.o: ../../src/quaternion.h
 CMakeFiles/pcExe.dir/src/main.c.o: ../../src/stl.h
 CMakeFiles/pcExe.dir/src/main.c.o: ../../src/vec_math.h
 
