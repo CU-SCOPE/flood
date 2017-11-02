@@ -113,14 +113,15 @@ node *initTree(face *faces, uint32_t numFaces) {
 
 void checkFaces(face *faces, uint32_t numFaces, float *query, float *closestPt, float *dist) {
 	uint32_t i;
-	float tmpPt[3], tmpDist;
+	float tmpPt[3], tmpDist, curDist = *dist;
 	for(i=0; i<numFaces; i++) {
 		triangleDist(faces[i], query, &tmpDist, tmpPt);
-		if(tmpDist < *dist) {
-			*dist = tmpDist;
+		if(tmpDist < curDist) {
+			curDist = tmpDist;
 			memcpy(closestPt, tmpPt, sizeof(float)*3);
 		}
 	}
+	*dist = curDist;
 }
 
 node *traverse(node *root, float *query, float *closestPt, float *dist){

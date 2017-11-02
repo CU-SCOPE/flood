@@ -6,6 +6,7 @@
 #include "svd3.h"
 #include "vec_math.h"
 #include "icp.h"
+#include "svdcmp.h"
 
 void transform(float T[4][4], point4D *points, uint32_t numPts) {
 	uint32_t i;
@@ -21,6 +22,13 @@ void printMat3(float a[3][3]) {
     printf("%f %f %f \n", a[0][0], a[0][1], a[0][2]);
     printf("%f %f %f \n", a[1][0], a[1][1], a[1][2]);
     printf("%f %f %f \n", a[2][0], a[2][1], a[2][2]);
+}
+
+void printMat4(float a[4][4]) {
+    printf("%f %f %f %f\n", a[0][0], a[0][1], a[0][2], a[0][3]);
+    printf("%f %f %f %f\n", a[1][0], a[1][1], a[1][2], a[1][3]);
+    printf("%f %f %f %f\n", a[2][0], a[2][1], a[2][2], a[2][3]);
+    printf("%f %f %f %f\n", a[3][0], a[3][1], a[3][2], a[3][3]);
 }
 #endif
 
@@ -62,14 +70,13 @@ void calcTransform(point4D *scan, point4D *model,float T[4][4], uint32_t numPts)
 		tempModel[i].point[1] = model[i].point[1] - centModel.point[1];
 		tempModel[i].point[2] = model[i].point[2] - centModel.point[2];
 	}
-	float U[3][3], V[3][3], UT[3][3], R[3][3], t[3], newCent[3];
+	float V[3][3], UT[3][3], R[3][3], t[3], newCent[3];
 	getMat(tempScan, tempModel, W, numPts);
-	runSVD(W, U, V);
-	transpose(U, UT);
+	svdcmp(W, V);
+	transpose(W, UT);
 	matMul3D(V, UT, R);
 	matMulVec3D(R, centScan.point, newCent);
 	sub3D(centModel.point, newCent, t);
-	// printMat3(R);
 	T[0][0] = R[0][0];
 	T[0][1] = R[0][1];
 	T[0][2] = R[0][2];
@@ -104,4 +111,5 @@ void icp(point4D *scan, node *root, float T[4][4], uint32_t numPts) {
 #endif
 	}
 	calcTransform(initState, scan,T, numPts);
+	printMat4(T);
 }

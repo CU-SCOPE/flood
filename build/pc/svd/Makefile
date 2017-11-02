@@ -152,6 +152,33 @@ svd3.cpp.s:
 	cd /home/zach/Documents/senior_projects/flood/build/pc && $(MAKE) -f svd/CMakeFiles/svd.dir/build.make svd/CMakeFiles/svd.dir/svd3.cpp.s
 .PHONY : svd3.cpp.s
 
+svdcmp.o: svdcmp.c.o
+
+.PHONY : svdcmp.o
+
+# target to build an object file
+svdcmp.c.o:
+	cd /home/zach/Documents/senior_projects/flood/build/pc && $(MAKE) -f svd/CMakeFiles/svd.dir/build.make svd/CMakeFiles/svd.dir/svdcmp.c.o
+.PHONY : svdcmp.c.o
+
+svdcmp.i: svdcmp.c.i
+
+.PHONY : svdcmp.i
+
+# target to preprocess a source file
+svdcmp.c.i:
+	cd /home/zach/Documents/senior_projects/flood/build/pc && $(MAKE) -f svd/CMakeFiles/svd.dir/build.make svd/CMakeFiles/svd.dir/svdcmp.c.i
+.PHONY : svdcmp.c.i
+
+svdcmp.s: svdcmp.c.s
+
+.PHONY : svdcmp.s
+
+# target to generate assembly for a file
+svdcmp.c.s:
+	cd /home/zach/Documents/senior_projects/flood/build/pc && $(MAKE) -f svd/CMakeFiles/svd.dir/build.make svd/CMakeFiles/svd.dir/svdcmp.c.s
+.PHONY : svdcmp.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -164,6 +191,9 @@ help:
 	@echo "... svd3.o"
 	@echo "... svd3.i"
 	@echo "... svd3.s"
+	@echo "... svdcmp.o"
+	@echo "... svdcmp.i"
+	@echo "... svdcmp.s"
 .PHONY : help
 
 

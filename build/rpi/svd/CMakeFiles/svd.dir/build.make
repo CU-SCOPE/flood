@@ -81,17 +81,43 @@ svd/CMakeFiles/svd.dir/svd3.cpp.o.provides: svd/CMakeFiles/svd.dir/svd3.cpp.o.re
 svd/CMakeFiles/svd.dir/svd3.cpp.o.provides.build: svd/CMakeFiles/svd.dir/svd3.cpp.o
 
 
+svd/CMakeFiles/svd.dir/svdcmp.c.o: svd/CMakeFiles/svd.dir/flags.make
+svd/CMakeFiles/svd.dir/svdcmp.c.o: ../../svd/svdcmp.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zach/Documents/senior_projects/flood/build/rpi/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object svd/CMakeFiles/svd.dir/svdcmp.c.o"
+	cd /home/zach/Documents/senior_projects/flood/build/rpi/svd && /home/zach/rpi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf-gcc  --sysroot=/home/zach/rpi/rootfs $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/svd.dir/svdcmp.c.o   -c /home/zach/Documents/senior_projects/flood/svd/svdcmp.c
+
+svd/CMakeFiles/svd.dir/svdcmp.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/svd.dir/svdcmp.c.i"
+	cd /home/zach/Documents/senior_projects/flood/build/rpi/svd && /home/zach/rpi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf-gcc  --sysroot=/home/zach/rpi/rootfs $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/zach/Documents/senior_projects/flood/svd/svdcmp.c > CMakeFiles/svd.dir/svdcmp.c.i
+
+svd/CMakeFiles/svd.dir/svdcmp.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/svd.dir/svdcmp.c.s"
+	cd /home/zach/Documents/senior_projects/flood/build/rpi/svd && /home/zach/rpi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf-gcc  --sysroot=/home/zach/rpi/rootfs $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/zach/Documents/senior_projects/flood/svd/svdcmp.c -o CMakeFiles/svd.dir/svdcmp.c.s
+
+svd/CMakeFiles/svd.dir/svdcmp.c.o.requires:
+
+.PHONY : svd/CMakeFiles/svd.dir/svdcmp.c.o.requires
+
+svd/CMakeFiles/svd.dir/svdcmp.c.o.provides: svd/CMakeFiles/svd.dir/svdcmp.c.o.requires
+	$(MAKE) -f svd/CMakeFiles/svd.dir/build.make svd/CMakeFiles/svd.dir/svdcmp.c.o.provides.build
+.PHONY : svd/CMakeFiles/svd.dir/svdcmp.c.o.provides
+
+svd/CMakeFiles/svd.dir/svdcmp.c.o.provides.build: svd/CMakeFiles/svd.dir/svdcmp.c.o
+
+
 # Object files for target svd
 svd_OBJECTS = \
-"CMakeFiles/svd.dir/svd3.cpp.o"
+"CMakeFiles/svd.dir/svd3.cpp.o" \
+"CMakeFiles/svd.dir/svdcmp.c.o"
 
 # External object files for target svd
 svd_EXTERNAL_OBJECTS =
 
 svd/libsvd.a: svd/CMakeFiles/svd.dir/svd3.cpp.o
+svd/libsvd.a: svd/CMakeFiles/svd.dir/svdcmp.c.o
 svd/libsvd.a: svd/CMakeFiles/svd.dir/build.make
 svd/libsvd.a: svd/CMakeFiles/svd.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/zach/Documents/senior_projects/flood/build/rpi/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX static library libsvd.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/zach/Documents/senior_projects/flood/build/rpi/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX static library libsvd.a"
 	cd /home/zach/Documents/senior_projects/flood/build/rpi/svd && $(CMAKE_COMMAND) -P CMakeFiles/svd.dir/cmake_clean_target.cmake
 	cd /home/zach/Documents/senior_projects/flood/build/rpi/svd && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/svd.dir/link.txt --verbose=$(VERBOSE)
 
@@ -101,6 +127,7 @@ svd/CMakeFiles/svd.dir/build: svd/libsvd.a
 .PHONY : svd/CMakeFiles/svd.dir/build
 
 svd/CMakeFiles/svd.dir/requires: svd/CMakeFiles/svd.dir/svd3.cpp.o.requires
+svd/CMakeFiles/svd.dir/requires: svd/CMakeFiles/svd.dir/svdcmp.c.o.requires
 
 .PHONY : svd/CMakeFiles/svd.dir/requires
 
