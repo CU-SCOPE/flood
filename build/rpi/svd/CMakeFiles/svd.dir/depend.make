@@ -3,6 +3,3 @@
 
 svd/CMakeFiles/svd.dir/svdcmp.c.o: ../../svd/svdcmp.c
 
-svd/CMakeFiles/svd.dir/svd3.cpp.o: ../../svd/svd3.cpp
-svd/CMakeFiles/svd.dir/svd3.cpp.o: ../../svd/svd3.h
-
