@@ -19,7 +19,7 @@ CMAKE_AR:FILEPATH=/usr/bin/ar
 
 //Choose the type of build, options are: None(CMAKE_CXX_FLAGS or
 // CMAKE_C_FLAGS used) Debug Release RelWithDebInfo MinSizeRel.
-CMAKE_BUILD_TYPE:STRING=
+CMAKE_BUILD_TYPE:STRING=Debug
 
 //Enable/Disable color output during build.
 CMAKE_COLOR_MAKEFILE:BOOL=ON
@@ -170,9 +170,6 @@ flood_BINARY_DIR:STATIC=/home/zach/Documents/senior_projects/flood/build/pc
 
 //Value Computed by CMake
 flood_SOURCE_DIR:STATIC=/home/zach/Documents/senior_projects/flood
-
-//Dependencies for the target
-math_LIB_DEPENDS:STATIC=general;m;
 
 //Dependencies for the target
 src_LIB_DEPENDS:STATIC=general;m;

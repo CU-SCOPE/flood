@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-../../svd/svd3.h
+../../svd/svdcmp.h
 
 /home/zach/Documents/senior_projects/flood/src/icp.c
 stdio.h
@@ -19,12 +19,12 @@ string.h
 -
 kd_tree.h
 /home/zach/Documents/senior_projects/flood/src/kd_tree.h
-svd3.h
-/home/zach/Documents/senior_projects/flood/src/svd3.h
 vec_math.h
 /home/zach/Documents/senior_projects/flood/src/vec_math.h
 icp.h
 /home/zach/Documents/senior_projects/flood/src/icp.h
+svdcmp.h
+/home/zach/Documents/senior_projects/flood/src/svdcmp.h
 
 /home/zach/Documents/senior_projects/flood/src/icp.h
 kd_tree.h

@@ -125,32 +125,32 @@ svd/fast:
 	cd /home/zach/Documents/senior_projects/flood/build/rpi && $(MAKE) -f svd/CMakeFiles/svd.dir/build.make svd/CMakeFiles/svd.dir/build
 .PHONY : svd/fast
 
-svd3.o: svd3.cpp.o
+svdcmp.o: svdcmp.c.o
 
-.PHONY : svd3.o
+.PHONY : svdcmp.o
 
 # target to build an object file
-svd3.cpp.o:
-	cd /home/zach/Documents/senior_projects/flood/build/rpi && $(MAKE) -f svd/CMakeFiles/svd.dir/build.make svd/CMakeFiles/svd.dir/svd3.cpp.o
-.PHONY : svd3.cpp.o
+svdcmp.c.o:
+	cd /home/zach/Documents/senior_projects/flood/build/rpi && $(MAKE) -f svd/CMakeFiles/svd.dir/build.make svd/CMakeFiles/svd.dir/svdcmp.c.o
+.PHONY : svdcmp.c.o
 
-svd3.i: svd3.cpp.i
+svdcmp.i: svdcmp.c.i
 
-.PHONY : svd3.i
+.PHONY : svdcmp.i
 
 # target to preprocess a source file
-svd3.cpp.i:
-	cd /home/zach/Documents/senior_projects/flood/build/rpi && $(MAKE) -f svd/CMakeFiles/svd.dir/build.make svd/CMakeFiles/svd.dir/svd3.cpp.i
-.PHONY : svd3.cpp.i
+svdcmp.c.i:
+	cd /home/zach/Documents/senior_projects/flood/build/rpi && $(MAKE) -f svd/CMakeFiles/svd.dir/build.make svd/CMakeFiles/svd.dir/svdcmp.c.i
+.PHONY : svdcmp.c.i
 
-svd3.s: svd3.cpp.s
+svdcmp.s: svdcmp.c.s
 
-.PHONY : svd3.s
+.PHONY : svdcmp.s
 
 # target to generate assembly for a file
-svd3.cpp.s:
-	cd /home/zach/Documents/senior_projects/flood/build/rpi && $(MAKE) -f svd/CMakeFiles/svd.dir/build.make svd/CMakeFiles/svd.dir/svd3.cpp.s
-.PHONY : svd3.cpp.s
+svdcmp.c.s:
+	cd /home/zach/Documents/senior_projects/flood/build/rpi && $(MAKE) -f svd/CMakeFiles/svd.dir/build.make svd/CMakeFiles/svd.dir/svdcmp.c.s
+.PHONY : svdcmp.c.s
 
 # Help Target
 help:
@@ -161,9 +161,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... svd"
-	@echo "... svd3.o"
-	@echo "... svd3.i"
-	@echo "... svd3.s"
+	@echo "... svdcmp.o"
+	@echo "... svdcmp.i"
+	@echo "... svdcmp.s"
 .PHONY : help
 
 
