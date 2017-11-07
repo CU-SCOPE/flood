@@ -1,6 +1,10 @@
 #ifndef KD_TREE_H
 #define KD_TREE_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdint.h>
 #include "stl.h"
 
@@ -8,6 +12,7 @@
 #define KD_DEPTH     9
 #define KD_NODES     (1 << KD_DEPTH) - 1
 #define KD_BINS      KD_NODES + 1
+#define MAX_POINTS	 5000
 
 typedef struct node{
 	float val;
@@ -34,5 +39,9 @@ node *initTree(face *faces, uint32_t numFaces);
 void deleteTree(node *root, uint8_t counter);
 void kd_search(float *query, float *closestPt, float *dist, node *root);
 void runSearch(point4D *points, point4D *closestPts, float *minDists, node *root, uint32_t numPts);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

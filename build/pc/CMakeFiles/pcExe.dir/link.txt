@@ -1,1 +1,1 @@
-/usr/bin/cc   -O2  -O2 -ggdb   CMakeFiles/pcExe.dir/src/main.c.o  -o ../exe/pc_target/pcExe -rdynamic -lm src/libsrc.a svd/libsvd.a -lm 
+/usr/bin/c++      CMakeFiles/pcExe.dir/src/main.cpp.o  -o ../exe/pc_target/pcExe -rdynamic -lm src/libsrc.a svd/libsvd.a -lm 

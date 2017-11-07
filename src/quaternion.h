@@ -1,6 +1,11 @@
 #ifndef QUATERNION_H
 #define QUATERNION_H
 
+#ifdef __cplusplus
+extern "C" {
+#include <stdio.h>
+#endif
+
 #include <math.h>
 #include "vec_math.h"
 
@@ -48,10 +53,17 @@ static inline void quat2trans(float T[4][4], quat q, float t[4]) {
 	T[0][3] = tRot[0];
 	T[1][3] = tRot[1];
 	T[2][3] = tRot[2];
+	T[3][0] = 0;
+	T[3][1] = 0;
+	T[3][2] = 0;
 }
 
 static inline void printQuat(quat q) {
 	printf("qW: %f qX: %f qY: %f qZ: %f\n", q.w, q.x, q.y, q.z);
 }
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

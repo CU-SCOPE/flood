@@ -6,15 +6,19 @@
 
 #IncludeRegexTransform: 
 
-/home/zach/Documents/senior_projects/flood/src/frames.h
-stdio.h
+/home/zach/Documents/senior_projects/flood/src/flood.h
+stdint.h
 -
-string.h
--
-math.h
+stdbool.h
 -
 kd_tree.h
 /home/zach/Documents/senior_projects/flood/src/kd_tree.h
+icp.h
+/home/zach/Documents/senior_projects/flood/src/icp.h
+quaternion.h
+/home/zach/Documents/senior_projects/flood/src/quaternion.h
+stl.h
+/home/zach/Documents/senior_projects/flood/src/stl.h
 
 /home/zach/Documents/senior_projects/flood/src/icp.h
 kd_tree.h
@@ -26,25 +30,17 @@ stdint.h
 stl.h
 /home/zach/Documents/senior_projects/flood/src/stl.h
 
-/home/zach/Documents/senior_projects/flood/src/main.c
+/home/zach/Documents/senior_projects/flood/src/main.cpp
 stdio.h
 -
-stdlib.h
--
-kd_tree.h
-/home/zach/Documents/senior_projects/flood/src/kd_tree.h
-stl.h
-/home/zach/Documents/senior_projects/flood/src/stl.h
-frames.h
-/home/zach/Documents/senior_projects/flood/src/frames.h
-icp.h
-/home/zach/Documents/senior_projects/flood/src/icp.h
-vec_math.h
-/home/zach/Documents/senior_projects/flood/src/vec_math.h
+flood.h
+/home/zach/Documents/senior_projects/flood/src/flood.h
 quaternion.h
 /home/zach/Documents/senior_projects/flood/src/quaternion.h
 
 /home/zach/Documents/senior_projects/flood/src/quaternion.h
+stdio.h
+-
 math.h
 -
 vec_math.h

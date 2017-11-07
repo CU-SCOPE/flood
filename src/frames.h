@@ -6,7 +6,6 @@
 #include <math.h>
 #include "kd_tree.h"
 
-#define MAX_POINTS		5000
 
 static inline uint32_t readFrame(point4D *scan, FILE *f) {
 	uint8_t numVals = 3;
