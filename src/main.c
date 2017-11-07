@@ -19,7 +19,7 @@ void main() {
 	node *root = initTree(faces, numFaces);
 	FILE *f = fopen("trajectory1/trajectory_noisy00001.pcd","r");
 	uint32_t numPts = readFrame(scan, f);
-	scan[1].point[2] += 10;
+	// scan[1].point[2] += 10;
 	icp(scan, root, T, numPts);
 	quat q;
 	trans2quat(T, &q);

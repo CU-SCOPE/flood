@@ -63,8 +63,8 @@ CMAKE_BINARY_DIR = /home/zach/Documents/senior_projects/flood/build/pc
 # Target rules for target CMakeFiles/pcExe.dir
 
 # All Build rule for target.
-CMakeFiles/pcExe.dir/all: svd/CMakeFiles/svd.dir/all
 CMakeFiles/pcExe.dir/all: src/CMakeFiles/src.dir/all
+CMakeFiles/pcExe.dir/all: svd/CMakeFiles/svd.dir/all
 	$(MAKE) -f CMakeFiles/pcExe.dir/build.make CMakeFiles/pcExe.dir/depend
 	$(MAKE) -f CMakeFiles/pcExe.dir/build.make CMakeFiles/pcExe.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/zach/Documents/senior_projects/flood/build/pc/CMakeFiles --progress-num=1,2 "Built target pcExe"
