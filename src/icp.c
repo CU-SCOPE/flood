@@ -16,7 +16,7 @@ void transform(float T[4][4], point4D *points, uint32_t numPts) {
 	}
 }
 
-#ifndef NDEBUG
+#if DEBUG
 void printMat3(float a[3][3]) {
     printf("%f %f %f \n", a[0][0], a[0][1], a[0][2]);
     printf("%f %f %f \n", a[1][0], a[1][1], a[1][2]);
@@ -99,11 +99,10 @@ void icp(point4D *scan, node *root, float T[4][4], uint32_t numPts) {
 	point4D closestPts[numPts];
 	for(i=0; i<MAX_ITERATIONS_FIND; i++) {
 		error = 0.0;
-		printMat4(T);
 		runSearch(scan, closestPts, minDists, root, numPts);
 		calcTransform(scan, closestPts, T, numPts);
 		transform(T, scan, numPts);
-#ifndef NDEBUG
+#if DEBUG
 		meanVec(minDists, &error, numPts);
 		printf("%f\n", error);
 		if(error <= 0.001)
@@ -111,5 +110,4 @@ void icp(point4D *scan, node *root, float T[4][4], uint32_t numPts) {
 #endif
 	}
 	calcTransform(initState, scan, T, numPts);
-	printMat4(T);
 }
