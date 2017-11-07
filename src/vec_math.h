@@ -128,8 +128,8 @@ static inline void matMul3D(float a[3][3], float b[3][3], float c[3][3]) {
 
 static inline void triangleDist(face tri, float *point, float *dist, float *closestPt) {
 	float B[3] = {tri.v1.x, tri.v1.y, tri.v1.z};
-	float E0[3] = {tri.v2.x - B[0], tri.v2.y - B[0], tri.v2.z - B[0]};
-	float E1[3] = {tri.v3.x - B[0], tri.v3.y - B[0], tri.v3.z - B[0]};
+	float E0[3] = {tri.v2.x - B[0], tri.v2.y - B[1], tri.v2.z - B[2]};
+	float E1[3] = {tri.v3.x - B[0], tri.v3.y - B[1], tri.v3.z - B[2]};
 	float D[3];
 	sub3D(B, point, D);
 	float a = dot3D(E0, E0);
@@ -141,10 +141,11 @@ static inline void triangleDist(face tri, float *point, float *dist, float *clos
 	float det = a*c - b*b;
 	float s = b*e - c*d;
 	float t = b*d - a*e;
+	// printf("%f   %f   %f   %f   %f\n", B[0],B[1],B[2],E1[0],E1[1]);
 	uint8_t region;
 	float tmp1, tmp0, numer, denom, invDet;
 
-	if(s+t <= det) {
+	if((s+t) <= det) {
 		if(s < 0) {
 			if(t < 0) {
 				region = 4;
@@ -170,9 +171,9 @@ static inline void triangleDist(face tri, float *point, float *dist, float *clos
 			invDet = 1/det;
 			s *= invDet;
 			t *= invDet;
-			*(dist) = s * (a*s + b*t + 2*d) + t * (b*s + c*t + 2*e) + f;
+			*(dist) = s * (a * s + b * t + 2.0 * d) + t * (b * s + c * t + 2.0 * e) + f;
 		case 1:
-			numer = c + e - b - d;
+			numer = (c + e) - (b + d);
 			if(numer <= 0) {
 				s = 0;
 				t = 1;
@@ -186,7 +187,7 @@ static inline void triangleDist(face tri, float *point, float *dist, float *clos
 				} else {
 					s = numer/denom;
 					t = 1-s;
-					*(dist) = s * (a*s + b*t + 2*d) + t * (b*s + c*t + 2*e) + f;
+					*(dist) = s * (a * s + b * t + 2.0 * d) + t * (b * s + c * t + 2.0 * e) + f;
 				}
 			}
 		case 2:

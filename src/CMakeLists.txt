@@ -1,2 +1,7 @@
 add_library(src kd_tree.c stl.c icp.c)
 target_link_libraries(src m)
+if(CMAKE_BUILD_TYPE MATCHES Debug)
+    target_compile_definitions(src PUBLIC DEBUG=1)
+else()
+    target_compile_definitions(src PUBLIC DEBUG=0)
+endif()
