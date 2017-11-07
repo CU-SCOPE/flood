@@ -90,14 +90,14 @@ void calcTransform(point4D *scan, point4D *model,float T[4][4], uint32_t numPts)
 	T[2][3] = t[2];
 }
 
-void icp(point4D *scan, node *root, float T[4][4], uint32_t numPts) {
+void icp(point4D *scan, node *root, float T[4][4], uint32_t numPts, uint8_t iterations) {
 	uint8_t i;
 	point4D initState[numPts];
 	memcpy(initState, scan, numPts*sizeof(point4D));
 	transform(T, scan, numPts);
 	float minDists[numPts], error;
 	point4D closestPts[numPts];
-	for(i=0; i<MAX_ITERATIONS_FIND; i++) {
+	for(i=0; i<iterations; i++) {
 		error = 0.0;
 		runSearch(scan, closestPts, minDists, root, numPts);
 		calcTransform(scan, closestPts, T, numPts);
@@ -105,8 +105,6 @@ void icp(point4D *scan, node *root, float T[4][4], uint32_t numPts) {
 #if DEBUG
 		meanVec(minDists, &error, numPts);
 		printf("%f\n", error);
-		if(error <= 0.001)
-			break;
 #endif
 	}
 	calcTransform(initState, scan, T, numPts);

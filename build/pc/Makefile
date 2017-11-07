@@ -149,32 +149,32 @@ svd/fast:
 	$(MAKE) -f svd/CMakeFiles/svd.dir/build.make svd/CMakeFiles/svd.dir/build
 .PHONY : svd/fast
 
-src/main.o: src/main.c.o
+src/main.o: src/main.cpp.o
 
 .PHONY : src/main.o
 
 # target to build an object file
-src/main.c.o:
-	$(MAKE) -f CMakeFiles/pcExe.dir/build.make CMakeFiles/pcExe.dir/src/main.c.o
-.PHONY : src/main.c.o
+src/main.cpp.o:
+	$(MAKE) -f CMakeFiles/pcExe.dir/build.make CMakeFiles/pcExe.dir/src/main.cpp.o
+.PHONY : src/main.cpp.o
 
-src/main.i: src/main.c.i
+src/main.i: src/main.cpp.i
 
 .PHONY : src/main.i
 
 # target to preprocess a source file
-src/main.c.i:
-	$(MAKE) -f CMakeFiles/pcExe.dir/build.make CMakeFiles/pcExe.dir/src/main.c.i
-.PHONY : src/main.c.i
+src/main.cpp.i:
+	$(MAKE) -f CMakeFiles/pcExe.dir/build.make CMakeFiles/pcExe.dir/src/main.cpp.i
+.PHONY : src/main.cpp.i
 
-src/main.s: src/main.c.s
+src/main.s: src/main.cpp.s
 
 .PHONY : src/main.s
 
 # target to generate assembly for a file
-src/main.c.s:
-	$(MAKE) -f CMakeFiles/pcExe.dir/build.make CMakeFiles/pcExe.dir/src/main.c.s
-.PHONY : src/main.c.s
+src/main.cpp.s:
+	$(MAKE) -f CMakeFiles/pcExe.dir/build.make CMakeFiles/pcExe.dir/src/main.cpp.s
+.PHONY : src/main.cpp.s
 
 # Help Target
 help:
