@@ -57,43 +57,43 @@ include CMakeFiles/rpiExe.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/rpiExe.dir/flags.make
 
-CMakeFiles/rpiExe.dir/src/main.c.o: CMakeFiles/rpiExe.dir/flags.make
-CMakeFiles/rpiExe.dir/src/main.c.o: ../../src/main.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zach/Documents/senior_projects/flood/build/rpi/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/rpiExe.dir/src/main.c.o"
-	/home/zach/rpi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf-gcc  --sysroot=/home/zach/rpi/rootfs $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/rpiExe.dir/src/main.c.o   -c /home/zach/Documents/senior_projects/flood/src/main.c
+CMakeFiles/rpiExe.dir/src/main.cpp.o: CMakeFiles/rpiExe.dir/flags.make
+CMakeFiles/rpiExe.dir/src/main.cpp.o: ../../src/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zach/Documents/senior_projects/flood/build/rpi/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/rpiExe.dir/src/main.cpp.o"
+	/home/zach/rpi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf-g++  --sysroot=/home/zach/rpi/rootfs  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/rpiExe.dir/src/main.cpp.o -c /home/zach/Documents/senior_projects/flood/src/main.cpp
 
-CMakeFiles/rpiExe.dir/src/main.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/rpiExe.dir/src/main.c.i"
-	/home/zach/rpi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf-gcc  --sysroot=/home/zach/rpi/rootfs $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/zach/Documents/senior_projects/flood/src/main.c > CMakeFiles/rpiExe.dir/src/main.c.i
+CMakeFiles/rpiExe.dir/src/main.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/rpiExe.dir/src/main.cpp.i"
+	/home/zach/rpi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf-g++  --sysroot=/home/zach/rpi/rootfs $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/zach/Documents/senior_projects/flood/src/main.cpp > CMakeFiles/rpiExe.dir/src/main.cpp.i
 
-CMakeFiles/rpiExe.dir/src/main.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/rpiExe.dir/src/main.c.s"
-	/home/zach/rpi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf-gcc  --sysroot=/home/zach/rpi/rootfs $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/zach/Documents/senior_projects/flood/src/main.c -o CMakeFiles/rpiExe.dir/src/main.c.s
+CMakeFiles/rpiExe.dir/src/main.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/rpiExe.dir/src/main.cpp.s"
+	/home/zach/rpi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf-g++  --sysroot=/home/zach/rpi/rootfs $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/zach/Documents/senior_projects/flood/src/main.cpp -o CMakeFiles/rpiExe.dir/src/main.cpp.s
 
-CMakeFiles/rpiExe.dir/src/main.c.o.requires:
+CMakeFiles/rpiExe.dir/src/main.cpp.o.requires:
 
-.PHONY : CMakeFiles/rpiExe.dir/src/main.c.o.requires
+.PHONY : CMakeFiles/rpiExe.dir/src/main.cpp.o.requires
 
-CMakeFiles/rpiExe.dir/src/main.c.o.provides: CMakeFiles/rpiExe.dir/src/main.c.o.requires
-	$(MAKE) -f CMakeFiles/rpiExe.dir/build.make CMakeFiles/rpiExe.dir/src/main.c.o.provides.build
-.PHONY : CMakeFiles/rpiExe.dir/src/main.c.o.provides
+CMakeFiles/rpiExe.dir/src/main.cpp.o.provides: CMakeFiles/rpiExe.dir/src/main.cpp.o.requires
+	$(MAKE) -f CMakeFiles/rpiExe.dir/build.make CMakeFiles/rpiExe.dir/src/main.cpp.o.provides.build
+.PHONY : CMakeFiles/rpiExe.dir/src/main.cpp.o.provides
 
-CMakeFiles/rpiExe.dir/src/main.c.o.provides.build: CMakeFiles/rpiExe.dir/src/main.c.o
+CMakeFiles/rpiExe.dir/src/main.cpp.o.provides.build: CMakeFiles/rpiExe.dir/src/main.cpp.o
 
 
 # Object files for target rpiExe
 rpiExe_OBJECTS = \
-"CMakeFiles/rpiExe.dir/src/main.c.o"
+"CMakeFiles/rpiExe.dir/src/main.cpp.o"
 
 # External object files for target rpiExe
 rpiExe_EXTERNAL_OBJECTS =
 
-../exe/rpi_target/rpiExe: CMakeFiles/rpiExe.dir/src/main.c.o
+../exe/rpi_target/rpiExe: CMakeFiles/rpiExe.dir/src/main.cpp.o
 ../exe/rpi_target/rpiExe: CMakeFiles/rpiExe.dir/build.make
 ../exe/rpi_target/rpiExe: src/libsrc.a
 ../exe/rpi_target/rpiExe: svd/libsvd.a
 ../exe/rpi_target/rpiExe: CMakeFiles/rpiExe.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/zach/Documents/senior_projects/flood/build/rpi/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking C executable ../exe/rpi_target/rpiExe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/zach/Documents/senior_projects/flood/build/rpi/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable ../exe/rpi_target/rpiExe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/rpiExe.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -101,7 +101,7 @@ CMakeFiles/rpiExe.dir/build: ../exe/rpi_target/rpiExe
 
 .PHONY : CMakeFiles/rpiExe.dir/build
 
-CMakeFiles/rpiExe.dir/requires: CMakeFiles/rpiExe.dir/src/main.c.o.requires
+CMakeFiles/rpiExe.dir/requires: CMakeFiles/rpiExe.dir/src/main.cpp.o.requires
 
 .PHONY : CMakeFiles/rpiExe.dir/requires
 

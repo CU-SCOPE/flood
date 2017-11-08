@@ -2,6 +2,7 @@
 #include <string.h>
 #include <iostream>
 #include <stdbool.h>
+#include <time.h>
 #include "flood.h"
 #include "kd_tree.h"
 #include "icp.h"
@@ -15,6 +16,7 @@ FLOOD::FLOOD() {
 };
 
 FLOOD::~FLOOD() {
+	printf("Exiting\n");
 	freeModel(faces);
 	deleteTree(root,0);
 };
@@ -22,15 +24,24 @@ FLOOD::~FLOOD() {
 void FLOOD::run() {
 	uint8_t i;
 	quat q;
+	clock_t start, end;
+	double time = 0;
 	for(i=1; i<=NUM_FILES; i++) {
 		getFrame(i);
-		if(i > 0)
+		if(i > 1) {
+			start = clock();
 			icp(scan, root, T, numPts, MAX_ITERATIONS_KNOWN);
-		else
+			end = clock();
+			time += (double) (end-start) / CLOCKS_PER_SEC * 1000.0;
+		}
+		else {
 			icp(scan, root, T, numPts, MAX_ITERATIONS_FIND);
+		}
 		trans2quat(T, &q);
 		printQuat(q);
 	}
+	time /= 58;
+	printf("Average time: %fms\n", time);
 }
 
 void FLOOD::initializePose(quat q, float t[4]) {
@@ -48,8 +59,8 @@ void FLOOD::getFrame(uint8_t fileNum) {
 	num = std::to_string(fileNum);
 	sufix = ".pcd";
 	filename = dir + prefix + num + sufix;
-	FILE *f = fopen(filename.c_str(),"r");
+	FILE *f = std::fopen(filename.c_str(),"r");
 	printf("%s\n", filename.c_str());
 	numPts = readFrame(scan, f);
-	fclose(f);
+	std::fclose(f);
 }

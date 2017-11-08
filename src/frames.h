@@ -1,5 +1,5 @@
-#ifndef CSV_H
-#define CSV_H
+#ifndef FRAME_H
+#define FRAME_H
 
 #include <stdio.h>
 #include <string.h>

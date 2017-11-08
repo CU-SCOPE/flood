@@ -169,9 +169,6 @@ flood_BINARY_DIR:STATIC=/home/zach/Documents/senior_projects/flood/build/rpi
 flood_SOURCE_DIR:STATIC=/home/zach/Documents/senior_projects/flood
 
 //Dependencies for the target
-math_LIB_DEPENDS:STATIC=general;m;
-
-//Dependencies for the target
 src_LIB_DEPENDS:STATIC=general;m;
 
 //Dependencies for the target

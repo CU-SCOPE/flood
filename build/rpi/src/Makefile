@@ -125,6 +125,33 @@ src/fast:
 	cd /home/zach/Documents/senior_projects/flood/build/rpi && $(MAKE) -f src/CMakeFiles/src.dir/build.make src/CMakeFiles/src.dir/build
 .PHONY : src/fast
 
+flood.o: flood.cpp.o
+
+.PHONY : flood.o
+
+# target to build an object file
+flood.cpp.o:
+	cd /home/zach/Documents/senior_projects/flood/build/rpi && $(MAKE) -f src/CMakeFiles/src.dir/build.make src/CMakeFiles/src.dir/flood.cpp.o
+.PHONY : flood.cpp.o
+
+flood.i: flood.cpp.i
+
+.PHONY : flood.i
+
+# target to preprocess a source file
+flood.cpp.i:
+	cd /home/zach/Documents/senior_projects/flood/build/rpi && $(MAKE) -f src/CMakeFiles/src.dir/build.make src/CMakeFiles/src.dir/flood.cpp.i
+.PHONY : flood.cpp.i
+
+flood.s: flood.cpp.s
+
+.PHONY : flood.s
+
+# target to generate assembly for a file
+flood.cpp.s:
+	cd /home/zach/Documents/senior_projects/flood/build/rpi && $(MAKE) -f src/CMakeFiles/src.dir/build.make src/CMakeFiles/src.dir/flood.cpp.s
+.PHONY : flood.cpp.s
+
 icp.o: icp.c.o
 
 .PHONY : icp.o
@@ -215,6 +242,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... src"
+	@echo "... flood.o"
+	@echo "... flood.i"
+	@echo "... flood.s"
 	@echo "... icp.o"
 	@echo "... icp.i"
 	@echo "... icp.s"
