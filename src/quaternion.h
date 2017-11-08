@@ -59,6 +59,13 @@ static inline void printQuat(quat q) {
 	printf("qW: %f qX: %f qY: %f qZ: %f\n", q.w, q.x, q.y, q.z);
 }
 
+static inline void printTrans(float T[4][4]) {
+	quat q;
+	trans2quat(T, &q);
+	printQuat(q);
+	printf("tX: %f tY: %f tZ: %f\n", T[0][3], T[1][3], T[2][3]);
+}
+
 #ifdef __cplusplus
 }
 #endif

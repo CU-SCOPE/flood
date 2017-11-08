@@ -37,8 +37,7 @@ void FLOOD::run() {
 		else {
 			icp(scan, root, T, numPts, MAX_ITERATIONS_FIND);
 		}
-		trans2quat(T, &q);
-		printQuat(q);
+		printTrans(T);
 	}
 	time /= 58;
 	printf("Average time: %fms\n", time);
