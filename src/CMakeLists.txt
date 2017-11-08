@@ -1,6 +1,7 @@
 add_library(src kd_tree.c stl.c icp.c flood.cpp)
 target_link_libraries(src m)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2")
 if(CMAKE_BUILD_TYPE MATCHES Debug)
     target_compile_definitions(src PUBLIC DEBUG=1)
 else()
