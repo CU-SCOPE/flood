@@ -16,6 +16,7 @@ FLOOD::FLOOD() {
 };
 
 FLOOD::~FLOOD() {
+	printf("Exiting\n");
 	freeModel(faces);
 	deleteTree(root,0);
 };
@@ -27,7 +28,7 @@ void FLOOD::run() {
 	double time = 0;
 	for(i=1; i<=NUM_FILES; i++) {
 		getFrame(i);
-		if(i > 0) {
+		if(i > 1) {
 			start = clock();
 			icp(scan, root, T, numPts, MAX_ITERATIONS_KNOWN);
 			end = clock();
@@ -58,8 +59,8 @@ void FLOOD::getFrame(uint8_t fileNum) {
 	num = std::to_string(fileNum);
 	sufix = ".pcd";
 	filename = dir + prefix + num + sufix;
-	FILE *f = fopen(filename.c_str(),"r");
+	FILE *f = std::fopen(filename.c_str(),"r");
 	printf("%s\n", filename.c_str());
 	numPts = readFrame(scan, f);
-	fclose(f);
+	std::fclose(f);
 }

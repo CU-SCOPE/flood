@@ -23,7 +23,7 @@ private:
 	node *root;
 	face *faces;
 	point4D scan[MAX_POINTS];
-	float T[4][4];
+	float T[4][4] = {{0}};
 	uint32_t numPts;
 	uint32_t numFaces;
 	bool finding;
