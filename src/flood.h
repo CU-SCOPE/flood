@@ -8,8 +8,11 @@
 #include "quaternion.h"
 #include "stl.h"
 
-
+#if DEBUG
+#define NUM_FILES			1
+#else
 #define NUM_FILES			60
+#endif
 #define FRAME_DIRECTORY		"trajectory1/"
 
 class FLOOD {

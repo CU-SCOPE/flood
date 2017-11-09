@@ -7,14 +7,14 @@ uint32_t loadSTL(face **faces){
 	FILE *f = fopen(STL_FILE_NAME, "r");
 	char header[80];
 	char buffNtri[4];
-	uint32_t numTri, i, ind, size = 50, offset = 12;
+	uint32_t numTri, i, ind, size = 50, offset = 12, read;
 
-	fread(header, 80*sizeof(char), 1, f);
-	fread(buffNtri, 4*sizeof(char), 1, f);
+	read = fread(header, 80*sizeof(char), 1, f);
+	read = fread(buffNtri, 4*sizeof(char), 1, f);
 
 	numTri = *((uint32_t*) buffNtri);
 	char buff[numTri*size];
-	fread(buff, size*sizeof(char), numTri, f);
+	read = fread(buff, size*sizeof(char), numTri, f);
 
 	(*faces) = malloc(numTri * sizeof(face));
 	for(i=0; i<numTri; i++) {
