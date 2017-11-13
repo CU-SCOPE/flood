@@ -16,12 +16,22 @@ int floatcomp(const void* elem1, const void* elem2) {
 
 
 void buildTree(node **current, node *parent, face *faces, uint32_t numFaces, uint8_t level, uint16_t ind) {
+	/*
+	buildTree - Recursive function to construct k-d tree from a 3-D model
+	Inputs:
+		current		- current node being cunstructed
+		parent		- parent node to current node. Null if current is root of tree
+		faces 		- list of all faces that fall into the bin described by the current node
+		numFaces	- number of faces in current bin
+		level		- level of tree current node falls in
+		ind 		- index of current node
+	*/
 	float points[numFaces*3], temp[numFaces*3], median;
 	uint8_t dim;
 	uint32_t numPoints= numFaces*3, numLeft = 0, numRight = 0, i;
 	dim = level % 3;
 
-	//Todo change  face data structure so points can just be indexed by dimension to make it look nicer/more efficient
+	// Get location of all vertices in current dimension
 	switch(dim){
 		case 0:
 			for(i=0; i<numFaces; i++) {
@@ -54,16 +64,17 @@ void buildTree(node **current, node *parent, face *faces, uint32_t numFaces, uin
 			}
 			break;
 	}
-
+	// Sort all points to split on median
 	qsort(points, numFaces*3, sizeof(float), floatcomp);
 	median = points[numPoints/2];
-	(*current) = malloc(sizeof(node));
 	// Create node
+	(*current) = malloc(sizeof(node));
 	(*current)->val = median;
 	(*current)->parent = parent;
 	(*current)->dim = dim;
 	(*current)->ind = ind;
 	face tmpLeft[numFaces], tmpRight[numFaces];
+	// Seperate all faces into two bins created by node
 	for(i=0; i<numFaces; i++) {
 		if((temp[i*3] < median) && (temp[i*3+1] < median) && (temp[i*3+2] < median)) {
 			tmpLeft[numLeft] = faces[i];
@@ -78,6 +89,7 @@ void buildTree(node **current, node *parent, face *faces, uint32_t numFaces, uin
 			numRight++;
 		}
 	}
+	// Point node bins to the temporary separated bins
 	(*current)->binLeft = malloc(sizeof(face)*numLeft);
 	(*current)->binRight = malloc(sizeof(face)*numRight);
 	memcpy((*current)->binLeft, tmpLeft, sizeof(face)*numLeft);
@@ -85,6 +97,7 @@ void buildTree(node **current, node *parent, face *faces, uint32_t numFaces, uin
 	(*current)->numLeft = numLeft;
 	(*current)->numRight = numRight;
 	
+	// Set parent child pointers
 	if(level) {
 		if(ind % 2) {
 			parent->lChild = (*current);
@@ -94,6 +107,7 @@ void buildTree(node **current, node *parent, face *faces, uint32_t numFaces, uin
 		}
 	}
 
+	// Recursively call buildTree and delete bins if node is not a leaf node
 	if(level < KD_DEPTH-1) {
 		buildTree(&((*current)->lChild), (*current), (*current)->binLeft, numLeft, level+1, 2*ind+1);
 		buildTree(&((*current)->rChild), (*current), (*current)->binRight, numRight, level+1, 2*ind+2);
@@ -106,12 +120,24 @@ void buildTree(node **current, node *parent, face *faces, uint32_t numFaces, uin
 }
 
 node *initTree(face *faces, uint32_t numFaces) {
+	/*
+	initTree - driver function start building tree
+	*/
 	node *root;
 	buildTree(&root, NULL, faces, numFaces, 0, 0);
 	return root;
 }
 
 void checkFaces(face *faces, uint32_t numFaces, float *query, float *closestPt, float *dist) {
+	/*
+	checkFaces - Function in search to check all bins in current leaf node
+	Inputs:
+		faces 		- Bin of faces to check for node
+		numFaces	- Number of faces in bin
+		query		- 3-D query point
+		closestPts 	- Current closest 3-D point
+		dist 		- Current minimum distance of closest point
+	*/
 	uint32_t i;
 	float tmpPt[3], tmpDist, curDist = *dist;
 	for(i=0; i<numFaces; i++) {
@@ -125,6 +151,14 @@ void checkFaces(face *faces, uint32_t numFaces, float *query, float *closestPt, 
 }
 
 node *traverse(node *root, float *query, float *closestPt, float *dist){
+	/*
+	traverse - Function to traverse down a subtree
+	Inputs:
+		root		- root node of subtree
+		query		- 3-D query point
+		closestPt 	- Current closest 3-D point
+		dist 		- Current minimum distance of closestPt
+	*/
 	node *current = root;
 	face *faceBin;
 	uint32_t numFaces;
@@ -162,6 +196,11 @@ node *traverse(node *root, float *query, float *closestPt, float *dist){
 }
 
 void kd_search(float *query, float *closestPt, float *dist, node *root) {
+	/*
+	kd_search - Function to search through kd-tree for the closest point on the model to an arbitrary query point
+	Inputs:
+		query	- 3-D query point
+	*/
 	node *current = root;
 	uint16_t checked[KD_DEPTH] = {0}, counter = 0;
 	bool goLeft;

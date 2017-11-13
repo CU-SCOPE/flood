@@ -7,14 +7,6 @@
 #include "icp.h"
 #include "svdcmp.h"
 
-void transform(float T[4][4], point4D *points, uint32_t numPts) {
-	uint32_t i;
-	point4D tmp[numPts];
-	memcpy(tmp, points, numPts*sizeof(point4D));
-	for(i=0; i<numPts; i++) {
-		matMulVec4D(T, tmp[i].point, points[i].point);
-	}
-}
 
 #if DEBUG
 void printMat3(float a[3][3]) {
@@ -31,7 +23,22 @@ void printMat4(float a[4][4]) {
 }
 #endif
 
+void transform(float T[4][4], point4D *points, uint32_t numPts) {
+	/*
+	transform - Function to apply current transformation to all points in scan
+	*/
+	uint32_t i;
+	point4D tmp[numPts];
+	memcpy(tmp, points, numPts*sizeof(point4D));
+	for(i=0; i<numPts; i++) {
+		matMulVec4D(T, tmp[i].point, points[i].point);
+	}
+}
+
 static inline void meanBoth(point4D *points1, point4D *points2, float *mean1, float *mean2, uint32_t numPts) {
+	/*
+	meanBoth - Function used to calculate the centroids of scan and model
+	*/
 	uint32_t i;
 	float pt1[3] = {0.0};
 	float pt2[3] = {0.0};
@@ -55,7 +62,15 @@ static inline void meanBoth(point4D *points1, point4D *points2, float *mean1, fl
 
 
 
-void calcTransform(point4D *scan, point4D *model,float T[4][4], uint32_t numPts) {
+void calcTransform(point4D *scan, point4D *model, float T[4][4], uint32_t numPts) {
+	/*
+	calcTransform - Function to calculate the current optimal transformation to minimize distance
+	Inputs:
+		scan 	- Input frame from flash lidar
+		model 	- Closest points found on model
+		T 		- Current transformation matrix
+		numPts	- Number of points in scan/model
+	*/
 	uint32_t i;
 	float W[3][3] = {0.0};
 	point3D centScan, centModel;
@@ -91,6 +106,14 @@ void calcTransform(point4D *scan, point4D *model,float T[4][4], uint32_t numPts)
 }
 
 void icp(point4D *scan, node *root, float T[4][4], uint32_t numPts, uint8_t iterations) {
+	/*
+	icp - Function to control iterative closest point calculation
+	Inputs:
+		scan 		- input frame from flash lidar
+		root 		- the root node of the K-D tree
+		T	  		- Initial transformation matrix
+		numPts	- Number of points in the flash lidar point cloud
+	*/
 	uint8_t i;
 	point4D initState[numPts];
 	memcpy(initState, scan, numPts*sizeof(point4D));
