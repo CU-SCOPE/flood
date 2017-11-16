@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include <string>
 #include "kd_tree.h"
 #include "icp.h"
 #include "quaternion.h"
@@ -13,7 +14,7 @@
 #else
 #define NUM_FILES			60
 #endif
-#define FRAME_DIRECTORY		"trajectory1/"
+#define FRAME_DIRECTORIES	"trajectories.txt"
 
 class FLOOD {
 public:
@@ -22,7 +23,7 @@ public:
 	void run();
 	void initializePose(quat q, float t[4]);
 private:
-	void getFrame(uint8_t fileNum);
+	void getFrame(uint8_t fileNum, std::string dir);
 	node *root;
 	face *faces;
 	point4D scan[MAX_POINTS];

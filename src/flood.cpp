@@ -3,6 +3,7 @@
 #include <iostream>
 #include <stdbool.h>
 #include <time.h>
+#include <fstream>
 #include "flood.h"
 #include "kd_tree.h"
 #include "icp.h"
@@ -26,30 +27,33 @@ void FLOOD::run() {
 	quat q;
 	clock_t start, end;
 	double time = 0;
-	for(i=1; i<=NUM_FILES; i++) {
-		getFrame(i);
-		if(i > 1) {
-			start = clock();
-			icp(scan, root, T, numPts, MAX_ITERATIONS_KNOWN);
-			end = clock();
-			time += (double) (end-start) / CLOCKS_PER_SEC * 1000.0;
+	std::ifstream file(FRAME_DIRECTORIES);
+    std::string dir; 
+    while (std::getline(file, dir)) {
+		for(i=1; i<=NUM_FILES; i++) {
+			getFrame(i, dir);
+			if(i > 1) {
+				start = clock();
+				icp(scan, root, T, numPts, MAX_ITERATIONS_KNOWN);
+				end = clock();
+				time += (double) (end-start) / CLOCKS_PER_SEC * 1000.0;
+			}
+			else {
+				icp(scan, root, T, numPts, MAX_ITERATIONS_FIND);
+			}
+			printTrans(T);
 		}
-		else {
-			icp(scan, root, T, numPts, MAX_ITERATIONS_FIND);
-		}
-		printTrans(T);
+		time /= 58;
+		printf("Average time: %fms\n", time);
 	}
-	time /= 58;
-	printf("Average time: %fms\n", time);
 }
 
 void FLOOD::initializePose(quat q, float t[4]) {
 	quat2trans(T,q,t);
 }
 
-void FLOOD::getFrame(uint8_t fileNum) {
+void FLOOD::getFrame(uint8_t fileNum, std::string dir) {
 	std::string filename, prefix, num, sufix;
-	std::string dir = FRAME_DIRECTORY;
 	if(fileNum < 10) {
 		prefix = "trajectory_noisy0000";
 	} else {
