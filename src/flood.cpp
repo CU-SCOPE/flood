@@ -13,7 +13,7 @@
 FLOOD::FLOOD() {
 	numFaces = loadSTL(&faces);
 	root = initTree(faces, numFaces);
-	finding = 1;
+	finding = true;
 };
 
 FLOOD::~FLOOD() {
@@ -32,7 +32,7 @@ void FLOOD::run() {
     while (std::getline(file, dir)) {
 		for(i=1; i<=NUM_FILES; i++) {
 			getFrame(i, dir);
-			if(i > 1) {
+			if(!finding) {
 				start = clock();
 				icp(scan, root, T, numPts, MAX_ITERATIONS_KNOWN);
 				end = clock();
@@ -40,6 +40,7 @@ void FLOOD::run() {
 			}
 			else {
 				icp(scan, root, T, numPts, MAX_ITERATIONS_FIND);
+				finding = false;
 			}
 			printTrans(T);
 		}
