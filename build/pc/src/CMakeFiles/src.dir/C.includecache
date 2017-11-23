@@ -25,6 +25,8 @@ icp.h
 /home/zach/Documents/senior_projects/flood/src/icp.h
 svdcmp.h
 /home/zach/Documents/senior_projects/flood/src/svdcmp.h
+quaternion.h
+/home/zach/Documents/senior_projects/flood/src/quaternion.h
 
 /home/zach/Documents/senior_projects/flood/src/icp.h
 kd_tree.h
@@ -56,6 +58,14 @@ stdint.h
 stl.h
 /home/zach/Documents/senior_projects/flood/src/stl.h
 
+/home/zach/Documents/senior_projects/flood/src/quaternion.h
+stdio.h
+-
+math.h
+-
+vec_math.h
+/home/zach/Documents/senior_projects/flood/src/vec_math.h
+
 /home/zach/Documents/senior_projects/flood/src/stl.c
 stdio.h
 -
@@ -71,4 +81,6 @@ stdint.h
 -
 
 /home/zach/Documents/senior_projects/flood/src/vec_math.h
+math.h
+-
 

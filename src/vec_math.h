@@ -1,6 +1,7 @@
 #ifndef VEC_MATH_H
 #define VEC_MATH_H
 
+#include <math.h>
 
 static inline float dot3D(float *x, float *y) {
 	return x[0] * y[0] + x[1] * y[1] + x[2] * y[2];
@@ -52,13 +53,35 @@ static inline void eye4D(float mat[4][4]) {
 
 static inline void meanVec(float *vec, float *mean, uint32_t numPts) {
 	uint32_t i;
+	float sum;
 	for(i=0; i<numPts; i++) {
-		(*mean) += vec[i];
+		sum += vec[i];
 	}
-	(*mean) /= numPts;
+	(*mean) = sum/numPts;
 }
 
+static inline void stdev(float *vec, float *s, float mean, uint32_t numPts) {
+	uint32_t i;
+	float sum, tmp;
+	for(i=0; i<numPts; i++) {
+		tmp = vec[i] - mean;
+		sum += tmp * tmp;
+	}
+	*s = sqrt(sum/(numPts-1));
+}
 
+static inline uint32_t remOutliers(float *vec, float thresh, uint32_t numPts, point4D *modelSrc, point4D *scanSrc, point4D *modelDst, point4D *scanDst) {
+	uint32_t i;
+	uint32_t counter = 0;
+	for(i=0; i<numPts; i++) {
+		if(vec[i] < thresh) {
+			modelDst[counter] = modelSrc[i];
+			scanDst[counter] = scanSrc[i];
+			++counter;
+		}
+	}
+	return counter;
+}
 
 static inline void transpose(float a[3][3], float aT[3][3]) {
 	aT[0][0] = a[0][0];

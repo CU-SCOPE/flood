@@ -10,7 +10,7 @@
 #include "stl.h"
 
 #if DEBUG
-#define NUM_FILES			1
+#define NUM_FILES			10
 #else
 #define NUM_FILES			60
 #endif

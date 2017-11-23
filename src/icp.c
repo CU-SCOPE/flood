@@ -6,6 +6,7 @@
 #include "vec_math.h"
 #include "icp.h"
 #include "svdcmp.h"
+#include "quaternion.h"
 
 
 #if DEBUG
@@ -115,20 +116,24 @@ void icp(point4D *scan, node *root, float T[4][4], uint32_t numPts, uint8_t iter
 		numPts	- Number of points in the flash lidar point cloud
 	*/
 	uint8_t i;
+	uint32_t numKeep;
 	point4D initState[numPts];
 	memcpy(initState, scan, numPts*sizeof(point4D));
 	transform(T, scan, numPts);
-	float minDists[numPts], error;
-	point4D closestPts[numPts];
+	float minDists[numPts], error, thresh;
+	point4D closestPts[numPts], modelPts[numPts], scanPts[numPts];
 	for(i=0; i<iterations; i++) {
-		error = 0.0;
-		runSearch(scan, closestPts, minDists, root, numPts);
-		calcTransform(scan, closestPts, T, numPts);
+		error = runSearch(scan, closestPts, minDists, root, numPts);
+		stdev(minDists, &thresh, error, numPts);
+		thresh = error + NUM_STANDARD_DEVS*thresh;
+		numKeep = remOutliers(minDists, thresh, numPts, closestPts, scan, modelPts, scanPts);
+		calcTransform(scanPts, modelPts, T, numKeep);
 		transform(T, scan, numPts);
 #if DEBUG
-		meanVec(minDists, &error, numPts);
 		printf("%f\n", error);
+		printf("%d\n", DEBUG);
 #endif
 	}
 	calcTransform(initState, scan, T, numPts);
+	printTrans(T);
 }

@@ -42,25 +42,25 @@ void FLOOD::run() {
 				icp(scan, root, T, numPts, MAX_ITERATIONS_FIND);
 				finding = false;
 			}
-			printTrans(T);
 		}
-		time /= 58;
+		time /= (NUM_FILES - 2);
 		printf("Average time: %fms\n", time);
 	}
 }
 
 void FLOOD::initializePose(quat q, float t[4]) {
 	quat2trans(T,q,t);
+	printTrans(T);
 }
 
 void FLOOD::getFrame(uint8_t fileNum, std::string dir) {
 	std::string filename, prefix, num, sufix;
-	if(fileNum < 10) {
+	num = std::to_string(fileNum);
+	if(fileNum < 10){
 		prefix = "trajectory_noisy0000";
 	} else {
 		prefix = "trajectory_noisy000";
 	}
-	num = std::to_string(fileNum);
 	sufix = ".pcd";
 	filename = dir + prefix + num + sufix;
 	FILE *f = std::fopen(filename.c_str(),"r");

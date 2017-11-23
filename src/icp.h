@@ -8,7 +8,8 @@ extern "C" {
 #include "kd_tree.h"
 
 #define MAX_ITERATIONS_FIND		10
-#define MAX_ITERATIONS_KNOWN    2
+#define MAX_ITERATIONS_KNOWN    5
+#define NUM_STANDARD_DEVS		1
 
 void icp(point4D *scan, node *root, float T[4][4], uint32_t numPts, uint8_t iterations);
 

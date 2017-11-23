@@ -230,13 +230,17 @@ void kd_search(float *query, float *closestPt, float *dist, node *root) {
 	*dist = sqrt((*dist));
 }
 
-void runSearch(point4D *points, point4D *closestPts, float *minDists, node *root, uint32_t numPts) {
+float runSearch(point4D *points, point4D *closestPts, float *minDists, node *root, uint32_t numPts) {
 	uint32_t i;
+	float mean;
 	for(i=0; i<numPts; i++) {
 		minDists[i] = 100.0;
 		closestPts[i].point[3] = 1.0;
 		kd_search(points[i].point, closestPts[i].point, &(minDists[i]), root);
+		mean += minDists[i];
 	}
+	mean /= numPts;
+	return mean;
 }
 
 void deleteTree(node *root, uint8_t counter) {
