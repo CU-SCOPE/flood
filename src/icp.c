@@ -131,7 +131,6 @@ void icp(point4D *scan, node *root, float T[4][4], uint32_t numPts, uint8_t iter
 		transform(T, scan, numPts);
 #if DEBUG
 		printf("%f\n", error);
-		printf("%d\n", DEBUG);
 #endif
 	}
 	calcTransform(initState, scan, T, numPts);
