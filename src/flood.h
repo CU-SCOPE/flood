@@ -15,6 +15,7 @@
 #define NUM_FILES			60
 #endif
 #define FRAME_DIRECTORIES	"trajectories.txt"
+#define OLD 				0
 
 class FLOOD {
 public:
@@ -28,6 +29,8 @@ private:
 	face *faces;
 	point4D scan[MAX_POINTS];
 	float T[4][4] = {{0}};
+	quat q;
+	float translation[4];
 	uint32_t numPts;
 	uint32_t numFaces;
 	bool finding;

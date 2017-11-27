@@ -106,7 +106,7 @@ void calcTransform(point4D *scan, point4D *model, float T[4][4], uint32_t numPts
 	T[2][3] = t[2];
 }
 
-void icp(point4D *scan, node *root, float T[4][4], uint32_t numPts, uint8_t iterations) {
+float icp(point4D *scan, node *root, float T[4][4], uint32_t numPts, uint8_t iterations) {
 	/*
 	icp - Function to control iterative closest point calculation
 	Inputs:
@@ -134,5 +134,5 @@ void icp(point4D *scan, node *root, float T[4][4], uint32_t numPts, uint8_t iter
 #endif
 	}
 	calcTransform(initState, scan, T, numPts);
-	printTrans(T);
+	return error;
 }
