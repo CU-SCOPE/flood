@@ -232,7 +232,7 @@ void kd_search(float *query, float *closestPt, float *dist, node *root) {
 
 float runSearch(point4D *points, point4D *closestPts, float *minDists, node *root, uint32_t numPts) {
 	uint32_t i;
-	float mean;
+	float mean = 0;
 	for(i=0; i<numPts; i++) {
 		minDists[i] = 100.0;
 		closestPts[i].point[3] = 1.0;
