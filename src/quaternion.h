@@ -9,6 +9,8 @@ extern "C" {
 #include <math.h>
 #include "vec_math.h"
 
+#define TO_FILE		0
+
 typedef struct quat {
 	float w;
 	float x;
@@ -127,6 +129,18 @@ static inline void quat2trans(float T[4][4], quat q, float t[4]) {
 }
 
 
+#if TO_FILE
+static inline void printQuat(quat q, FILE *f) {
+	fprintf(f, "%f  %f  %f  %f\n", q.w, q.x, q.y, q.z);
+}
+
+static inline void printTrans(float T[4][4], FILE *pos, FILE *rot) {
+	quat q;
+	trans2quat(T, &q);
+	printQuat(q, rot);
+	fprintf(pos, "%f  %f  %f\n", T[0][3], T[1][3], T[2][3]);
+}
+#else
 static inline void printQuat(quat q) {
 	printf("qW: %f qX: %f qY: %f qZ: %f\n", q.w, q.x, q.y, q.z);
 }
@@ -137,6 +151,7 @@ static inline void printTrans(float T[4][4]) {
 	printQuat(q);
 	printf("tX: %f tY: %f tZ: %f\n", T[0][3], T[1][3], T[2][3]);
 }
+#endif
 
 #ifdef __cplusplus
 }

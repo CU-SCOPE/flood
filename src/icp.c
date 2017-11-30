@@ -129,10 +129,10 @@ float icp(point4D *scan, node *root, float T[4][4], uint32_t numPts, uint8_t ite
 		numKeep = remOutliers(minDists, thresh, numPts, closestPts, scan, modelPts, scanPts);
 		calcTransform(scanPts, modelPts, T, numKeep);
 		transform(T, scan, numPts);
-#if DEBUG
-		printf("%f\n", error);
-#endif
 	}
 	calcTransform(initState, scan, T, numPts);
+#if DEBUG
+	printTrans(T);
+#endif
 	return error;
 }
