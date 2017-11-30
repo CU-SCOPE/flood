@@ -62,7 +62,7 @@ static inline void meanVec(float *vec, float *mean, uint32_t numPts) {
 
 static inline void stdev(float *vec, float *s, float mean, uint32_t numPts) {
 	uint32_t i;
-	float sum, tmp;
+	float sum = 0, tmp;
 	for(i=0; i<numPts; i++) {
 		tmp = vec[i] - mean;
 		sum += tmp * tmp;
