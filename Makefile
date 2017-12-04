@@ -1,4 +1,4 @@
-SUBDIRS = build/pc build/rpi
+SUBDIRS = build/pc/release build/rpi
 
 all: $(SUBDIRS)
 
