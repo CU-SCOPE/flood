@@ -13,6 +13,7 @@
 FLOOD::FLOOD() {
 	numFaces = loadSTL(&faces);
 	root = initTree(faces, numFaces);
+	eye4D(T);
 	finding = true;
 };
 

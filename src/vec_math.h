@@ -77,7 +77,7 @@ static inline uint32_t remOutliers(float *vec, float thresh, uint32_t numPts, po
 		if(vec[i] < thresh) {
 			modelDst[counter] = modelSrc[i];
 			scanDst[counter] = scanSrc[i];
-			++counter;
+			counter++;
 		}
 	}
 	return counter;

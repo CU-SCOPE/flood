@@ -117,17 +117,17 @@ float icp(point4D *scan, node *root, float T[4][4], uint32_t numPts, uint8_t ite
 	*/
 	uint8_t i;
 	uint32_t numKeep;
-	point4D initState[numPts];
+	point4D initState[numPts], closestPts[numPts];
+	point4D modelPts[numPts], scanPts[numPts];
 	memcpy(initState, scan, numPts*sizeof(point4D));
 	transform(T, scan, numPts);
 	float minDists[numPts], error, thresh;
-	point4D closestPts[numPts], modelPts[numPts], scanPts[numPts];
 	for(i=0; i<iterations; i++) {
 		error = runSearch(scan, closestPts, minDists, root, numPts);
 		stdev(minDists, &thresh, error, numPts);
 		thresh = error + NUM_STANDARD_DEVS*thresh;
 		numKeep = remOutliers(minDists, thresh, numPts, closestPts, scan, modelPts, scanPts);
-		calcTransform(scanPts, modelPts, T, numKeep);
+		calcTransform(scan, closestPts, T, numPts);
 		transform(T, scan, numPts);
 	}
 	calcTransform(initState, scan, T, numPts);
