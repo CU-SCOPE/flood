@@ -13,7 +13,6 @@
 FLOOD::FLOOD() {
 	numFaces = loadSTL(&faces);
 	root = initTree(faces, numFaces);
-	eye4D(T);
 	finding = true;
 };
 
@@ -60,6 +59,7 @@ void FLOOD::run() {
 				looking = clock();
 				point4D initState[numPts];
 				memcpy(initState, scan, numPts*sizeof(point4D));
+				initializePose(current, translation);
 				error = icp(initState, root, T, numPts, MAX_ITERATIONS_FIND);
 				for(j=0; j<7; j++) {
 					for(k=0; k<7; k++) {

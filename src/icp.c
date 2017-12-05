@@ -127,7 +127,7 @@ float icp(point4D *scan, node *root, float T[4][4], uint32_t numPts, uint8_t ite
 		stdev(minDists, &thresh, error, numPts);
 		thresh = error + NUM_STANDARD_DEVS*thresh;
 		numKeep = remOutliers(minDists, thresh, numPts, closestPts, scan, modelPts, scanPts);
-		calcTransform(scan, closestPts, T, numPts);
+		calcTransform(scanPts, modelPts, T, numKeep);
 		transform(T, scan, numPts);
 	}
 	calcTransform(initState, scan, T, numPts);
