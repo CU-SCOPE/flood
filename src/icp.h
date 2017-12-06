@@ -9,7 +9,7 @@ extern "C" {
 
 #define MAX_ITERATIONS_FIND		20
 #define MAX_ITERATIONS_KNOWN    5
-#define NUM_STANDARD_DEVS		2
+#define NUM_STANDARD_DEVS		1.5
 
 float icp(point4D *scan, node *root, float T[4][4], uint32_t numPts, uint8_t iterations);
 

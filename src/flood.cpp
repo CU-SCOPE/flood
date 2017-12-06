@@ -113,17 +113,8 @@ void FLOOD::initializePose(quat qInit, float t[4]) {
 void FLOOD::getFrame(uint8_t fileNum, std::string dir) {
 	std::string filename, prefix, num, sufix;
 	num = std::to_string(fileNum);
-#if OLD
-	if(fileNum < 10) {
-		prefix = "trajectory_noisy0000";
-	} else {
-		prefix = "trajectory_noisy000";
-	}
-	sufix = ".pcd";
-#else
 	prefix = "test";
 	sufix = "_noisy00000.pcd";
-#endif
 	filename = dir + prefix + num + sufix;
 	FILE *f = std::fopen(filename.c_str(),"r");
 	printf("%s\n", filename.c_str());
@@ -132,9 +123,10 @@ void FLOOD::getFrame(uint8_t fileNum, std::string dir) {
 }
 
 void FLOOD::getPosition(std::string dir) {
+	uint8_t vals;
 	std::string filename = dir + "position.txt";
 	FILE *f = std::fopen(filename.c_str(), "r");
-	fscanf(f,"%f  %f  %f", &translation[0], &translation[1], &translation[2]);
+	vals = fscanf(f,"%f  %f  %f", &translation[0], &translation[1], &translation[2]);
 	translation[2] = 10 - translation[2];
 	translation[3] = 1;
 	printf("%f %f %f\n", translation[0], translation[1], translation[2]);

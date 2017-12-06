@@ -22,7 +22,7 @@ dt = 0.5 #s
 with open("output.csv","w") as csvfile:
 	outs = csv.writer(csvfile, delimiter=',', quoting=csv.QUOTE_MINIMAL)
 	outs.writerow(['% Position error', 'Rotation error (deg)', 'Rotation rate error (deg/s)', 'Velocity (m/s)', 'Distance (m)'])
-	for i in range(1,99):
+	for i in range(1,2):
 		direct = "test" + str(i)
 		pos_calc = np.loadtxt(direct + "/position_act.txt")
 		pos = np.loadtxt(direct + "/position.txt")

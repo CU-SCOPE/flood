@@ -17,16 +17,8 @@ endif(CMAKE_TOOLCHAIN_FILE)
 
 
 # Add Executable
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3")
-set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS} -ggdb")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 add_executable(${TARGET} src/main.cpp)
 target_link_libraries(${TARGET} m)
 target_link_libraries (${TARGET} src)
 target_link_libraries(${TARGET} svd)
 
-if(CMAKE_BUILD_TYPE MATCHES Debug)
-    target_compile_definitions(${TARGET} PUBLIC DEBUG=1)
-else(CMAKE_BUILD_TYPE MATCHES Debug)
-    target_compile_definitions(${TARGET} PUBLIC DEBUG=0)
-endif(CMAKE_BUILD_TYPE MATCHES Debug)
