@@ -12,7 +12,7 @@
 #if DEBUG
 #define NUM_FILES			10
 #else
-#define NUM_FILES			60
+#define NUM_FILES			179
 #endif
 #define FRAME_DIRECTORIES	"trajectories.txt"
 #define OLD 				0
@@ -25,6 +25,7 @@ public:
 	void initializePose(quat q, float t[4]);
 private:
 	void getFrame(uint8_t fileNum, std::string dir);
+	void getPosition(std::string dir);
 	node *root;
 	face *faces;
 	point4D scan[MAX_POINTS];

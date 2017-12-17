@@ -12,8 +12,9 @@ static inline uint32_t readFrame(point4D *scan, FILE *f) {
 	uint32_t i;
 	float tmp[3];
 	char buff[1024];
+	char *garbage;
 	for(i=0; i<11; i++) {
-		fgets(buff, 1024, f);
+		garbage = fgets(buff, 1024, f);
 	}
 	i=0;
 	do {
