@@ -1,7 +1,7 @@
 #ifndef FLOOD_H
 #define FLOOD_H
 
-#include <stdint.h>
+
 #include <stdbool.h>
 #include <string>
 #include "kd_tree.h"
@@ -24,7 +24,7 @@ public:
 	void run();
 	void initializePose(quat q, float t[4]);
 private:
-	void getFrame(uint8_t fileNum, std::string dir);
+	void getFrame(unsigned int fileNum, std::string dir);
 	void getPosition(std::string dir);
 	node *root;
 	face *faces;
@@ -32,8 +32,8 @@ private:
 	float T[4][4] = {{0}};
 	quat q;
 	float translation[4];
-	uint32_t numPts;
-	uint32_t numFaces;
+	unsigned int numPts;
+	unsigned int numFaces;
 	bool finding;
 };
 

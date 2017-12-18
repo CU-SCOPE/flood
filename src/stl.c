@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "stl.h"
-#include <stdint.h>
 
 uint32_t loadSTL(face **faces){
 	FILE *f = fopen(STL_FILE_NAME, "r");

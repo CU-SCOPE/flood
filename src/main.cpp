@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "flood.h"
 #include "quaternion.h"
 

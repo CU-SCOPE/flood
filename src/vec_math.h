@@ -51,8 +51,8 @@ static inline void eye4D(float mat[4][4]) {
 	mat[3][3] = 1;
 }
 
-static inline void meanVec(float *vec, float *mean, uint32_t numPts) {
-	uint32_t i;
+static inline void meanVec(float *vec, float *mean, unsigned int numPts) {
+	unsigned int i;
 	float sum;
 	for(i=0; i<numPts; i++) {
 		sum += vec[i];
@@ -60,8 +60,8 @@ static inline void meanVec(float *vec, float *mean, uint32_t numPts) {
 	(*mean) = sum/numPts;
 }
 
-static inline void stdev(float *vec, float *s, float mean, uint32_t numPts) {
-	uint32_t i;
+static inline void stdev(float *vec, float *s, float mean, unsigned int numPts) {
+	unsigned int i;
 	float sum = 0, tmp;
 	for(i=0; i<numPts; i++) {
 		tmp = vec[i] - mean;
@@ -70,9 +70,9 @@ static inline void stdev(float *vec, float *s, float mean, uint32_t numPts) {
 	*s = sqrt(sum/(numPts-1));
 }
 
-static inline uint32_t remOutliers(float *vec, float thresh, uint32_t numPts, point4D *modelSrc, point4D *scanSrc, point4D *modelDst, point4D *scanDst) {
-	uint32_t i;
-	uint32_t counter = 0;
+static inline unsigned int remOutliers(float *vec, float thresh, unsigned int numPts, point4D *modelSrc, point4D *scanSrc, point4D *modelDst, point4D *scanDst) {
+	unsigned int i;
+	unsigned int counter = 0;
 	for(i=0; i<numPts; i++) {
 		if(vec[i] < thresh) {
 			modelDst[counter] = modelSrc[i];
@@ -95,8 +95,8 @@ static inline void transpose(float a[3][3], float aT[3][3]) {
 	aT[2][2] = a[2][2];
 }
 
-static inline void getMat(point4D *scan, point4D *model, float W[3][3], uint32_t numPts) {
-	uint32_t i;
+static inline void getMat(point4D *scan, point4D *model, float W[3][3], unsigned int numPts) {
+	unsigned int i;
 	for(i=0; i<numPts; i++) {
 		W[0][0] += scan[i].point[0] * model[i].point[0];
 		W[0][1] += scan[i].point[0] * model[i].point[1];
@@ -165,7 +165,7 @@ static inline void triangleDist(face tri, float *point, float *dist, float *clos
 	float s = b*e - c*d;
 	float t = b*d - a*e;
 	// printf("%f   %f   %f   %f   %f\n", B[0],B[1],B[2],E1[0],E1[1]);
-	uint8_t region;
+	unsigned int region;
 	float tmp1, tmp0, numer, denom, invDet;
 
 	if((s+t) <= det) {

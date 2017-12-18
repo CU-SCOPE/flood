@@ -1,13 +1,5 @@
-#include <stdlib.h>
-#include <string.h>
-#include <iostream>
-#include <stdbool.h>
-#include <time.h>
 #include <fstream>
 #include "flood.h"
-#include "kd_tree.h"
-#include "icp.h"
-#include "quaternion.h"
 #include "frames.h"
 
 FLOOD::FLOOD() {
@@ -23,7 +15,7 @@ FLOOD::~FLOOD() {
 };
 
 void FLOOD::run() {
-	uint8_t i, j, k, l;
+	unsigned int i, j, k, l;
 	quat current, temp;
 	quat rotx, roty, rotz;
 	// 45 degree rotation about each axis
@@ -110,7 +102,7 @@ void FLOOD::initializePose(quat qInit, float t[4]) {
 	quat2trans(T,qInit,t);
 }
 
-void FLOOD::getFrame(uint8_t fileNum, std::string dir) {
+void FLOOD::getFrame(unsigned int fileNum, std::string dir) {
 	std::string filename, prefix, num, sufix;
 	num = std::to_string(fileNum);
 	prefix = "test";
@@ -123,7 +115,7 @@ void FLOOD::getFrame(uint8_t fileNum, std::string dir) {
 }
 
 void FLOOD::getPosition(std::string dir) {
-	uint8_t vals;
+	unsigned int vals;
 	std::string filename = dir + "position.txt";
 	FILE *f = std::fopen(filename.c_str(), "r");
 	vals = fscanf(f,"%f  %f  %f", &translation[0], &translation[1], &translation[2]);

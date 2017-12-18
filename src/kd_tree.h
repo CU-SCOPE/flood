@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-#include <stdint.h>
+
 #include "stl.h"
 
 // Define Macros
@@ -16,10 +16,10 @@ extern "C" {
 
 typedef struct node{
 	float val;
-	uint16_t ind;
-	uint16_t numLeft;
-	uint16_t numRight;
-	uint8_t dim;
+	unsigned int ind;
+	unsigned int numLeft;
+	unsigned int numRight;
+	unsigned int dim;
 	face *binLeft;
 	face *binRight;
 	struct node *parent;
@@ -35,10 +35,10 @@ typedef struct point4D {
 	float point[4];
 }point4D;
 
-node *initTree(face *faces, uint32_t numFaces);
-void deleteTree(node *root, uint8_t counter);
+node *initTree(face *faces, unsigned int numFaces);
+void deleteTree(node *root, unsigned int counter);
 void kd_search(float *query, float *closestPt, float *dist, node *root);
-float runSearch(point4D *points, point4D *closestPts, float *minDists, node *root, uint32_t numPts);
+float runSearch(point4D *points, point4D *closestPts, float *minDists, node *root, unsigned int numPts);
 
 #ifdef __cplusplus
 }

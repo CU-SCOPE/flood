@@ -7,9 +7,9 @@
 #include "kd_tree.h"
 
 
-static inline uint32_t readFrame(point4D *scan, FILE *f) {
-	uint8_t numVals = 3;
-	uint32_t i;
+static inline unsigned int readFrame(point4D *scan, FILE *f) {
+	unsigned int numVals = 3;
+	unsigned int i;
 	float tmp[3];
 	char buff[1024];
 	char *garbage;

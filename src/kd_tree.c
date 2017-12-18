@@ -1,10 +1,7 @@
-#include <stdio.h>
 #include <stdlib.h>
-#include <stdint.h>
 #include <string.h>
 #include <math.h>
 #include <stdbool.h>
-#include "stl.h"
 #include "kd_tree.h"
 #include "vec_math.h"
 
@@ -15,7 +12,7 @@ int floatcomp(const void* elem1, const void* elem2) {
 }
 
 
-void buildTree(node **current, node *parent, face *faces, uint32_t numFaces, uint8_t level, uint16_t ind) {
+void buildTree(node **current, node *parent, face *faces, unsigned int numFaces, unsigned int level, unsigned int ind) {
 	/*
 	buildTree - Recursive function to construct k-d tree from a 3-D model
 	Inputs:
@@ -27,8 +24,8 @@ void buildTree(node **current, node *parent, face *faces, uint32_t numFaces, uin
 		ind 		- index of current node
 	*/
 	float points[numFaces*3], temp[numFaces*3], median;
-	uint8_t dim;
-	uint32_t numPoints= numFaces*3, numLeft = 0, numRight = 0, i;
+	unsigned int dim;
+	unsigned int numPoints= numFaces*3, numLeft = 0, numRight = 0, i;
 	dim = level % 3;
 
 	// Get location of all vertices in current dimension
@@ -119,7 +116,7 @@ void buildTree(node **current, node *parent, face *faces, uint32_t numFaces, uin
 	}
 }
 
-node *initTree(face *faces, uint32_t numFaces) {
+node *initTree(face *faces, unsigned int numFaces) {
 	/*
 	initTree - driver function start building tree
 	*/
@@ -128,7 +125,7 @@ node *initTree(face *faces, uint32_t numFaces) {
 	return root;
 }
 
-void checkFaces(face *faces, uint32_t numFaces, float *query, float *closestPt, float *dist) {
+void checkFaces(face *faces, unsigned int numFaces, float *query, float *closestPt, float *dist) {
 	/*
 	checkFaces - Function in search to check all bins in current leaf node
 	Inputs:
@@ -138,7 +135,7 @@ void checkFaces(face *faces, uint32_t numFaces, float *query, float *closestPt, 
 		closestPts 	- Current closest 3-D point
 		dist 		- Current minimum distance of closest point
 	*/
-	uint32_t i;
+	unsigned int i;
 	float tmpPt[3], tmpDist, curDist = *dist;
 	for(i=0; i<numFaces; i++) {
 		triangleDist(faces[i], query, &tmpDist, tmpPt);
@@ -161,7 +158,7 @@ node *traverse(node *root, float *query, float *closestPt, float *dist){
 	*/
 	node *current = root;
 	face *faceBin;
-	uint32_t numFaces;
+	unsigned int numFaces;
 	bool left;
 	while(current->rChild) {
 		if(query[current->dim] < current->val) {
@@ -202,7 +199,7 @@ void kd_search(float *query, float *closestPt, float *dist, node *root) {
 		query	- 3-D query point
 	*/
 	node *current = root;
-	uint16_t checked[KD_DEPTH] = {0}, counter = 0;
+	unsigned int checked[KD_DEPTH] = {0}, counter = 0;
 	bool goLeft;
 	float plneDist;
 	current = traverse(current, query, closestPt, dist);
@@ -230,8 +227,8 @@ void kd_search(float *query, float *closestPt, float *dist, node *root) {
 	*dist = sqrt((*dist));
 }
 
-float runSearch(point4D *points, point4D *closestPts, float *minDists, node *root, uint32_t numPts) {
-	uint32_t i;
+float runSearch(point4D *points, point4D *closestPts, float *minDists, node *root, unsigned int numPts) {
+	unsigned int i;
 	float mean = 0;
 	for(i=0; i<numPts; i++) {
 		minDists[i] = 100.0;
@@ -243,7 +240,7 @@ float runSearch(point4D *points, point4D *closestPts, float *minDists, node *roo
 	return mean;
 }
 
-void deleteTree(node *root, uint8_t counter) {
+void deleteTree(node *root, unsigned int counter) {
 	if(counter < KD_DEPTH-1) {
 		deleteTree(root->lChild, counter+1);
 		deleteTree(root->rChild, counter+1);
