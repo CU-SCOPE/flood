@@ -7,32 +7,14 @@
 #IncludeRegexTransform: 
 
 /home/zach/Documents/senior_projects/flood/src/flood.cpp
-stdlib.h
--
-string.h
--
-iostream
--
-stdbool.h
--
-time.h
--
 fstream
 -
 flood.h
 /home/zach/Documents/senior_projects/flood/src/flood.h
-kd_tree.h
-/home/zach/Documents/senior_projects/flood/src/kd_tree.h
-icp.h
-/home/zach/Documents/senior_projects/flood/src/icp.h
-quaternion.h
-/home/zach/Documents/senior_projects/flood/src/quaternion.h
 frames.h
 /home/zach/Documents/senior_projects/flood/src/frames.h
 
 /home/zach/Documents/senior_projects/flood/src/flood.h
-stdint.h
--
 stdbool.h
 -
 string
@@ -61,8 +43,6 @@ kd_tree.h
 /home/zach/Documents/senior_projects/flood/src/kd_tree.h
 
 /home/zach/Documents/senior_projects/flood/src/kd_tree.h
-stdint.h
--
 stl.h
 /home/zach/Documents/senior_projects/flood/src/stl.h
 

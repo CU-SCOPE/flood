@@ -20,9 +20,9 @@ void FLOOD::run() {
 	quat rotx, roty, rotz;
 	// 45 degree rotation about each axis
 	rotx.w = 0.924; roty.w = 0.924; rotz.w = 0.924;
-	rotx.x = 0.383; roty.x = 0.0; rotz.x = 0.0;
-	rotx.y = 0.0; roty.y = 0.383; rotz.y = 0.0;
-	rotx.z = 0.0; roty.z = 0.0; rotz.z = 0.383;
+	rotx.x = 0.383; roty.x = 0.0;   rotz.x = 0.0;
+	rotx.y = 0.0;   roty.y = 0.383; rotz.y = 0.0;
+	rotx.z = 0.0;   roty.z = 0.0;   rotz.z = 0.383;
 	clock_t start, end, looking, found;
 	float error;
 	double time = 0, acq_time;
@@ -61,7 +61,7 @@ void FLOOD::run() {
 							current = temp;
 							initializePose(current, translation);
 							error = icp(initState, root, T, numPts, MAX_ITERATIONS_FIND);
-							if(error < 0.02) {
+							if(error < THRESH) {
 								k = 7; j = 7;
 								break;
 							}
@@ -72,7 +72,7 @@ void FLOOD::run() {
 					temp = multQuat(rotx, current);
 					current = temp;
 				}
-				if(error > 0.02) {
+				if(error > THRESH) {
 					printf("DID NOT CONVERGE!!!\n");
 					return;
 				}
@@ -119,6 +119,7 @@ void FLOOD::getPosition(std::string dir) {
 	std::string filename = dir + "position.txt";
 	FILE *f = std::fopen(filename.c_str(), "r");
 	vals = fscanf(f,"%f  %f  %f", &translation[0], &translation[1], &translation[2]);
+	translation[0] = -translation[0]; translation[1] = -translation[1];
 	translation[2] = 10 - translation[2];
 	translation[3] = 1;
 	printf("%f %f %f\n", translation[0], translation[1], translation[2]);
