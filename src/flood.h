@@ -15,7 +15,7 @@
 #define NUM_FILES			179
 #endif
 #define FRAME_DIRECTORIES	"trajectories.txt"
-#define THRESH				0.06
+#define THRESH				0.04
 
 class FLOOD {
 public:
