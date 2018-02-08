@@ -4,6 +4,8 @@
 
 #include <stdbool.h>
 #include <string>
+#include <thread>
+#include <atomic>
 #include "kd_tree.h"
 #include "icp.h"
 #include "quaternion.h"
@@ -14,7 +16,7 @@
 #else
 #define NUM_FILES			179
 #endif
-#define FRAME_DIRECTORIES	"trajectories.txt"
+#define FRAME_DIRECTORIES	"test/"
 #define THRESH				0.04
 
 class FLOOD {
@@ -24,17 +26,19 @@ public:
 	void run();
 	void initializePose(quat q, float t[4]);
 private:
-	void getFrame(unsigned int fileNum, std::string dir);
+	void calcPose();
+	void getFrame();
 	void getPosition(std::string dir);
 	node *root;
 	face *faces;
 	point4D scan[MAX_POINTS];
 	float T[4][4] = {{0}};
-	quat q;
+	quat q, rotx, roty, rotz;
 	float translation[4];
 	unsigned int numPts;
 	unsigned int numFaces;
 	bool finding;
+	std::atomic<bool> read;
 };
 
 #endif
