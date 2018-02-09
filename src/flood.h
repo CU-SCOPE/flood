@@ -10,6 +10,9 @@
 #include "icp.h"
 #include "quaternion.h"
 #include "stl.h"
+#include "image.h"
+#include "o3d3xx_camera.h"
+#include "o3d3xx_framegrabber.h"
 
 #if DEBUG
 #define NUM_FILES			10
@@ -31,7 +34,7 @@ private:
 	void getPosition(std::string dir);
 	node *root;
 	face *faces;
-	point4D scan[MAX_POINTS];
+	point4D *scan;
 	float T[4][4] = {{0}};
 	quat q, rotx, roty, rotz;
 	float translation[4];

@@ -24,16 +24,16 @@ FLOOD::~FLOOD() {
 };
 
 void FLOOD::run() {
-	std::thread frames (&FLOOD::getFrame, this);
-	std::thread icp (&FLOOD::calcPose, this);
-	frames.join();
+	std::thread frames (&FLOOD::getFrame, this); // Thread to read frames in
+	std::thread icp (&FLOOD::calcPose, this); // Thread to calculate POSE
+	frames.join(); // Cleanup threads
 	icp.join();
 }
 
 void FLOOD::calcPose() {
 	unsigned int i, j, k, l;
 	quat current, temp;
-	point4D initState[MAX_POINTS], copy[MAX_POINTS];
+	point4D initState[MAX_POINTS];
 	// Initialize timer
 	clock_t start, end, looking, found;
 	float error;
@@ -52,10 +52,7 @@ void FLOOD::calcPose() {
     current = q;
     // Analyze trajectory
 	for(i=1; i<=NUM_FILES; i++) {
-		while(read) {std::this_thread::yield();}
-		memcpy(initState, scan, numPts*sizeof(point4D));
-		memcpy(copy, scan, numPts*sizeof(point4D));
-		read = true;
+		while(read) {std::this_thread::yield();} // Wait for new frame
 		// If the pose is known
 		if(!finding) {
 			// Run ICP
@@ -69,16 +66,16 @@ void FLOOD::calcPose() {
 		else {
 			// Get current frame
 			looking = clock();
-			// Remember the initial state of the LiDAR scan
 			initializePose(current, translation);
 			// First test
+			memcpy(initState, scan, numPts*sizeof(point4D)); // Copy frame from buffer
 			error = icp(initState, root, T, numPts, MAX_ITERATIONS_FIND);
 			//Rotate about each access until a solution converges
 			if(error > THRESH) {
 				for(j=0; j<7; j++) {
 					for(k=0; k<7; k++) {
 						for(l=0; l<7; l++) {
-							memcpy(initState, copy, numPts*sizeof(point4D));
+							memcpy(initState, scan, numPts*sizeof(point4D));
 							// rotate about z
 							temp = multQuat(rotz, current);
 							current = temp;
@@ -117,6 +114,7 @@ void FLOOD::calcPose() {
 		printf("%f\n", error);
 		printTrans(T);
 #endif
+		read = true; // Tell frame reader to copy in next frame
 	}
 #if TO_FILE
 	std::fclose(fpos);
@@ -132,21 +130,22 @@ void FLOOD::initializePose(quat qInit, float t[4]) {
 }
 
 void FLOOD::getFrame() {
-	std::string dir = FRAME_DIRECTORIES, filename, prefix, num, sufix;
-	printf("%s\n", dir.c_str());
-	prefix = "test";
-	sufix = "_noisy00000.pcd";
-	unsigned int fileNum = 1;
-	FILE *f;
+	o3d3xx::Logging::Init();
+	o3d3xx::Camera::Ptr cam = std::make_shared<o3d3xx::Camera>();
+	// Start framegrabber
+	o3d3xx::FrameGrabber::Ptr fg = std::make_shared<o3d3xx::FrameGrabber>(cam);
+	o3d3xx::ImageBuffer::Ptr img = std::make_shared<o3d3xx::ImageBuffer>();
+	int fileNum = 0;
+	std::vector<point4D> v;
 	while(fileNum <= NUM_FILES) {
-		while(!read) {std::this_thread::yield();}
-		num = std::to_string(fileNum);
-		filename = dir + prefix + num + sufix;
-		f = std::fopen(filename.c_str(),"r");
-		printf("%s\n", filename.c_str());
-		numPts = readFrame(scan, f);
-		std::fclose(f);
-		++fileNum;
+		if (! fg->WaitForFrame(img.get(), 1000)) {
+			std::cerr << "Timeout waiting for camera!" << std::endl;
+			continue;
+		}
+		v = img->XYZImage();
+		while(!read) {std::this_thread::yield();} // Wait for current frame to be read
+		std::copy(v.begin(), v.end(), scan); // Copy new frame to image buffer
+		++fileNum;	
 		read = false;
 	}
 }
