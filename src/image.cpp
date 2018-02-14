@@ -313,7 +313,8 @@ o3d3xx::ImageBuffer::Organize()
           // pt.x = pt.y = pt.z = bad_point;
           // this->cloud_->is_dense = false;
 
-          pt.point[0] = pt.point[1] = pt.point[2] = bad_point;
+          // pt.point[0] = pt.point[1] = pt.point[2] = bad_point;
+          continue;
         }
       else
         {

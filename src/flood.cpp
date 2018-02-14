@@ -63,7 +63,6 @@ void FLOOD::calcPose() {
 		}
 		// If pose is unknown
 		else {
-			printf("here\n");
 			// Get current frame
 			looking = clock();
 			initializePose(current, translation);
@@ -101,7 +100,7 @@ void FLOOD::calcPose() {
 			// If it didn't converge send error
 			if(error > THRESH) {
 				printf("DID NOT CONVERGE!!!\n");
-				return;
+				continue;
 			}
 			found = clock();
 			acq_time = (double) (found-looking) / CLOCKS_PER_SEC;
@@ -136,7 +135,7 @@ void FLOOD::getFrame() {
 	// Start framegrabber
 	o3d3xx::FrameGrabber::Ptr fg = std::make_shared<o3d3xx::FrameGrabber>(cam);
 	o3d3xx::ImageBuffer::Ptr img = std::make_shared<o3d3xx::ImageBuffer>();
-	int fileNum = 0;
+	int fileNum = 1;
 	std::vector<point4D> v;
 	while(fileNum <= NUM_FILES) {
 		if (! fg->WaitForFrame(img.get(), 1000)) {
