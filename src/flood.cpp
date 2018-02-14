@@ -33,7 +33,6 @@ void FLOOD::run() {
 void FLOOD::calcPose() {
 	unsigned int i, j, k, l;
 	quat current, temp;
-	point4D initState[MAX_POINTS];
 	// Initialize timer
 	clock_t start, end, looking, found;
 	float error;
@@ -64,17 +63,19 @@ void FLOOD::calcPose() {
 		}
 		// If pose is unknown
 		else {
+			printf("here\n");
 			// Get current frame
 			looking = clock();
 			initializePose(current, translation);
 			// First test
+			point4D initState[numPts];
 			memcpy(initState, scan, numPts*sizeof(point4D)); // Copy frame from buffer
 			error = icp(initState, root, T, numPts, MAX_ITERATIONS_FIND);
 			//Rotate about each access until a solution converges
 			if(error > THRESH) {
-				for(j=0; j<7; j++) {
-					for(k=0; k<7; k++) {
-						for(l=0; l<7; l++) {
+				for(j=0; j<1; j++) {
+					for(k=0; k<1; k++) {
+						for(l=0; l<1; l++) {
 							memcpy(initState, scan, numPts*sizeof(point4D));
 							// rotate about z
 							temp = multQuat(rotz, current);
@@ -144,6 +145,7 @@ void FLOOD::getFrame() {
 		}
 		v = img->XYZImage();
 		while(!read) {std::this_thread::yield();} // Wait for current frame to be read
+		numPts = v.size();
 		std::copy(v.begin(), v.end(), scan); // Copy new frame to image buffer
 		++fileNum;	
 		read = false;

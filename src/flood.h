@@ -34,11 +34,11 @@ private:
 	void getPosition(std::string dir);
 	node *root;
 	face *faces;
-	point4D *scan;
+	point4D scan[MAX_POINTS];
 	float T[4][4] = {{0}};
 	quat q, rotx, roty, rotz;
 	float translation[4];
-	unsigned int numPts;
+	std::atomic<int> numPts;
 	unsigned int numFaces;
 	bool finding;
 	std::atomic<bool> read;

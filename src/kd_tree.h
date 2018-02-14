@@ -12,7 +12,7 @@ extern "C" {
 #define KD_DEPTH     9
 #define KD_NODES     (1 << KD_DEPTH) - 1
 #define KD_BINS      KD_NODES + 1
-#define MAX_POINTS	 5000
+#define MAX_POINTS	 23232
 
 typedef struct node{
 	float val;

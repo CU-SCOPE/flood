@@ -254,6 +254,7 @@ o3d3xx::ImageBuffer::Organize()
   this->cloud_->points.resize(num_points);*/
 
   this->xyz_image_.reserve(height * width);
+  this->xyz_image_.clear();
   /*this->uvec_.create(height, width, CV_32FC3);
   this->conf_.create(height, width, CV_8UC1);
   this->depth_.create(height, width, CV_16UC1);
@@ -291,7 +292,7 @@ o3d3xx::ImageBuffer::Organize()
   // std::uint16_t* depth_row_ptr;
   // std::uint16_t* amp_row_ptr;
   // std::uint16_t* raw_amp_row_ptr;
-  std::uint8_t* conf_row_ptr;
+  std::uint8_t conf_row_ptr;
   // float* uvec_row_ptr;
 
   std::int16_t x_, y_, z_;
@@ -306,8 +307,8 @@ o3d3xx::ImageBuffer::Organize()
       // o3d3xx::PointT& pt = this->cloud_->points[i];
       col = i % width;
 
-      conf_row_ptr[col] = this->bytes_.at(cidx);
-      if ((conf_row_ptr[col] & 0x1) == 1)
+      conf_row_ptr = this->bytes_.at(cidx);
+      if ((conf_row_ptr & 0x1) == 1)
         {
           // pt.x = pt.y = pt.z = bad_point;
           // this->cloud_->is_dense = false;
