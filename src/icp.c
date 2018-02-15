@@ -118,6 +118,7 @@ float icp(point4D *scan, node *root, float T[4][4], unsigned int numPts, unsigne
 	point4D initState[numPts], closestPts[numPts];
 	point4D modelPts[numPts], scanPts[numPts];
 	memcpy(initState, scan, numPts*sizeof(point4D));
+	printf("%f  %f\n", scan[0].point[0], initState[0].point[0]);
 	transform(T, scan, numPts);
 	float minDists[numPts], error, thresh;
 	for(i=0; i<iterations; i++) {
@@ -128,6 +129,7 @@ float icp(point4D *scan, node *root, float T[4][4], unsigned int numPts, unsigne
 		calcTransform(scanPts, modelPts, T, numKeep);
 		transform(T, scan, numPts);
 	}
+	printf("%f\n", scan[0].point[0]);
 	calcTransform(initState, scan, T, numPts);
 #if DEBUG
 	printTrans(T);

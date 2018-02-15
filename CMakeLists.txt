@@ -14,7 +14,7 @@ else(CMAKE_TOOLCHAIN_FILE)
 	set(TARGET pcExe)
 endif(CMAKE_TOOLCHAIN_FILE)
 
-
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
 
 # Add Executable
 add_executable(${TARGET} src/main.cpp)

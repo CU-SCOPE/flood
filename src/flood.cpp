@@ -13,6 +13,7 @@ FLOOD::FLOOD() {
 	rotx.x = 0.383; roty.x = 0.0;   rotz.x = 0.0;
 	rotx.y = 0.0;   roty.y = 0.383; rotz.y = 0.0;
 	rotx.z = 0.0;   roty.z = 0.0;   rotz.z = 0.383;
+	translation[0] = 0.4; translation[1] = 0; translation[2] = 0; translation[3] = 1;
 	// Get initial position
 	// getPosition(FRAME_DIRECTORIES);
 };

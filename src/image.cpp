@@ -334,7 +334,8 @@ o3d3xx::ImageBuffer::Organize()
             }
           else
             {
-              pt.point[0] = pt.point[1] = pt.point[2] = bad_point;
+                continue;
+              // pt.point[0] = pt.point[1] = pt.point[2] = bad_point;
             }
 
           // keep depth image data as mm
