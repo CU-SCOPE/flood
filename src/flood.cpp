@@ -1,6 +1,6 @@
 #include <fstream>
 #include "flood.h"
-#include "frames.h"
+// #include "frames.h"
 
 FLOOD::FLOOD() {
 	numFaces = loadSTL(&faces);
@@ -14,7 +14,7 @@ FLOOD::FLOOD() {
 	rotx.y = 0.0;   roty.y = 0.383; rotz.y = 0.0;
 	rotx.z = 0.0;   roty.z = 0.0;   rotz.z = 0.383;
 	// Get initial position
-	getPosition(FRAME_DIRECTORIES);
+	// getPosition(FRAME_DIRECTORIES);
 };
 
 FLOOD::~FLOOD() {
@@ -63,25 +63,26 @@ void FLOOD::calcPose() {
 		}
 		// If pose is unknown
 		else {
+			int num = numPts;
 			// Get current frame
 			looking = clock();
 			initializePose(current, translation);
 			// First test
-			point4D initState[numPts];
-			memcpy(initState, scan, numPts*sizeof(point4D)); // Copy frame from buffer
-			error = icp(initState, root, T, numPts, MAX_ITERATIONS_FIND);
+			point4D initState[num];
+			memcpy(initState, scan, num*sizeof(point4D)); // Copy frame from buffer
+			error = icp(initState, root, T, num, MAX_ITERATIONS_FIND);
 			//Rotate about each access until a solution converges
 			if(error > THRESH) {
 				for(j=0; j<1; j++) {
 					for(k=0; k<1; k++) {
 						for(l=0; l<1; l++) {
-							memcpy(initState, scan, numPts*sizeof(point4D));
+							memcpy(initState, scan, num*sizeof(point4D));
 							// rotate about z
 							temp = multQuat(rotz, current);
 							current = temp;
 							initializePose(current, translation);
 							// Perform icp
-							error = icp(initState, root, T, numPts, MAX_ITERATIONS_FIND);
+							error = icp(initState, root, T, num, MAX_ITERATIONS_FIND);
 							// Check for convergance
 							if(error < THRESH) {
 								k = 7; j = 7;

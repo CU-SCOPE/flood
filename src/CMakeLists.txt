@@ -7,7 +7,7 @@ if(CMAKE_BUILD_TYPE MATCHES Debug)
     target_compile_options(src PUBLIC -ggdb -std=c++11)
 else(CMAKE_BUILD_TYPE MATCHES Debug)
     target_compile_definitions(src PUBLIC DEBUG=0)
-    target_compile_options(src PUBLIC -O3 -std=c++11 -pthread -lglog)
+    target_compile_options(src PUBLIC -O3 -std=c++11 -pthread -lglog -fPIC)
 endif(CMAKE_BUILD_TYPE MATCHES Debug)
 
 set(CMAKE_MODULE_PATH
