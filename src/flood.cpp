@@ -71,7 +71,7 @@ void FLOOD::calcPose() {
 			srand(time(NULL));
 			// Get current frame
 			looking = clock();
-			for(j=0; j<5; j++) {
+			for(j=0; j<10; j++) {
 				memcpy(initState, scan, numPts*sizeof(point4D));
 				current.w = ((double) rand() / (RAND_MAX)); current.x = ((double) rand() / (RAND_MAX));
 				current.y = ((double) rand() / (RAND_MAX)); current.z = ((double) rand() / (RAND_MAX));
