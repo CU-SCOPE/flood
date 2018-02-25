@@ -9,7 +9,7 @@ extern "C" {
 #include <math.h>
 #include "vec_math.h"
 
-#define TO_FILE		0
+#define TO_FILE		1
 
 typedef struct quat {
 	float w;

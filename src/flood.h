@@ -17,17 +17,17 @@
 #if DEBUG
 #define NUM_FILES			10
 #else
-#define NUM_FILES			1
+#define NUM_FILES			100
 #endif
 #define FRAME_DIRECTORIES	"test/"
-#define THRESH				0.04
+#define THRESH				0.015
 
 class FLOOD {
 public:
 	FLOOD();
 	~FLOOD();
 	void run();
-	void initializePose(quat q, float t[4]);
+	void initializePose(quat q, float t[4], float Temp[4][4]);
 private:
 	void calcPose();
 	void getFrame();

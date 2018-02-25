@@ -298,7 +298,7 @@ o3d3xx::ImageBuffer::Organize()
   std::int16_t x_, y_, z_;
   float e_x, e_y, e_z;
   point4D pt;
-
+  FILE *f = fopen("out.txt", "w");
   for (std::size_t i = 0; i < num_points;
        ++i, xidx += xincr, yidx += yincr, zidx += zincr,
          cidx += cincr, aidx += aincr, didx += dincr,
@@ -325,12 +325,15 @@ o3d3xx::ImageBuffer::Organize()
               x_ = o3d3xx::mkval<std::int16_t>(this->bytes_.data()+zidx);
               y_ = -o3d3xx::mkval<std::int16_t>(this->bytes_.data()+xidx);
               z_ = -o3d3xx::mkval<std::int16_t>(this->bytes_.data()+yidx);
+              if(x_ > 1000 || y_ > 1000 || z_ > 1000)
+                continue;
 
               // convert units to meters for the point cloud
               pt.point[0] = x_ / 1000.0f;
               pt.point[1] = y_ / 1000.0f;
               pt.point[2] = z_ / 1000.0f;
               pt.point[3] = 1.0f;
+              fprintf(f, "%d  %d  %d\n", x_, y_, z_);
             }
           else
             {
@@ -429,6 +432,6 @@ o3d3xx::ImageBuffer::Organize()
     }
 
 
-
+  fclose(f);
   this->_SetDirty(false);
 }

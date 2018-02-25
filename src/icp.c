@@ -49,14 +49,12 @@ static inline void meanBoth(point4D *points1, point4D *points2, float *mean1, fl
 		pt2[1] += points2[i].point[1];
 		pt2[2] += points2[i].point[2];
 	}
-	pt1[0] /= numPts;
-	pt1[1] /= numPts;
-	pt1[2] /= numPts;
-	pt2[0] /= numPts;
-	pt2[1] /= numPts;
-	pt2[2] /= numPts;
-	memcpy(mean1, pt1, 3*sizeof(float));
-	memcpy(mean2, pt2, 3*sizeof(float));
+	mean1[0] = pt1[0]/numPts;
+	mean1[1] = pt1[1]/numPts;
+	mean1[2] = pt1[2]/numPts;
+	mean2[0] = pt2[0]/numPts;
+	mean2[1] = pt2[1]/numPts;
+	mean2[2] = pt2[2]/numPts;
 }
 
 
@@ -83,11 +81,21 @@ void calcTransform(point4D *scan, point4D *model, float T[4][4], unsigned int nu
 		tempModel[i].point[1] = model[i].point[1] - centModel.point[1];
 		tempModel[i].point[2] = model[i].point[2] - centModel.point[2];
 	}
-	float V[3][3], UT[3][3], R[3][3], t[3], newCent[3];
+	float V[3][3], UT[3][3], R[3][3], t[3], newCent[3], det;
 	getMat(tempScan, tempModel, W, numPts);
 	svdcmp(W, V);
 	transpose(W, UT);
 	matMul3D(V, UT, R);
+	det = determinant(R);
+	if(det < 0) {
+		float tmp[3][3], VT[3][3], U[3][3], B[3][3] = {0};
+		eye3D(B);
+		B[2][2] = det;
+		transpose(V,VT);
+		transpose(UT,U);
+		matMul3D(U, B, tmp);
+		matMul3D(tmp, VT, R);
+	}
 	matMulVec3D(R, centScan.point, newCent);
 	sub3D(centModel.point, newCent, t);
 	T[0][0] = R[0][0];
@@ -102,6 +110,7 @@ void calcTransform(point4D *scan, point4D *model, float T[4][4], unsigned int nu
 	T[0][3] = t[0];
 	T[1][3] = t[1];
 	T[2][3] = t[2];
+	T[3][3] = 1.0f;
 }
 
 float icp(point4D *scan, node *root, float T[4][4], unsigned int numPts, unsigned int iterations) {
@@ -115,11 +124,10 @@ float icp(point4D *scan, node *root, float T[4][4], unsigned int numPts, unsigne
 	*/
 	unsigned int i;
 	unsigned int numKeep;
-	point4D initState[numPts], closestPts[numPts];
-	point4D modelPts[numPts], scanPts[numPts];
+	point4D initState[numPts], closestPts[numPts], modelPts[numPts], scanPts[numPts];
+	float minDists[numPts], error, thresh;
 	memcpy(initState, scan, numPts*sizeof(point4D));
 	transform(T, scan, numPts);
-	float minDists[numPts], error, thresh;
 	for(i=0; i<iterations; i++) {
 		error = runSearch(scan, closestPts, minDists, root, numPts);
 		stdev(minDists, &thresh, error, numPts);

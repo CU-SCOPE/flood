@@ -1,4 +1,6 @@
 #include <fstream>
+#include <cstdlib>
+#include <ctime>
 #include "flood.h"
 // #include "frames.h"
 
@@ -13,7 +15,7 @@ FLOOD::FLOOD() {
 	rotx.x = 0.383; roty.x = 0.0;   rotz.x = 0.0;
 	rotx.y = 0.0;   roty.y = 0.383; rotz.y = 0.0;
 	rotx.z = 0.0;   roty.z = 0.0;   rotz.z = 0.383;
-	translation[0] = 0.4; translation[1] = 0; translation[2] = 0; translation[3] = 1;
+	translation[0] = 0.7; translation[1] = 0; translation[2] = 0; translation[3] = 1;
 	// Get initial position
 	// getPosition(FRAME_DIRECTORIES);
 };
@@ -37,7 +39,7 @@ void FLOOD::calcPose() {
 	// Initialize timer
 	clock_t start, end, looking, found;
 	float error;
-	double time = 0, acq_time;
+	double tm = 0, acq_time;
 	// Read all trajectories being tested
     std::string dir = FRAME_DIRECTORIES, pos, rot; 
 #if TO_FILE
@@ -60,47 +62,31 @@ void FLOOD::calcPose() {
 			// Get current frame
 			error = icp(scan, root, T, numPts, MAX_ITERATIONS_KNOWN);
 			end = clock();
-			time += (double) (end-start) / CLOCKS_PER_SEC * 1000.0;
+			tm += (double) (end-start) / CLOCKS_PER_SEC * 1000.0;
 		}
 		// If pose is unknown
 		else {
-			int num = numPts;
+			point4D initState[numPts];
+			float Temp[4][4] = {0}, best = 100;
+			srand(time(NULL));
 			// Get current frame
 			looking = clock();
-			initializePose(current, translation);
-			// First test
-			point4D initState[num];
-			memcpy(initState, scan, num*sizeof(point4D)); // Copy frame from buffer
-			error = icp(initState, root, T, num, MAX_ITERATIONS_FIND);
-			//Rotate about each access until a solution converges
-			if(error > THRESH) {
-				for(j=0; j<1; j++) {
-					for(k=0; k<1; k++) {
-						for(l=0; l<1; l++) {
-							memcpy(initState, scan, num*sizeof(point4D));
-							// rotate about z
-							temp = multQuat(rotz, current);
-							current = temp;
-							initializePose(current, translation);
-							// Perform icp
-							error = icp(initState, root, T, num, MAX_ITERATIONS_FIND);
-							// Check for convergance
-							if(error < THRESH) {
-								k = 7; j = 7;
-								break;
-							}
-						}
-						// Rotate about y
-						temp = multQuat(roty, current);
-						current = temp;
-					}
-					// Rotate about x
-					temp = multQuat(rotx, current);
-					current = temp;
+			for(j=0; j<5; j++) {
+				memcpy(initState, scan, numPts*sizeof(point4D));
+				current.w = ((double) rand() / (RAND_MAX)); current.x = ((double) rand() / (RAND_MAX));
+				current.y = ((double) rand() / (RAND_MAX)); current.z = ((double) rand() / (RAND_MAX));
+				initializePose(current, translation, Temp);
+				// First test
+				error = icp(initState, root, Temp, numPts, MAX_ITERATIONS_FIND);
+				if(error < best) {
+					best = error;
+					memcpy(T, Temp, 16*sizeof(float));
 				}
-			}
+			}	
+			error = best;
 			// If it didn't converge send error
 			if(error > THRESH) {
+				read = true; // Tell frame reader to copy in next frame
 				printf("DID NOT CONVERGE!!!\n");
 				continue;
 			}
@@ -122,13 +108,13 @@ void FLOOD::calcPose() {
 	std::fclose(fpos);
 	std::fclose(frot);
 #endif
-	time /= (NUM_FILES - 2);
+	tm /= (NUM_FILES - 2);
 	printf("Time to acquire: %fs\n", acq_time);
-	printf("Average time: %fms\n", time);
+	printf("Average time: %fms\n", tm);
 }
 
-void FLOOD::initializePose(quat qInit, float t[4]) {
-	quat2trans(T,qInit,t);
+void FLOOD::initializePose(quat qInit, float t[4], float Temp[4][4]) {
+	quat2trans(Temp,qInit,t);
 }
 
 void FLOOD::getFrame() {
@@ -145,6 +131,7 @@ void FLOOD::getFrame() {
 			continue;
 		}
 		v = img->XYZImage();
+		printf("%d\n", fileNum);
 		while(!read) {std::this_thread::yield();} // Wait for current frame to be read
 		numPts = v.size();
 		std::copy(v.begin(), v.end(), scan); // Copy new frame to image buffer
