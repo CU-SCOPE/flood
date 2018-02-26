@@ -34,7 +34,7 @@ void FLOOD::run() {
 }
 
 void FLOOD::calcPose() {
-	unsigned int i, j, k, l;
+	unsigned int i, j, num = 0;
 	quat current, temp;
 	// Initialize timer
 	clock_t start, end, looking, found;
@@ -63,6 +63,10 @@ void FLOOD::calcPose() {
 			error = icp(scan, root, T, numPts, MAX_ITERATIONS_KNOWN);
 			end = clock();
 			tm += (double) (end-start) / CLOCKS_PER_SEC * 1000.0;
+			num++;
+			// Restart start if error is drifting off too much; tune threshold value here
+			if(error > 0.025)
+				finding = true;
 		}
 		// If pose is unknown
 		else {
@@ -108,7 +112,7 @@ void FLOOD::calcPose() {
 	std::fclose(fpos);
 	std::fclose(frot);
 #endif
-	tm /= (NUM_FILES - 2);
+	tm /= num;
 	printf("Time to acquire: %fs\n", acq_time);
 	printf("Average time: %fms\n", tm);
 }

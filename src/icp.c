@@ -72,6 +72,7 @@ void calcTransform(point4D *scan, point4D *model, float T[4][4], unsigned int nu
 	float W[3][3] = {0.0};
 	point3D centScan, centModel;
 	point4D tempScan[numPts], tempModel[numPts];
+	// Subtract centroid from each point cloud
 	meanBoth(scan, model, centScan.point, centModel.point, numPts);
 	for(i=0; i<numPts; i++) {
 		tempScan[i].point[0] = scan[i].point[0] - centScan.point[0];
@@ -81,11 +82,13 @@ void calcTransform(point4D *scan, point4D *model, float T[4][4], unsigned int nu
 		tempModel[i].point[1] = model[i].point[1] - centModel.point[1];
 		tempModel[i].point[2] = model[i].point[2] - centModel.point[2];
 	}
+	// SVD here
 	float V[3][3], UT[3][3], R[3][3], t[3], newCent[3], det;
 	getMat(tempScan, tempModel, W, numPts);
 	svdcmp(W, V);
 	transpose(W, UT);
 	matMul3D(V, UT, R);
+	// Account for reflection case
 	det = determinant(R);
 	if(det < 0) {
 		float tmp[3][3], VT[3][3], U[3][3], B[3][3] = {0};
@@ -96,8 +99,10 @@ void calcTransform(point4D *scan, point4D *model, float T[4][4], unsigned int nu
 		matMul3D(U, B, tmp);
 		matMul3D(tmp, VT, R);
 	}
+	// Rotate translation vector
 	matMulVec3D(R, centScan.point, newCent);
 	sub3D(centModel.point, newCent, t);
+	// Construct Transformation matrix
 	T[0][0] = R[0][0];
 	T[0][1] = R[0][1];
 	T[0][2] = R[0][2];
