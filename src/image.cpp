@@ -97,8 +97,10 @@ o3d3xx::ImageBuffer::ConfidenceImage()
 }*/
 
 std::vector<point4D> 
-o3d3xx::ImageBuffer::XYZImage()
+o3d3xx::ImageBuffer::XYZImage(float t[3], float d[3])
 {
+  this->position[0] = t[0]; this->position[1] = t[1]; this->position[2] = t[2];
+  this->dims[0] = d[0]; this->dims[1] = d[1]; this->dims[2] = d[2];
   this->Organize();
   return this->xyz_image_;
 }
@@ -146,7 +148,6 @@ o3d3xx::ImageBuffer::Organize()
     {
       return;
     }
-
   // get indices to the start of each chunk of interest in the image buffer
   // NOTE: These could get optimized by using apriori values if necessary
   std::size_t INVALID_IDX = std::numeric_limits<std::size_t>::max();
@@ -298,7 +299,7 @@ o3d3xx::ImageBuffer::Organize()
   std::int16_t x_, y_, z_;
   float e_x, e_y, e_z;
   point4D pt;
-  // FILE *f = fopen("out.txt", "w");
+  FILE *f = fopen("out.txt", "w");
   for (std::size_t i = 0; i < num_points;
        ++i, xidx += xincr, yidx += yincr, zidx += zincr,
          cidx += cincr, aidx += aincr, didx += dincr,
@@ -325,15 +326,19 @@ o3d3xx::ImageBuffer::Organize()
               x_ = o3d3xx::mkval<std::int16_t>(this->bytes_.data()+zidx);
               y_ = -o3d3xx::mkval<std::int16_t>(this->bytes_.data()+xidx);
               z_ = -o3d3xx::mkval<std::int16_t>(this->bytes_.data()+yidx);
-              if(x_ > 1000 || y_ > 1000 || z_ > 1000)
-                continue;
 
               // convert units to meters for the point cloud
               pt.point[0] = x_ / 1000.0f;
               pt.point[1] = y_ / 1000.0f;
               pt.point[2] = z_ / 1000.0f;
               pt.point[3] = 1.0f;
-              // fprintf(f, "%d  %d  %d\n", x_, y_, z_);
+              if(pt.point[0] > this->position[0] + this->dims[0] || pt.point[0] < this->position[0] - this->dims[0])
+                continue;
+              if(pt.point[1] > this->position[1] + this->dims[1] || pt.point[1] < this->position[1] - this->dims[1])
+                continue;
+              if(pt.point[2] > this->position[2] + this->dims[2] || pt.point[2] < this->position[2] - this->dims[2])
+                continue;
+              fprintf(f, "%d  %d  %d\n", x_, y_, z_);
             }
           else
             {
@@ -432,6 +437,6 @@ o3d3xx::ImageBuffer::Organize()
     }
 
 
-  // fclose(f);
+  fclose(f);
   this->_SetDirty(false);
 }

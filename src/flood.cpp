@@ -15,7 +15,7 @@ FLOOD::FLOOD() {
 	rotx.x = 0.383; roty.x = 0.0;   rotz.x = 0.0;
 	rotx.y = 0.0;   roty.y = 0.383; rotz.y = 0.0;
 	rotx.z = 0.0;   roty.z = 0.0;   rotz.z = 0.383;
-	translation[0] = 0.7; translation[1] = 0; translation[2] = 0; translation[3] = 1;
+	translation[0] = -0.7; translation[1] = 0; translation[2] = 0; translation[3] = 1;
 	// Get initial position
 	// getPosition(FRAME_DIRECTORIES);
 };
@@ -38,7 +38,7 @@ void FLOOD::calcPose() {
 	quat current, temp;
 	// Initialize timer
 	clock_t start, end, looking, found;
-	float error;
+	float error, RT[3][3], t[3];
 	double tm = 0, acq_time;
 	// Read all trajectories being tested
     std::string dir = FRAME_DIRECTORIES, pos, rot; 
@@ -64,8 +64,8 @@ void FLOOD::calcPose() {
 			end = clock();
 			tm += (double) (end-start) / CLOCKS_PER_SEC * 1000.0;
 			num++;
-			// Restart start if error is drifting off too much; tune threshold value here
-			if(error > 0.025)
+			// Restart if error is drifting off too much; tune threshold value here
+			if(error > 0.02)
 				finding = true;
 		}
 		// If pose is unknown
@@ -101,11 +101,17 @@ void FLOOD::calcPose() {
 		// Print results
 #if TO_FILE
 		printf("%f\n", error);
-		printTrans(T, fpos, frot);
+		printTrans(T, translation, fpos, frot);
 #else
 		printf("%f\n", error);
-		printTrans(T);
+		printTrans(T, translation);
 #endif
+		// Rotate position vector
+		RT[0][0] = T[0][0]; RT[0][1] = T[1][0]; RT[0][2] = T[2][0];
+		RT[1][0] = T[0][1]; RT[1][1] = T[1][1]; RT[1][2] = T[2][1];
+		RT[2][0] = T[0][2]; RT[2][1] = T[1][2]; RT[2][2] = T[2][2];
+		t[0] = T[0][3]; t[1] = T[1][3]; t[2] = T[2][3];
+		matMulVec3D(RT, t, translation);
 		read = true; // Tell frame reader to copy in next frame
 	}
 #if TO_FILE
@@ -128,18 +134,21 @@ void FLOOD::getFrame() {
 	o3d3xx::FrameGrabber::Ptr fg = std::make_shared<o3d3xx::FrameGrabber>(cam);
 	o3d3xx::ImageBuffer::Ptr img = std::make_shared<o3d3xx::ImageBuffer>();
 	int fileNum = 1;
+	float t[3], dims[3] = {0.15, 0.15, 0.15};
+	t[0] = -translation[0]; t[1] = -translation[1]; t[2] = -translation[2];
 	std::vector<point4D> v;
 	while(fileNum <= NUM_FILES) {
 		if (! fg->WaitForFrame(img.get(), 1000)) {
 			std::cerr << "Timeout waiting for camera!" << std::endl;
 			continue;
 		}
-		v = img->XYZImage();
+		v = img->XYZImage(t, dims);
 		printf("%d\n", fileNum);
 		while(!read) {std::this_thread::yield();} // Wait for current frame to be read
 		numPts = v.size();
 		std::copy(v.begin(), v.end(), scan); // Copy new frame to image buffer
-		++fileNum;	
+		++fileNum;
+		t[0] = -translation[0]; t[1] = -translation[1]; t[2] = -translation[2];
 		read = false;
 	}
 }
