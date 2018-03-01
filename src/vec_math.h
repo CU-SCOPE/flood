@@ -51,6 +51,12 @@ static inline void eye4D(float mat[4][4]) {
 	mat[3][3] = 1;
 }
 
+static inline void eye3D(float mat[3][3]) {
+	mat[0][0] = 1;
+	mat[1][1] = 1;
+	mat[2][2] = 1;
+}
+
 static inline void meanVec(float *vec, float *mean, unsigned int numPts) {
 	unsigned int i;
 	float sum;
@@ -93,6 +99,10 @@ static inline void transpose(float a[3][3], float aT[3][3]) {
 	aT[2][0] = a[0][2];
 	aT[2][1] = a[1][2];
 	aT[2][2] = a[2][2];
+}
+
+static inline float determinant(float R[3][3]) {
+	return R[0][0]*(R[1][1]*R[2][2] - R[1][2]*R[2][1]) - R[0][1]*(R[1][0]*R[2][2] - R[1][2]*R[2][0]) + R[0][2]*(R[0][1]*R[2][1] - R[1][1]*R[2][0]);
 }
 
 static inline void getMat(point4D *scan, point4D *model, float W[3][3], unsigned int numPts) {
