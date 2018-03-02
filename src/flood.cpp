@@ -15,9 +15,6 @@ FLOOD::FLOOD() {
 	rotx.x = 0.383; roty.x = 0.0;   rotz.x = 0.0;
 	rotx.y = 0.0;   roty.y = 0.383; rotz.y = 0.0;
 	rotx.z = 0.0;   roty.z = 0.0;   rotz.z = 0.383;
-	translation[0] = -0.7; translation[1] = 0; translation[2] = 0; translation[3] = 1;
-	// Get initial position
-	// getPosition(FRAME_DIRECTORIES);
 };
 
 FLOOD::~FLOOD() {
@@ -153,14 +150,6 @@ void FLOOD::getFrame() {
 	}
 }
 
-void FLOOD::getPosition(std::string dir) {
-	unsigned int vals;
-	std::string filename = dir + "position.txt";
-	FILE *f = std::fopen(filename.c_str(), "r");
-	vals = fscanf(f,"%f  %f  %f", &translation[0], &translation[1], &translation[2]);
-	translation[0] = -translation[0]; translation[1] = -translation[1];
-	translation[2] = 10 - translation[2];
-	translation[3] = 1;
-	printf("%f %f %f\n", translation[0], translation[1], translation[2]);
-	std::fclose(f);
+void FLOOD::getPosition(float position) {
+	translation[0] = -position; translation[1] = 0; translation[2] = 0; translation[3] = 1;
 }
