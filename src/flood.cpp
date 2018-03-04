@@ -52,6 +52,8 @@ void FLOOD::calcPose() {
     // Analyze trajectory
 	for(i=1; i<=NUM_FILES; i++) {
 		while(read) {std::this_thread::yield();} // Wait for new frame
+		int num = numPts;
+		printf("%d\n", num);
 		// If the pose is known
 		if(!finding) {
 			// Run ICP
@@ -132,14 +134,19 @@ void FLOOD::getFrame() {
 	sufix = "_noisy00000.pcd";
 	unsigned int fileNum = 1;
 	FILE *f;
+	point4D temp[MAX_POINTS];
+	int points;
+	getPosition(dir);
 	while(fileNum <= NUM_FILES) {
-		while(!read) {std::this_thread::yield();}
 		num = std::to_string(fileNum);
 		filename = dir + prefix + num + sufix;
 		f = std::fopen(filename.c_str(),"r");
 		printf("%s\n", filename.c_str());
-		numPts = readFrame(scan, f);
+		points = readFrame(temp, f);
 		std::fclose(f);
+		while(!read) {std::this_thread::yield();}
+		memcpy(scan, temp, points*sizeof(point4D));
+		numPts = points;
 		++fileNum;
 		read = false;
 	}

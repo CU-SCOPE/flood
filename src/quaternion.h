@@ -9,7 +9,7 @@ extern "C" {
 #include <math.h>
 #include "vec_math.h"
 
-#define TO_FILE		1
+#define TO_FILE		0
 
 typedef struct quat {
 	float w;
@@ -149,7 +149,7 @@ static inline void printTrans(float T[4][4], float translation[3]) {
 	quat q;
 	trans2quat(T, &q);
 	printQuat(q);
-	printf("tX: %f tY: %f tZ: %f\n", , translation[0], translation[1], translation[2]);
+	printf("tX: %f tY: %f tZ: %f\n", translation[0], translation[1], translation[2]);
 }
 #endif
 

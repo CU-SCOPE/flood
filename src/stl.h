@@ -7,7 +7,7 @@ extern "C" {
 
 #include <stdint.h>
 
-#define STL_FILE_NAME    "models/test.stl"
+#define STL_FILE_NAME    "models/testing.stl"
 
 typedef struct point{
 	float x;
