@@ -62,7 +62,7 @@ void FLOOD::calcPose() {
 			tm += (double) (end-start) / CLOCKS_PER_SEC * 1000.0;
 			num++;
 			// Restart if error is drifting off too much; tune threshold value here
-			if(error > 0.02)
+			if(error > 0.1)
 				finding = true;
 		}
 		// If pose is unknown
@@ -87,6 +87,7 @@ void FLOOD::calcPose() {
 			error = best;
 			// If it didn't converge send error
 			if(error > THRESH) {
+				printf("%f\n", error);
 				read = true; // Tell frame reader to copy in next frame
 				printf("DID NOT CONVERGE!!!\n");
 				continue;
@@ -131,7 +132,7 @@ void FLOOD::getFrame() {
 	o3d3xx::FrameGrabber::Ptr fg = std::make_shared<o3d3xx::FrameGrabber>(cam);
 	o3d3xx::ImageBuffer::Ptr img = std::make_shared<o3d3xx::ImageBuffer>();
 	int fileNum = 1;
-	float t[3], dims[3] = {0.15, 0.15, 0.15};
+	float t[3], dims[3] = {0.4, 0.5, 0.5};
 	t[0] = -translation[0]; t[1] = -translation[1]; t[2] = -translation[2];
 	std::vector<point4D> v;
 	while(fileNum <= NUM_FILES) {
