@@ -2,7 +2,7 @@
 #include <cstdlib>
 #include <ctime>
 #include "flood.h"
-// #include "frames.h"
+#include "frames.h"
 
 FLOOD::FLOOD() {
 	numFaces = loadSTL(&faces);
@@ -126,31 +126,33 @@ void FLOOD::initializePose(quat qInit, float t[4], float Temp[4][4]) {
 }
 
 void FLOOD::getFrame() {
-	o3d3xx::Logging::Init();
-	o3d3xx::Camera::Ptr cam = std::make_shared<o3d3xx::Camera>();
-	// Start framegrabber
-	o3d3xx::FrameGrabber::Ptr fg = std::make_shared<o3d3xx::FrameGrabber>(cam);
-	o3d3xx::ImageBuffer::Ptr img = std::make_shared<o3d3xx::ImageBuffer>();
-	int fileNum = 1;
-	float t[3], dims[3] = {0.4, 0.5, 0.5};
-	t[0] = -translation[0]; t[1] = -translation[1]; t[2] = -translation[2];
-	std::vector<point4D> v;
+	std::string dir = FRAME_DIRECTORIES, filename, prefix, num, sufix;
+	printf("%s\n", dir.c_str());
+	prefix = "test";
+	sufix = "_noisy00000.pcd";
+	unsigned int fileNum = 1;
+	FILE *f;
 	while(fileNum <= NUM_FILES) {
-		if (! fg->WaitForFrame(img.get(), 1000)) {
-			std::cerr << "Timeout waiting for camera!" << std::endl;
-			continue;
-		}
-		v = img->XYZImage(t, dims);
-		printf("%d\n", fileNum);
-		while(!read) {std::this_thread::yield();} // Wait for current frame to be read
-		numPts = v.size();
-		std::copy(v.begin(), v.end(), scan); // Copy new frame to image buffer
+		while(!read) {std::this_thread::yield();}
+		num = std::to_string(fileNum);
+		filename = dir + prefix + num + sufix;
+		f = std::fopen(filename.c_str(),"r");
+		printf("%s\n", filename.c_str());
+		numPts = readFrame(scan, f);
+		std::fclose(f);
 		++fileNum;
-		t[0] = -translation[0]; t[1] = -translation[1]; t[2] = -translation[2];
 		read = false;
 	}
 }
 
-void FLOOD::getPosition(float position) {
-	translation[0] = -position; translation[1] = 0; translation[2] = 0; translation[3] = 1;
+void FLOOD::getPosition(std::string dir) {
+	unsigned int vals;
+	std::string filename = dir + "position.txt";
+	FILE *f = std::fopen(filename.c_str(), "r");
+	vals = fscanf(f,"%f  %f  %f", &translation[0], &translation[1], &translation[2]);
+	translation[0] = -translation[0]; translation[1] = -translation[1];
+	translation[2] = 10 - translation[2];
+	translation[3] = 1;
+	printf("%f %f %f\n", translation[0], translation[1], translation[2]);
+	std::fclose(f);
 }
