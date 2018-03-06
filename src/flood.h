@@ -20,7 +20,7 @@
 #define NUM_FILES			100
 #endif
 #define FRAME_DIRECTORIES	"test/"
-#define THRESH				0.04
+#define THRESH				0.03
 
 class FLOOD {
 public:
@@ -31,7 +31,7 @@ public:
 private:
 	void calcPose();
 	void getFrame();
-	void getPosition(std::string dir);
+	void getPosition(FILE *f);
 	node *root;
 	face *faces;
 	point4D scan[MAX_POINTS];

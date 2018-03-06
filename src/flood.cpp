@@ -38,7 +38,9 @@ void FLOOD::calcPose() {
 	float error, RT[3][3], t[3];
 	double tm = 0, acq_time;
 	// Read all trajectories being tested
-    std::string dir = FRAME_DIRECTORIES, pos, rot; 
+    std::string dir = FRAME_DIRECTORIES, pos, rot;
+    std::string filename = dir + "position.txt";
+	FILE *f = std::fopen(filename.c_str(), "r"); 
 #if TO_FILE
     // Output results
     pos = dir + "position_act.txt";
@@ -74,7 +76,8 @@ void FLOOD::calcPose() {
 			srand(time(NULL));
 			// Get current frame
 			looking = clock();
-			for(j=0; j<10; j++) {
+			getPosition(f);
+			for(j=0; j<20; j++) {
 				memcpy(initState, scan, numPts*sizeof(point4D));
 				current.w = ((double) rand() / (RAND_MAX)); current.x = ((double) rand() / (RAND_MAX));
 				current.y = ((double) rand() / (RAND_MAX)); current.z = ((double) rand() / (RAND_MAX));
@@ -89,7 +92,7 @@ void FLOOD::calcPose() {
 			error = best;
 			// If it didn't converge send error
 			if(error > THRESH) {
-				printf("%f\n", error);
+				printf("error: %f\n", error);
 				read = true; // Tell frame reader to copy in next frame
 				printf("DID NOT CONVERGE!!!\n");
 				continue;
@@ -98,6 +101,12 @@ void FLOOD::calcPose() {
 			acq_time = (double) (found-looking) / CLOCKS_PER_SEC;
 			finding = false;
 		}
+		// Rotate position vector
+		RT[0][0] = T[0][0]; RT[0][1] = T[1][0]; RT[0][2] = T[2][0];
+		RT[1][0] = T[0][1]; RT[1][1] = T[1][1]; RT[1][2] = T[2][1];
+		RT[2][0] = T[0][2]; RT[2][1] = T[1][2]; RT[2][2] = T[2][2];
+		t[0] = T[0][3]; t[1] = T[1][3]; t[2] = T[2][3];
+		matMulVec3D(RT, t, translation);
 		// Print results
 #if TO_FILE
 		printf("%f\n", error);
@@ -106,18 +115,13 @@ void FLOOD::calcPose() {
 		printf("%f\n", error);
 		printTrans(T, translation);
 #endif
-		// Rotate position vector
-		RT[0][0] = T[0][0]; RT[0][1] = T[1][0]; RT[0][2] = T[2][0];
-		RT[1][0] = T[0][1]; RT[1][1] = T[1][1]; RT[1][2] = T[2][1];
-		RT[2][0] = T[0][2]; RT[2][1] = T[1][2]; RT[2][2] = T[2][2];
-		t[0] = T[0][3]; t[1] = T[1][3]; t[2] = T[2][3];
-		matMulVec3D(RT, t, translation);
 		read = true; // Tell frame reader to copy in next frame
 	}
 #if TO_FILE
 	std::fclose(fpos);
 	std::fclose(frot);
 #endif
+	std::fclose(f);
 	tm /= num;
 	printf("Time to acquire: %fs\n", acq_time);
 	printf("Average time: %fms\n", tm);
@@ -136,7 +140,6 @@ void FLOOD::getFrame() {
 	FILE *f;
 	point4D temp[MAX_POINTS];
 	int points;
-	getPosition(dir);
 	while(fileNum <= NUM_FILES) {
 		num = std::to_string(fileNum);
 		filename = dir + prefix + num + sufix;
@@ -152,14 +155,11 @@ void FLOOD::getFrame() {
 	}
 }
 
-void FLOOD::getPosition(std::string dir) {
+void FLOOD::getPosition(FILE *f) {
 	unsigned int vals;
-	std::string filename = dir + "position.txt";
-	FILE *f = std::fopen(filename.c_str(), "r");
 	vals = fscanf(f,"%f  %f  %f", &translation[0], &translation[1], &translation[2]);
 	translation[0] = -translation[0]; translation[1] = -translation[1];
 	translation[2] = 10 - translation[2];
 	translation[3] = 1;
 	printf("%f %f %f\n", translation[0], translation[1], translation[2]);
-	std::fclose(f);
 }
