@@ -52,44 +52,41 @@ void FLOOD::calcPose() {
     // Analyze trajectory
 	for(i=1; i<=NUM_FILES; i++) {
 		while(read) {std::this_thread::yield();} // Wait for new frame
-		// If the pose is known
 		if(!finding) {
-			// Run ICP
 			start = clock();
-			// Get current frame
 			error = icp(scan, root, T, numPts, MAX_ITERATIONS_KNOWN);
 			end = clock();
 			tm += (double) (end-start) / CLOCKS_PER_SEC * 1000.0;
-			num++;
-			// Restart if error is drifting off too much; tune threshold value here
-			if(error > 0.1)
-				finding = true;
 		}
-		// If pose is unknown
 		else {
-			point4D initState[numPts];
-			float Temp[4][4] = {0}, best = 100;
-			srand(time(NULL));
-			// Get current frame
+			current = q;
 			looking = clock();
-			for(j=0; j<10; j++) {
-				memcpy(initState, scan, numPts*sizeof(point4D));
-				current.w = ((double) rand() / (RAND_MAX)); current.x = ((double) rand() / (RAND_MAX));
-				current.y = ((double) rand() / (RAND_MAX)); current.z = ((double) rand() / (RAND_MAX));
-				initializePose(current, translation, Temp);
-				// First test
-				error = icp(initState, root, Temp, numPts, MAX_ITERATIONS_FIND);
-				if(error < best) {
-					best = error;
-					memcpy(T, Temp, 16*sizeof(float));
+			point4D initState[numPts];
+			memcpy(initState, scan, numPts*sizeof(point4D));
+			initializePose(current, translation, T);
+			error = icp(initState, root, T, numPts, MAX_ITERATIONS_FIND);
+			for(int j=0; j<7; j++) {
+				for(int k=0; k<7; k++) {
+					for(int l=0; l<7; l++) {
+						if(error < THRESH) {
+							k = 7; j = 7;
+							break;
+						}
+						memcpy(initState, scan, numPts*sizeof(point4D));
+						temp = multQuat(rotz, current);
+						current = temp;
+						initializePose(current, translation, T);
+						error = icp(initState, root, T, numPts, MAX_ITERATIONS_FIND);
+					}
+					temp = multQuat(roty, current);
+					current = temp;
 				}
-			}	
-			error = best;
-			// If it didn't converge send error
+				temp = multQuat(rotx, current);
+				current = temp;
+			}
 			if(error > THRESH) {
-				printf("%f\n", error);
-				read = true; // Tell frame reader to copy in next frame
 				printf("DID NOT CONVERGE!!!\n");
+				read = true;
 				continue;
 			}
 			found = clock();
@@ -131,7 +128,7 @@ void FLOOD::getFrame() {
 	// Start framegrabber
 	o3d3xx::FrameGrabber::Ptr fg = std::make_shared<o3d3xx::FrameGrabber>(cam);
 	o3d3xx::ImageBuffer::Ptr img = std::make_shared<o3d3xx::ImageBuffer>();
-	int fileNum = 1;
+	int fileNum = 1, val = 0;
 	float t[3], dims[3] = {0.4, 0.5, 0.5};
 	t[0] = -translation[0]; t[1] = -translation[1]; t[2] = -translation[2];
 	std::vector<point4D> v;
@@ -144,6 +141,8 @@ void FLOOD::getFrame() {
 		printf("%d\n", fileNum);
 		while(!read) {std::this_thread::yield();} // Wait for current frame to be read
 		numPts = v.size();
+		val = numPts;
+		printf("%d\n", val);
 		std::copy(v.begin(), v.end(), scan); // Copy new frame to image buffer
 		++fileNum;
 		t[0] = -translation[0]; t[1] = -translation[1]; t[2] = -translation[2];

@@ -332,13 +332,14 @@ o3d3xx::ImageBuffer::Organize()
               pt.point[1] = y_ / 1000.0f;
               pt.point[2] = z_ / 1000.0f;
               pt.point[3] = 1.0f;
-              if(pt.point[0] > this->position[0] + this->dims[0] || pt.point[0] < this->position[0] - this->dims[0])
+              if(pt.point[0] > 4.6 + 0.5 || pt.point[0] < 4.7 - 0.5)
                 continue;
-              if(pt.point[1] > this->position[1] + this->dims[1] || pt.point[1] < this->position[1] - this->dims[1])
+              if(pt.point[1] > 0 + 0.5 || pt.point[1] < 0 - 0.5)
                 continue;
-              if(pt.point[2] > this->position[2] + this->dims[2] || pt.point[2] < this->position[2] - this->dims[2])
+              if(pt.point[2] > 0 + 0.5 || pt.point[2] < 0 - 0.5)
                 continue;
               fprintf(f, "%d  %d  %d\n", x_, y_, z_);
+              
             }
           else
             {

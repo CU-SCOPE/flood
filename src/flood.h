@@ -20,7 +20,7 @@
 #define NUM_FILES			100
 #endif
 #define FRAME_DIRECTORIES	"./"
-#define THRESH				0.06
+#define THRESH				0.08
 
 class FLOOD {
 public:
