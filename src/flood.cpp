@@ -131,13 +131,14 @@ void FLOOD::getFrame() {
 	int fileNum = 1, val = 0;
 	float t[3], dims[3] = {0.4, 0.5, 0.5};
 	t[0] = -translation[0]; t[1] = -translation[1]; t[2] = -translation[2];
+	img->setPosition(t, dims);
 	std::vector<point4D> v;
 	while(fileNum <= NUM_FILES) {
 		if (! fg->WaitForFrame(img.get(), 1000)) {
 			std::cerr << "Timeout waiting for camera!" << std::endl;
 			continue;
 		}
-		v = img->XYZImage(t, dims);
+		v = img->XYZImage();
 		printf("%d\n", fileNum);
 		while(!read) {std::this_thread::yield();} // Wait for current frame to be read
 		numPts = v.size();
@@ -146,6 +147,7 @@ void FLOOD::getFrame() {
 		std::copy(v.begin(), v.end(), scan); // Copy new frame to image buffer
 		++fileNum;
 		t[0] = -translation[0]; t[1] = -translation[1]; t[2] = -translation[2];
+		img->setPosition(t, dims);
 		read = false;
 	}
 }

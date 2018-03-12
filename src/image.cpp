@@ -97,10 +97,8 @@ o3d3xx::ImageBuffer::ConfidenceImage()
 }*/
 
 std::vector<point4D> 
-o3d3xx::ImageBuffer::XYZImage(float t[3], float d[3])
+o3d3xx::ImageBuffer::XYZImage()
 {
-  this->position[0] = t[0]; this->position[1] = t[1]; this->position[2] = t[2];
-  this->dims[0] = d[0]; this->dims[1] = d[1]; this->dims[2] = d[2];
   this->Organize();
   return this->xyz_image_;
 }
@@ -138,6 +136,11 @@ o3d3xx::ImageBuffer::TimeStamp()
 {
   this->Organize();
   return this->time_stamp_;
+}
+
+void o3d3xx::ImageBuffer::setPosition(float position[3], float dims[3]) {
+  this->position[0] = position[0]; this->position[1] = position[1]; this->position[2] = position[2];
+  this->dims[0] = dims[0]; this->dims[1] = dims[1]; this->dims[2] = dims[2];
 }
 
 
@@ -332,11 +335,11 @@ o3d3xx::ImageBuffer::Organize()
               pt.point[1] = y_ / 1000.0f;
               pt.point[2] = z_ / 1000.0f;
               pt.point[3] = 1.0f;
-              if(pt.point[0] > 4.6 + 0.5 || pt.point[0] < 4.7 - 0.5)
+              if(pt.point[0] > this->position[0] + this->dims[0] || pt.point[0] < this->position[0] - 0.1)
                 continue;
-              if(pt.point[1] > 0 + 0.5 || pt.point[1] < 0 - 0.5)
+              if(pt.point[1] > this->position[1] + this->dims[1] || pt.point[1] < this->position[1] - this->dims[1])
                 continue;
-              if(pt.point[2] > 0 + 0.5 || pt.point[2] < 0 - 0.5)
+              if(pt.point[2] > this->position[2] + this->dims[2] || pt.point[2] < this->position[2] - this->dims[2])
                 continue;
               fprintf(f, "%d  %d  %d\n", x_, y_, z_);
               
