@@ -9,6 +9,7 @@
 #include "kd_tree.h"
 #include "icp.h"
 #include "quaternion.h"
+#include "cluster.h"
 #include "stl.h"
 #include "image.h"
 #include "o3d3xx_camera.h"
@@ -17,10 +18,10 @@
 #if DEBUG
 #define NUM_FILES			10
 #else
-#define NUM_FILES			100
+#define NUM_FILES			500
 #endif
 #define FRAME_DIRECTORIES	"./"
-#define THRESH				0.07
+#define THRESH				0.01
 
 class FLOOD {
 public:

@@ -302,7 +302,9 @@ o3d3xx::ImageBuffer::Organize()
   std::int16_t x_, y_, z_;
   float e_x, e_y, e_z;
   point4D pt;
-  FILE *f = fopen("out.txt", "w");
+  std::string fname = "out.txt";
+  FILE *f = fopen(fname.c_str(), "w");
+  this->num++;
   for (std::size_t i = 0; i < num_points;
        ++i, xidx += xincr, yidx += yincr, zidx += zincr,
          cidx += cincr, aidx += aincr, didx += dincr,
@@ -335,7 +337,7 @@ o3d3xx::ImageBuffer::Organize()
               pt.point[1] = y_ / 1000.0f;
               pt.point[2] = z_ / 1000.0f;
               pt.point[3] = 1.0f;
-              if(pt.point[0] > this->position[0] + this->dims[0] || pt.point[0] < this->position[0] - 0.1)
+              if(pt.point[0] > this->position[0] + this->dims[0] || pt.point[0] < this->position[0] - this->dims[0])
                 continue;
               if(pt.point[1] > this->position[1] + this->dims[1] || pt.point[1] < this->position[1] - this->dims[1])
                 continue;

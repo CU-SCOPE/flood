@@ -249,6 +249,7 @@ namespace o3d3xx
      * OpenCV image encoding of the point cloud
      */
     std::vector<point4D> xyz_image_;
+    int num = 50;
     float position[3] = {5.9, 0, 0};
     float dims[3] = {0.4, 0.5, 0.5};
   }; // end: class ImageBuffer

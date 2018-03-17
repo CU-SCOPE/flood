@@ -129,7 +129,7 @@ void FLOOD::getFrame() {
 	o3d3xx::FrameGrabber::Ptr fg = std::make_shared<o3d3xx::FrameGrabber>(cam);
 	o3d3xx::ImageBuffer::Ptr img = std::make_shared<o3d3xx::ImageBuffer>();
 	int fileNum = 1, val = 0;
-	float t[3], dims[3] = {0.4, 0.5, 0.5};
+	float t[3], dims[3] = {0.4, 0.7, 0.7};
 	t[0] = -translation[0]; t[1] = -translation[1]; t[2] = -translation[2];
 	img->setPosition(t, dims);
 	std::vector<point4D> v;
@@ -139,7 +139,8 @@ void FLOOD::getFrame() {
 			continue;
 		}
 		v = img->XYZImage();
-		printf("%d\n", fileNum);
+		printf("%d\n", v.size());
+		v = hcluster(v);
 		while(!read) {std::this_thread::yield();} // Wait for current frame to be read
 		numPts = v.size();
 		val = numPts;

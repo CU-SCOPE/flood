@@ -224,7 +224,7 @@ void kd_search(float *query, float *closestPt, float *dist, node *root) {
 			}
 		}
 	} while(current->parent);
-	*dist = sqrt((*dist));
+	//*dist = sqrt((*dist));
 }
 
 float runSearch(point4D *points, point4D *closestPts, float *minDists, node *root, unsigned int numPts) {
