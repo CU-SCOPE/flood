@@ -4,31 +4,34 @@
 std::vector<point4D> hcluster(std::vector<point4D> v) {
 	int i, j, ind1, ind2, elems = v.size(), max_cluster = 0;
 	int inds[elems];
-	float mindist = 100, mins[elems] = {100};
-	std::vector<std::vector<float> > dists(elems);
+	float mindist = 100;
+	std::vector<std::vector<float> > dists(elems, std::vector<float>(elems));
 	std::vector<std::vector<point4D> > cluster_inds(elems);
+	std::vector<float> mins(elems, 100.0f);
 	std::vector<int> cluster(elems);
 	for(i = 0; i < elems; i++) {
-		dists[i] = std::vector<float>(elems);
-
 		cluster_inds[i].push_back(v[i]);
 		cluster[i] = i;
 		mindist = 100;
-		for(j = 0; j< elems; j++) {
+		for(j = i; j< elems; j++) {
 			if(i == j) {
 				dists[i][j] = 100;
 				continue;
 			}
 			dists[i][j] = calc_dist(v[i], v[j]);
-			if(dists[i][j] < mindist) {
-				mindist = dists[i][j];
+			dists[j][i] = dists[i][j];
+			if(dists[i][j] < mins[i]) {
+				// mindist = dists[i][j];
 				inds[i] = j;
 				mins[i] = dists[i][j];
 			}
+			if(dists[j][i] < mins[j]) {
+				mins[j] = dists[j][i];
+				inds[j] = i;
+			}
 		}
 	}
-	int ID;
-
+	std::vector<point4D> out;
 	do {
 		mindist = 100;
 		for(i = 0; i < elems; i++) {
@@ -39,6 +42,10 @@ std::vector<point4D> hcluster(std::vector<point4D> v) {
 			}
 		}
 		cluster_inds[ind1].insert( cluster_inds[ind1].end(), cluster_inds[ind2].begin(), cluster_inds[ind2].end() );
+		if(cluster_inds[ind1].size() > max_cluster) {
+			max_cluster = cluster_inds[ind1].size();
+			out = cluster_inds[ind1];
+		}
 		mins[ind1] = 100;
 		mins[ind2] = 100;
 		// Take min from matrix
@@ -57,13 +64,6 @@ std::vector<point4D> hcluster(std::vector<point4D> v) {
 			}
 		}
 	} while(mindist < CLUSTER_THRESH);
-	std::vector<point4D> out;
-	for(i = 0; i < elems; i++) {
-		if(cluster_inds[i].size() > max_cluster) {
-			max_cluster = cluster_inds[i].size();
-			out = cluster_inds[i];
-		}
-	}
 	return out;
 }
 

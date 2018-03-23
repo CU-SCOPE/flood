@@ -24,8 +24,8 @@ FLOOD::~FLOOD() {
 };
 
 void FLOOD::run() {
-	std::thread frames (&FLOOD::getFrame, this); // Thread to read frames in
-	std::thread icp (&FLOOD::calcPose, this); // Thread to calculate POSE
+	std::thread frames(&FLOOD::getFrame, this); // Thread to read frames in
+	std::thread icp(&FLOOD::calcPose, this); // Thread to calculate POSE
 	frames.join(); // Cleanup threads
 	icp.join();
 }
@@ -41,8 +41,8 @@ void FLOOD::calcPose() {
     std::string dir = FRAME_DIRECTORIES, pos, rot; 
 #if TO_FILE
     // Output results
-    pos = dir + "position_act.txt";
-    rot = dir + "rotation_act.txt";
+    pos = dir + "position_small.txt";
+    rot = dir + "rotation_small.txt";
     FILE *fpos = std::fopen(pos.c_str(), "w");
     FILE *frot = std::fopen(rot.c_str(), "w");
 #endif
@@ -62,27 +62,20 @@ void FLOOD::calcPose() {
 			current = q;
 			looking = clock();
 			point4D initState[numPts];
+			float mindist = 100, Transf[4][4] = {{0}};
 			memcpy(initState, scan, numPts*sizeof(point4D));
-			initializePose(current, translation, T);
-			error = icp(initState, root, T, numPts, MAX_ITERATIONS_FIND);
-			for(int j=0; j<7; j++) {
-				for(int k=0; k<7; k++) {
-					for(int l=0; l<7; l++) {
-						if(error < THRESH) {
-							k = 7; j = 7;
-							break;
-						}
-						memcpy(initState, scan, numPts*sizeof(point4D));
-						temp = multQuat(rotz, current);
-						current = temp;
-						initializePose(current, translation, T);
-						error = icp(initState, root, T, numPts, MAX_ITERATIONS_FIND);
-					}
-					temp = multQuat(roty, current);
-					current = temp;
+			initializePose(current, translation, Transf);
+			error = icp(initState, root, Transf, numPts, MAX_ITERATIONS_FIND);
+			for(int j=0; j<6; j++) {
+				if(error < mindist) {
+					mindist = error;
+					memcpy(T, Transf, 16*sizeof(float));
 				}
+				memcpy(initState, scan, numPts*sizeof(point4D));
 				temp = multQuat(rotx, current);
 				current = temp;
+				initializePose(current, translation, Transf);
+				error = icp(initState, root, Transf, numPts, MAX_ITERATIONS_FIND);
 			}
 			if(error > THRESH) {
 				printf("DID NOT CONVERGE!!!\n");
@@ -129,7 +122,7 @@ void FLOOD::getFrame() {
 	o3d3xx::FrameGrabber::Ptr fg = std::make_shared<o3d3xx::FrameGrabber>(cam);
 	o3d3xx::ImageBuffer::Ptr img = std::make_shared<o3d3xx::ImageBuffer>();
 	int fileNum = 1, val = 0;
-	float t[3], dims[3] = {0.4, 0.7, 0.7};
+	float t[3], dims[3] = {0.25, 0.7, 0.7};
 	t[0] = -translation[0]; t[1] = -translation[1]; t[2] = -translation[2];
 	img->setPosition(t, dims);
 	std::vector<point4D> v;
@@ -140,7 +133,7 @@ void FLOOD::getFrame() {
 		}
 		v = img->XYZImage();
 		printf("%d\n", v.size());
-		v = hcluster(v);
+		// v = hcluster(v);
 		while(!read) {std::this_thread::yield();} // Wait for current frame to be read
 		numPts = v.size();
 		val = numPts;

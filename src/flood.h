@@ -18,10 +18,10 @@
 #if DEBUG
 #define NUM_FILES			10
 #else
-#define NUM_FILES			500
+#define NUM_FILES			10
 #endif
 #define FRAME_DIRECTORIES	"./"
-#define THRESH				0.01
+#define THRESH				0.013
 
 class FLOOD {
 public:
