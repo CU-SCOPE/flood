@@ -1,5 +1,0 @@
-/home/zach/Documents/senior_projects/flood/opengl/build/CMakeFiles/edit_cache.dir
-/home/zach/Documents/senior_projects/flood/opengl/build/CMakeFiles/render.dir
-/home/zach/Documents/senior_projects/flood/opengl/build/CMakeFiles/rebuild_cache.dir
-/home/zach/Documents/senior_projects/flood/opengl/build/CMakeFiles/STB_IMAGE.dir
-/home/zach/Documents/senior_projects/flood/opengl/build/CMakeFiles/GLAD.dir
