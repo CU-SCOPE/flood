@@ -5,10 +5,11 @@
 #include <stdbool.h>
 #include <string>
 #include <thread>
-#include <atomic>
+#include <semaphore.h>
 #include "kd_tree.h"
 #include "icp.h"
 #include "quaternion.h"
+#include "cluster.h"
 #include "stl.h"
 #include "image.h"
 #include "o3d3xx_camera.h"
@@ -41,7 +42,8 @@ private:
 	std::atomic<int> numPts;
 	unsigned int numFaces;
 	bool finding;
-	std::atomic<bool> read;
+	pthread_mutex_t lock;
+	sem_t frame1;
 };
 
 #endif

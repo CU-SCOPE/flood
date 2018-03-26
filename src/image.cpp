@@ -97,10 +97,8 @@ o3d3xx::ImageBuffer::ConfidenceImage()
 }*/
 
 std::vector<point4D> 
-o3d3xx::ImageBuffer::XYZImage(float t[3], float d[3])
+o3d3xx::ImageBuffer::XYZImage()
 {
-  this->position[0] = t[0]; this->position[1] = t[1]; this->position[2] = t[2];
-  this->dims[0] = d[0]; this->dims[1] = d[1]; this->dims[2] = d[2];
   this->Organize();
   return this->xyz_image_;
 }
@@ -138,6 +136,11 @@ o3d3xx::ImageBuffer::TimeStamp()
 {
   this->Organize();
   return this->time_stamp_;
+}
+
+void o3d3xx::ImageBuffer::setPosition(float position[3], float dims[3]) {
+  this->position[0] = position[0]; this->position[1] = position[1]; this->position[2] = position[2];
+  this->dims[0] = dims[0]; this->dims[1] = dims[1]; this->dims[2] = dims[2];
 }
 
 
@@ -299,7 +302,9 @@ o3d3xx::ImageBuffer::Organize()
   std::int16_t x_, y_, z_;
   float e_x, e_y, e_z;
   point4D pt;
-  FILE *f = fopen("out.txt", "w");
+  std::string fname = "out.txt";
+  FILE *f = fopen(fname.c_str(), "w");
+  this->num++;
   for (std::size_t i = 0; i < num_points;
        ++i, xidx += xincr, yidx += yincr, zidx += zincr,
          cidx += cincr, aidx += aincr, didx += dincr,
@@ -339,6 +344,7 @@ o3d3xx::ImageBuffer::Organize()
               if(pt.point[2] > this->position[2] + this->dims[2] || pt.point[2] < this->position[2] - this->dims[2])
                 continue;
               fprintf(f, "%d  %d  %d\n", x_, y_, z_);
+              
             }
           else
             {

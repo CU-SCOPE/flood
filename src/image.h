@@ -132,7 +132,7 @@ namespace o3d3xx
      * the data types are int16_t as opposed to float. However, the coord frame
      * for this point cloud data is consistent with the PCL point cloud.
      */
-    std::vector<point4D> XYZImage(float position[3], float dims[3]);
+    std::vector<point4D> XYZImage();
 
     /**
      * Returns the shared pointer to the wrapped point cloud
@@ -185,6 +185,8 @@ namespace o3d3xx
      * buffer.
      */
     virtual void Organize();
+
+    void setPosition(float position[3], float dims[3]);
 
   private:
     /**
@@ -247,8 +249,9 @@ namespace o3d3xx
      * OpenCV image encoding of the point cloud
      */
     std::vector<point4D> xyz_image_;
-    float position[3];
-    float dims[3];
+    int num = 50;
+    float position[3] = {5.9, 0, 0};
+    float dims[3] = {0.4, 0.5, 0.5};
   }; // end: class ImageBuffer
 
 } // end: namespace o3d3xx

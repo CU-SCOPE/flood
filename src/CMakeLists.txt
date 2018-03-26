@@ -1,4 +1,4 @@
-add_library(src kd_tree.c stl.c icp.c flood.cpp image.cpp)
+add_library(src kd_tree.c stl.c icp.c flood.cpp image.cpp cluster.cpp)
 target_link_libraries (src ${CMAKE_THREAD_LIBS_INIT})
 find_package(Threads)
 target_link_libraries(src m)
