@@ -35,7 +35,7 @@ Render::Render(float *sa, std::atomic<bool> *d, pthread_mutex_t *lock) {
 int Render::run()
 {
     //Define euler strings
-    std::string yaw, pitch, roll;
+    std::string yaw, pitch, roll, x, y, z;
     // glfw: initialize and configure
     // ------------------------------
     glfwInit();
@@ -136,9 +136,16 @@ int Render::run()
         pitch = "Pitch: " + std::to_string(euler.z*180/PI);
         roll = "Roll: " + std::to_string(euler.x*180/PI);
 
+        x = "X: " + std::to_string(translation.x);
+        y = "Y: " + std::to_string(translation.y);
+        z = "Z: " + std::to_string(translation.z);
+
         text.RenderText(textshader, yaw.c_str(), 25.0f, 75.0f, 0.5f, glm::vec3(0.5, 0.8f, 0.2f));
         text.RenderText(textshader, pitch.c_str(), 25.0f, 50.0f, 0.5f, glm::vec3(0.5, 0.8f, 0.2f));
         text.RenderText(textshader, roll.c_str(), 25.0f, 25.0f, 0.5f, glm::vec3(0.5, 0.8f, 0.2f));
+        text.RenderText(textshader, x.c_str(), 540.0f, 75.0f, 0.5f, glm::vec3(0.5, 0.8f, 0.2f));
+        text.RenderText(textshader, y.c_str(), 540.0f, 50.0f, 0.5f, glm::vec3(0.5, 0.8f, 0.2f));
+        text.RenderText(textshader, z.c_str(), 540.0f, 25.0f, 0.5f, glm::vec3(0.5, 0.8f, 0.2f));
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
         glfwSwapBuffers(window);

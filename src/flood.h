@@ -19,7 +19,7 @@
 #if DEBUG
 #define NUM_FILES			10
 #else
-#define NUM_FILES			100
+#define NUM_FILES			179
 #endif
 #define FRAME_DIRECTORIES	"test/"
 #define THRESH				0.01
