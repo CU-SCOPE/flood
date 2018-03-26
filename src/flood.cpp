@@ -3,18 +3,21 @@
 #include <ctime>
 #include "flood.h"
 #include "frames.h"
+#include "render.h"
 
 FLOOD::FLOOD() {
 	numFaces = loadSTL(&faces);
 	root = initTree(faces, numFaces);
 	// POSE is unkown at start
 	finding = true;
+	done = false;
 	// Define quaternion for 45 degree rotation about each axis
 	rotx.w = 0.924; roty.w = 0.924; rotz.w = 0.924;
 	rotx.x = 0.383; roty.x = 0.0;   rotz.x = 0.0;
 	rotx.y = 0.0;   roty.y = 0.383; rotz.y = 0.0;
 	rotx.z = 0.0;   roty.z = 0.0;   rotz.z = 0.383;
 	pthread_mutex_init(&lock, NULL);
+	pthread_mutex_init(&sa_lock, NULL);
 	sem_init(&frame1, 0, 0);
 };
 
@@ -23,14 +26,17 @@ FLOOD::~FLOOD() {
 	freeModel(faces);
 	deleteTree(root,0);
 	pthread_mutex_destroy(&lock);
+	pthread_mutex_destroy(&sa_lock);
 	sem_destroy(&frame1);
 };
 
 void FLOOD::run() {
 	std::thread frames(&FLOOD::getFrame, this); // Thread to read frames in
 	std::thread icp(&FLOOD::calcPose, this); // Thread to calculate POSE
+	std::thread animate(&FLOOD::render, this);
 	frames.join(); // Cleanup threads
 	icp.join();
+	animate.join();
 }
 
 void FLOOD::calcPose() {
@@ -81,29 +87,29 @@ void FLOOD::calcPose() {
 				initializePose(current, translation, Transf);
 				error = icp(initState, root, Transf, numPts, MAX_ITERATIONS_FIND);
 			}
-			if(error > THRESH) {
-				printf("DID NOT CONVERGE!!!\n");
-				pthread_mutex_unlock(&lock);
-				continue;
-			}
+			// if(error > THRESH) {
+			// 	printf("DID NOT CONVERGE!!!\n");
+			// 	pthread_mutex_unlock(&lock);
+			// 	continue;
+			// }
 			found = clock();
 			acq_time = (double) (found-looking) / CLOCKS_PER_SEC;
 			finding = false;
 		}
-		// Print results
-#if TO_FILE
-		printf("%f\n", error);
-		printTrans(T, translation, fpos, frot);
-#else
-		printf("%f\n", error);
-		printTrans(T, translation);
-#endif
 		// Rotate position vector
 		RT[0][0] = T[0][0]; RT[0][1] = T[1][0]; RT[0][2] = T[2][0];
 		RT[1][0] = T[0][1]; RT[1][1] = T[1][1]; RT[1][2] = T[2][1];
 		RT[2][0] = T[0][2]; RT[2][1] = T[1][2]; RT[2][2] = T[2][2];
 		t[0] = T[0][3]; t[1] = T[1][3]; t[2] = T[2][3];
 		matMulVec3D(RT, t, translation);
+		// Print results
+#if TO_FILE
+		printf("%f\n", error);
+		printTrans(T, translation, fpos, frot);
+#else
+		printf("%f\n", error);
+		printTrans(T, translation, NULL, NULL);
+#endif
 		pthread_mutex_unlock(&lock);
 	}
 #if TO_FILE
@@ -152,4 +158,37 @@ void FLOOD::getPosition(FILE *f) {
 	translation[2] = 10 - translation[2];
 	translation[3] = 1;
 	printf("%f %f %f\n", translation[0], translation[1], translation[2]);
+}
+
+
+void FLOOD::printQuat(quat qt, FILE *f) {
+	if(f) {
+		fprintf(f, "%f  %f  %f  %f\n", qt.w, qt.x, qt.y, qt.z);
+	} else {
+		printf("%f  %f  %f  %f\n", qt.w, qt.x, qt.y, qt.z);
+	}
+}
+
+void FLOOD::printTrans(float T[4][4], float translation[3], FILE *pos, FILE *rot) {
+	quat qt;
+	trans2quat(T, &qt);
+	pthread_mutex_lock(&sa_lock);
+	shared_array[0] = qt.w; shared_array[1] = qt.x;
+	shared_array[2] = qt.y; shared_array[3] = qt.z;
+	shared_array[4] = translation[2];
+	shared_array[5] = translation[0];
+	shared_array[6] = translation[1];
+	done = true;
+	pthread_mutex_unlock(&sa_lock);
+	printQuat(qt, rot);
+	if(pos) {
+		fprintf(pos, "%f  %f  %f\n", translation[0], translation[1], translation[2]);
+	} else {
+		printf("%f  %f  %f\n", translation[0], translation[1], translation[2]);
+	}
+}
+
+void FLOOD::render() {
+	Render scene(shared_array, &done, &sa_lock);
+	scene.run();
 }

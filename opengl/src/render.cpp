@@ -25,6 +25,12 @@ bool firstMouse = true;
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
+Render::Render(float *sa, std::atomic<bool> *d, pthread_mutex_t *lock) {
+    shared_array = sa;
+    done = d;
+    sa_lock = lock;
+}
+
 
 int Render::run()
 {
@@ -76,11 +82,12 @@ int Render::run()
 
     // load models
     // -----------
-    Model ourModel("../../../resources/objects/TargetSatelliteModel/TargetSatellite.obj");
+    Model ourModel("models/TargetSatelliteModel/TargetSatellite.obj");
     
     // draw in wireframe
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    q = glm::quat(0.707, 0, 0, -0.707);
+    glm::quat q;
+    glm::vec3 translation;
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
@@ -109,9 +116,13 @@ int Render::run()
         ourShader.setMat4("view", view);
 
         // render the loaded model
+        if(*done) {
+            pthread_mutex_lock(sa_lock);
+            q = glm::quat(shared_array[0], shared_array[1], shared_array[3], shared_array[2]);
+            translation = glm::vec3(shared_array[4], shared_array[5], shared_array[6]);
+            pthread_mutex_unlock(sa_lock);
+        }
         glm::mat4 model, rotation, trans;
-        glm::vec3 translation(1.0f, 0.0f, 0.0f);
-        // std::cout << translation.x << " " << translation.y << " " << translation.z << "\n";
         trans = glm::translate(trans, translation); // translate it down so it's at the center of the scene
         rotation = glm::toMat4(q);
         model = trans * rotation;

@@ -129,29 +129,7 @@ static inline void quat2trans(float T[4][4], quat q, float t[4]) {
 }
 
 
-#if TO_FILE
-static inline void printQuat(quat q, FILE *f) {
-	fprintf(f, "%f  %f  %f  %f\n", q.w, q.x, q.y, q.z);
-}
 
-static inline void printTrans(float T[4][4], float translation[3], FILE *pos, FILE *rot) {
-	quat q;
-	trans2quat(T, &q);
-	printQuat(q, rot);
-	fprintf(pos, "%f  %f  %f\n", translation[0], translation[1], translation[2]);
-}
-#else
-static inline void printQuat(quat q) {
-	printf("qW: %f qX: %f qY: %f qZ: %f\n", q.w, q.x, q.y, q.z);
-}
-
-static inline void printTrans(float T[4][4], float translation[3]) {
-	quat q;
-	trans2quat(T, &q);
-	printQuat(q);
-	printf("tX: %f tY: %f tZ: %f\n", translation[0], translation[1], translation[2]);
-}
-#endif
 
 #ifdef __cplusplus
 }

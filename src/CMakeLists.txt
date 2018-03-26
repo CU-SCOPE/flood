@@ -1,9 +1,7 @@
-add_library(src kd_tree.c stl.c icp.c flood.cpp image.cpp cluster.cpp render.cpp)
+add_library(src kd_tree.c stl.c icp.c flood.cpp image.cpp cluster.cpp)
 target_link_libraries (src ${CMAKE_THREAD_LIBS_INIT})
 find_package(Threads)
 target_link_libraries(src m)
-
-find_package(glfw3)
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)
     target_compile_definitions(src PUBLIC DEBUG=1)

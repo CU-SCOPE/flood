@@ -403,6 +403,9 @@ glfw3_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/glfw3
 //The directory containing a CMake configuration file for glm.
 glm_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/glm
 
+//Dependencies for the target
+render_LIB_DEPENDS:STATIC=general;glfw;general;dl;general;pthread;general;assimp;general;freetype;general;STB_IMAGE;general;GLAD;
+
 
 ########################
 # INTERNAL cache entries
