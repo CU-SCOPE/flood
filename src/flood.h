@@ -42,7 +42,7 @@ private:
 	std::atomic<int> numPts;
 	unsigned int numFaces;
 	bool finding;
-	std::atomic<bool> read;
+	pthread_mutex_t lock;
 };
 
 #endif

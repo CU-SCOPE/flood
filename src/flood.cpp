@@ -9,18 +9,19 @@ FLOOD::FLOOD() {
 	root = initTree(faces, numFaces);
 	// POSE is unkown at start
 	finding = true;
-	read = true;
 	// Define quaternion for 45 degree rotation about each axis
 	rotx.w = 0.924; roty.w = 0.924; rotz.w = 0.924;
 	rotx.x = 0.383; roty.x = 0.0;   rotz.x = 0.0;
 	rotx.y = 0.0;   roty.y = 0.383; rotz.y = 0.0;
 	rotx.z = 0.0;   roty.z = 0.0;   rotz.z = 0.383;
+	pthread_mutex_init(&lock, NULL);
 };
 
 FLOOD::~FLOOD() {
 	printf("Exiting\n");
 	freeModel(faces);
 	deleteTree(root,0);
+	pthread_mutex_destroy(&lock);
 };
 
 void FLOOD::run() {
@@ -51,7 +52,7 @@ void FLOOD::calcPose() {
     current = q;
     // Analyze trajectory
 	for(i=1; i<=NUM_FILES; i++) {
-		while(read) {std::this_thread::yield();} // Wait for new frame
+		pthread_mutex_lock(&lock);
 		if(!finding) {
 			start = clock();
 			error = icp(scan, root, T, numPts, MAX_ITERATIONS_KNOWN);
@@ -79,7 +80,7 @@ void FLOOD::calcPose() {
 			}
 			if(error > THRESH) {
 				printf("DID NOT CONVERGE!!!\n");
-				read = true;
+				pthread_mutex_unlock(&lock);
 				continue;
 			}
 			found = clock();
@@ -100,7 +101,7 @@ void FLOOD::calcPose() {
 		RT[2][0] = T[0][2]; RT[2][1] = T[1][2]; RT[2][2] = T[2][2];
 		t[0] = T[0][3]; t[1] = T[1][3]; t[2] = T[2][3];
 		matMulVec3D(RT, t, translation);
-		read = true; // Tell frame reader to copy in next frame
+		pthread_mutex_unlock(&lock);
 	}
 #if TO_FILE
 	std::fclose(fpos);
@@ -133,8 +134,8 @@ void FLOOD::getFrame() {
 		}
 		v = img->XYZImage();
 		printf("%d\n", v.size());
-		// v = hcluster(v);
-		while(!read) {std::this_thread::yield();} // Wait for current frame to be read
+		v = hcluster(v);
+		pthread_mutex_lock(&lock);
 		numPts = v.size();
 		val = numPts;
 		printf("%d\n", val);
@@ -142,7 +143,7 @@ void FLOOD::getFrame() {
 		++fileNum;
 		t[0] = -translation[0]; t[1] = -translation[1]; t[2] = -translation[2];
 		img->setPosition(t, dims);
-		read = false;
+		pthread_mutex_unlock(&lock);
 	}
 }
 
