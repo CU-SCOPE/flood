@@ -1,3 +1,0 @@
-/home/zach/Documents/senior_projects/flood/src/opengl/CMakeFiles/rebuild_cache.dir
-/home/zach/Documents/senior_projects/flood/src/opengl/CMakeFiles/render.dir
-/home/zach/Documents/senior_projects/flood/src/opengl/CMakeFiles/edit_cache.dir
