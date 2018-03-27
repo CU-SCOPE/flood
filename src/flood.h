@@ -30,11 +30,11 @@ public:
 	~FLOOD();
 	void run();
 	void initializePose(quat qInit, float t[4], float Temp[4][4]);
+	void getPosition(float position);
 private:
 	void calcPose();
 	void getFrame();
 	void render();
-	void getPosition(FILE *f);
 	void printQuat(quat q, FILE *f);
 	void printTrans(float T[4][4], float translation[3], FILE *pos, FILE *rot);
 	node *root;

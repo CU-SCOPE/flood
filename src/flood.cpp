@@ -69,7 +69,6 @@ void FLOOD::calcPose() {
 		}
 		else {
 			current = q;
-			getPosition(f);
 			looking = clock();
 			point4D initState[numPts];
 			float mindist = 100, Transf[4][4] = {{0}};
@@ -127,39 +126,40 @@ void FLOOD::initializePose(quat qInit, float t[4], float Temp[4][4]) {
 }
 
 void FLOOD::getFrame() {
-	std::string dir = FRAME_DIRECTORIES, filename, prefix, num, sufix;
-	printf("%s\n", dir.c_str());
-	prefix = "test";
-	sufix = "_noisy00000.pcd";
-	unsigned int fileNum = 1;
-	FILE *f;
-	point4D temp[MAX_POINTS];
-	int points;
+	o3d3xx::Logging::Init();
+	o3d3xx::Camera::Ptr cam = std::make_shared<o3d3xx::Camera>();
+	// Start framegrabber
+	o3d3xx::FrameGrabber::Ptr fg = std::make_shared<o3d3xx::FrameGrabber>(cam);
+	o3d3xx::ImageBuffer::Ptr img = std::make_shared<o3d3xx::ImageBuffer>();
+	int fileNum = 1, val = 0;
+	float t[3], dims[3] = {0.25, 0.7, 0.7};
+	t[0] = -translation[0]; t[1] = -translation[1]; t[2] = -translation[2];
+	img->setPosition(t, dims);
+	std::vector<point4D> v;
 	while(fileNum <= NUM_FILES) {
-		num = std::to_string(fileNum);
-		filename = dir + prefix + num + sufix;
-		f = std::fopen(filename.c_str(),"r");
-		printf("%s\n", filename.c_str());
-		points = readFrame(temp, f);
-		std::fclose(f);
+		if (! fg->WaitForFrame(img.get(), 1000)) {
+			std::cerr << "Timeout waiting for camera!" << std::endl;
+			continue;
+		}
+		v = img->XYZImage();
+		printf("%d\n", v.size());
+		v = hcluster(v);
 		pthread_mutex_lock(&lock);
-		memcpy(scan, temp, points*sizeof(point4D));
-		numPts = points;
+		numPts = v.size();
+		val = numPts;
+		printf("%d\n", val);
+		std::copy(v.begin(), v.end(), scan); // Copy new frame to image buffer
 		++fileNum;
+		t[0] = -translation[0]; t[1] = -translation[1]; t[2] = -translation[2];
+		img->setPosition(t, dims);
 		sem_post(&frame1);
 		pthread_mutex_unlock(&lock);
 	}
 }
 
-void FLOOD::getPosition(FILE *f) {
-	unsigned int vals;
-	vals = fscanf(f,"%f  %f  %f", &translation[0], &translation[1], &translation[2]);
-	translation[0] = -translation[0]; translation[1] = -translation[1];
-	translation[2] = 10 - translation[2];
-	translation[3] = 1;
-	printf("%f %f %f\n", translation[0], translation[1], translation[2]);
+void FLOOD::getPosition(float position) {
+	translation[0] = -position; translation[1] = 0; translation[2] = 0; translation[3] = 1;
 }
-
 
 void FLOOD::printQuat(quat qt, FILE *f) {
 	if(f) {
