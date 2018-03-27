@@ -48,7 +48,7 @@ private:
 	bool finding;
 	pthread_mutex_t lock, sa_lock;
 	sem_t frame1;
-	std::atomic<bool> done;
+	std::atomic<bool> done, work;
 	float shared_array[7];
 };
 
