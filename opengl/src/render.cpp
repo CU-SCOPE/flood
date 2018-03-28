@@ -118,28 +118,27 @@ int Render::run()
         // render the loaded model
         if(*done) {
             pthread_mutex_lock(sa_lock);
-            q = glm::quat(shared_array[0], shared_array[1], shared_array[3], shared_array[2]);
+            q = glm::quat(shared_array[0], shared_array[1], shared_array[2], shared_array[3]);
             translation = glm::vec3(shared_array[4], shared_array[5], shared_array[6]);
             *done = false;
             pthread_mutex_unlock(sa_lock);
+            glm::vec3 euler = glm::eulerAngles(q);
+            yaw = "Yaw: " + std::to_string(euler.x*180/PI) + "\370";
+            pitch = "Pitch: " + std::to_string(euler.y*180/PI) + "\370";
+            roll = "Roll: " + std::to_string(euler.z*180/PI) + "\370";
+            q = glm::rotate(q, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
         }
-        glm::mat4 model, rotation, trans;
-        trans = glm::translate(trans, translation); // translate it down so it's at the center of the scene
+        glm::mat4 model, rotation, trans, init_rot;
+        trans = glm::translate(trans, translation);
         rotation = glm::toMat4(q);
-        model = trans * rotation;
-        // model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));	// it's a bit too big for our scene, so scale it down
+        init_rot = glm::rotate(init_rot, glm::radians(-90.0f), glm::vec3(0.0, 1.0, 0.0));
+        model = trans * rotation * init_rot;
         ourShader.setMat4("model", model);
         ourModel.Draw(ourShader);
 
-        glm::vec3 euler = glm::eulerAngles(q);
-
-        yaw = "Yaw: " + std::to_string(euler.y*180/PI) + "\370";
-        pitch = "Pitch: " + std::to_string(euler.z*180/PI) + "\370";
-        roll = "Roll: " + std::to_string(euler.x*180/PI) + "\370";
-
-        x = "X: " + std::to_string(translation.x) + "\370";
-        y = "Y: " + std::to_string(translation.y) + "\370";
-        z = "Z: " + std::to_string(translation.z) + "\370";
+        x = "X: " + std::to_string(translation.x);
+        y = "Y: " + std::to_string(translation.y);
+        z = "Z: " + std::to_string(translation.z);
 
         text.RenderText(textshader, yaw.c_str(), 25.0f, 75.0f, 0.5f, glm::vec3(0.5, 0.8f, 0.2f));
         text.RenderText(textshader, pitch.c_str(), 25.0f, 50.0f, 0.5f, glm::vec3(0.5, 0.8f, 0.2f));

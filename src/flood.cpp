@@ -175,9 +175,9 @@ void FLOOD::printTrans(float T[4][4], float translation[3], FILE *pos, FILE *rot
 	pthread_mutex_lock(&sa_lock);
 	shared_array[0] = qt.w; shared_array[1] = qt.x;
 	shared_array[2] = qt.y; shared_array[3] = qt.z;
-	shared_array[4] = translation[2];
-	shared_array[5] = translation[0];
-	shared_array[6] = translation[1];
+	shared_array[4] = translation[0];
+	shared_array[5] = translation[1];
+	shared_array[6] = translation[2];
 	done = true;
 	pthread_mutex_unlock(&sa_lock);
 	printQuat(qt, rot);
