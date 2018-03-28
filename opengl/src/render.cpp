@@ -115,7 +115,7 @@ int Render::run()
         ourShader.setMat4("projection", projection);
         ourShader.setMat4("view", view);
 
-        // render the loaded model
+        // Check for new POSE
         if(*done) {
             pthread_mutex_lock(sa_lock);
             q = glm::quat(shared_array[0], shared_array[1], shared_array[2], shared_array[3]);
@@ -129,17 +129,19 @@ int Render::run()
             q = glm::rotate(q, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
         }
         glm::mat4 model, rotation, trans, init_rot;
+        // Create transformation matrix
         trans = glm::translate(trans, translation);
         rotation = glm::toMat4(q);
         init_rot = glm::rotate(init_rot, glm::radians(-90.0f), glm::vec3(0.0, 1.0, 0.0));
         model = trans * rotation * init_rot;
+        // Render model
         ourShader.setMat4("model", model);
         ourModel.Draw(ourShader);
 
         x = "X: " + std::to_string(translation.x);
         y = "Y: " + std::to_string(translation.y);
         z = "Z: " + std::to_string(translation.z);
-
+        // Print text on screen
         text.RenderText(textshader, yaw.c_str(), 25.0f, 75.0f, 0.5f, glm::vec3(0.5, 0.8f, 0.2f));
         text.RenderText(textshader, pitch.c_str(), 25.0f, 50.0f, 0.5f, glm::vec3(0.5, 0.8f, 0.2f));
         text.RenderText(textshader, roll.c_str(), 25.0f, 25.0f, 0.5f, glm::vec3(0.5, 0.8f, 0.2f));
