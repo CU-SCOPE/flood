@@ -445,6 +445,7 @@ o3d3xx::ImageBuffer::Organize()
 
   fclose(f);
   this->_SetDirty(false);
+  // Perform sub sampling if image has more than 5000 points
   num_points = xyz_image_.size();
   if(num_points > 5000) {
     std::vector<point4D> temp_points;
