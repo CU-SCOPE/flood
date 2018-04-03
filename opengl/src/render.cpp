@@ -126,6 +126,7 @@ int Render::run()
             yaw = "Yaw: " + std::to_string(euler.x*180/PI) + "\370";
             pitch = "Pitch: " + std::to_string(euler.y*180/PI) + "\370";
             roll = "Roll: " + std::to_string(euler.z*180/PI) + "\370";
+            q = glm::inverse(q);
             q = glm::rotate(q, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
         }
         glm::mat4 model, rotation, trans, init_rot;

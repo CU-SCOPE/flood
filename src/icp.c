@@ -89,13 +89,13 @@ void calcTransform(point4D *scan, point4D *model, float T[4][4], unsigned int nu
 	transpose(W, UT);
 	matMul3D(V, UT, R);
 	// Account for reflection case
-	det = determinant(R);
-	if(det < 0) {
-		printf("DET: %f    ", det);
-		V[0][2] *= -1; V[1][2] *= -1; V[2][2] *= -1;
-		matMul3D(V, UT, R);
-		printf("%f\n", determinant(R));
-	}
+	// det = determinant(R);
+	// if(det < 0) {
+	// 	printf("DET: %f    ", det);
+	// 	V[0][2] *= -1; V[1][2] *= -1; V[2][2] *= -1;
+	// 	matMul3D(V, UT, R);
+	// 	printf("%f\n", determinant(R));
+	// }
 	// Rotate translation vector
 	matMulVec3D(R, centScan.point, newCent);
 	sub3D(centModel.point, newCent, t);
