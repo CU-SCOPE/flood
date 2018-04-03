@@ -369,10 +369,6 @@ o3d3xx::ImageBuffer::Organize()
             o3d3xx::mkval<float>(this->bytes_.data()+extidx);
         }
     }
-  else
-    {
-      // LOG(WARNING) << "Extrinsics are invalid!";
-    }
 
   //
   // OK, now we want to see if the temp illu and exposure times are present,
@@ -436,10 +432,6 @@ o3d3xx::ImageBuffer::Organize()
 	{
 	  this->illu_temp_ = 0;
 	}
-    }
-  else
-    {
-      // LOG(WARNING) << "Checking for illu temp and exposure times skipped (cant trust extidx)";
     }
 
 
