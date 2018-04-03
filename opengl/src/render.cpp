@@ -123,9 +123,9 @@ int Render::run()
             *done = false;
             pthread_mutex_unlock(sa_lock);
             glm::vec3 euler = glm::eulerAngles(q);
-            yaw = "Yaw: " + std::to_string(euler.x*180/PI) + "\370";
-            pitch = "Pitch: " + std::to_string(euler.y*180/PI) + "\370";
-            roll = "Roll: " + std::to_string(euler.z*180/PI) + "\370";
+            yaw = "Yaw: " + std::to_string(euler.x*180/PI);
+            pitch = "Pitch: " + std::to_string(euler.y*180/PI);
+            roll = "Roll: " + std::to_string(euler.z*180/PI);
             q = glm::inverse(q);
         }
         glm::mat4 model, rotation, trans init_rot;
@@ -138,9 +138,9 @@ int Render::run()
 
         glm::vec3 euler = glm::eulerAngles(q);
 
-        x = "X: " + std::to_string(translation.x) + "\370";
-        y = "Y: " + std::to_string(translation.y) + "\370";
-        z = "Z: " + std::to_string(translation.z) + "\370";
+        x = "X: " + std::to_string(translation.x);
+        y = "Y: " + std::to_string(translation.y);
+        z = "Z: " + std::to_string(translation.z);
 
         text.RenderText(textshader, yaw.c_str(), 25.0f, 75.0f, 0.5f, glm::vec3(0.5, 0.8f, 0.2f));
         text.RenderText(textshader, pitch.c_str(), 25.0f, 50.0f, 0.5f, glm::vec3(0.5, 0.8f, 0.2f));
