@@ -445,4 +445,19 @@ o3d3xx::ImageBuffer::Organize()
 
   fclose(f);
   this->_SetDirty(false);
+  num_points = xyz_image_.size();
+  if(num_points > 5000) {
+    std::vector<point4D> temp_points;
+    temp_points.reserve(num_points);
+    if(num_points < 10000) {
+      for(std::size_t i = 0; i < num_points; i+=2) {
+        temp_points.push_back(xyz_image_[i]);
+      }
+    } else {
+      for(std::size_t i = 0; i < num_points; i+=3) {
+        temp_points.push_back(xyz_image_[i]);
+      }
+    }
+    xyz_image_ = temp_points;
+  } 
 }
