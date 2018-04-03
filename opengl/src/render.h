@@ -12,7 +12,7 @@
 
 class Render {
 public:
-	Render(float *sa, std::atomic<bool> *d, pthread_mutex_t *lock);
+	Render(float *sa, std::atomic<bool> *d, pthread_mutex_t *lock, std::atomic<bool> *e);
 	int run();
 
 private:
@@ -22,7 +22,7 @@ private:
 	static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 	static void processInput(GLFWwindow *window);
 	float *shared_array;
-	std::atomic<bool> *done;
+	std::atomic<bool> *done, *exit;
 	pthread_mutex_t *sa_lock;
 };
 

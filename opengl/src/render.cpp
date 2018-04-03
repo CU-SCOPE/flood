@@ -25,10 +25,11 @@ bool firstMouse = true;
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
-Render::Render(float *sa, std::atomic<bool> *d, pthread_mutex_t *lock) {
+Render::Render(float *sa, std::atomic<bool> *d, pthread_mutex_t *lock, std::atomic<bool> *e) {
     shared_array = sa;
     done = d;
     sa_lock = lock;
+    exit = e;
 }
 
 
@@ -128,7 +129,7 @@ int Render::run()
             roll = "Roll: " + std::to_string(euler.z*180/PI);
             q = glm::inverse(q);
         }
-        glm::mat4 model, rotation, trans init_rot;
+        glm::mat4 model, rotation, trans, init_rot;
         trans = glm::translate(trans, translation);
         rotation = glm::toMat4(q);
         init_rot = glm::rotate(init_rot, glm::radians(-90.0f), glm::vec3(0.0, 1.0, 0.0));
@@ -157,6 +158,7 @@ int Render::run()
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
     glfwTerminate();
+    *exit = true;
     return 0;
 }
 

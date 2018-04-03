@@ -11,7 +11,7 @@ FLOOD::FLOOD() {
 	// POSE is unkown at start
 	finding = true;
 	done = false;
-	work = true;
+	exit = false;
 	// Define quaternion for 45 degree rotation about each axis
 	rotx.w = 0.924; roty.w = 0.924; rotz.w = 0.924;
 	rotx.x = 0.383; roty.x = 0.0;   rotz.x = 0.0;
@@ -59,7 +59,7 @@ void FLOOD::calcPose() {
     FILE *frot = std::fopen(rot.c_str(), "w");
 #endif
 	q.w = 1; q.x = 0; q.y = 0; q.z = 0;
-	while(work) {
+	while(!exit) {
 		sem_wait(&frame1);
 		pthread_mutex_lock(&lock);
 		if(!finding) {
@@ -137,7 +137,7 @@ void FLOOD::getFrame() {
 	t[0] = -translation[0]; t[1] = -translation[1]; t[2] = -translation[2];
 	img->setPosition(t, dims);
 	std::vector<point4D> v;
-	while(work) {
+	while(!exit) {
 		if (! fg->WaitForFrame(img.get(), 1000)) {
 			std::cerr << "Timeout waiting for camera!" << std::endl;
 			continue;
@@ -189,7 +189,6 @@ void FLOOD::printTrans(float T[4][4], float translation[3], FILE *pos, FILE *rot
 }
 
 void FLOOD::render() {
-	Render scene(shared_array, &done, &sa_lock);
+	Render scene(shared_array, &done, &sa_lock, &exit);
 	scene.run();
-	work = false;
 }
