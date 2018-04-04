@@ -89,10 +89,6 @@ int Render::run()
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glm::quat q;
     glm::vec3 translation;
-    q.w = 0.5;
-    q.x = 0.5;
-    q.y = -0.5;
-    q.z = 0.0;
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
@@ -134,7 +130,7 @@ int Render::run()
             q = glm::inverse(q);
         }
         glm::mat4 model, rotation, trans, init_rot;
-        trans = glm::translate(trans, glm::vec3(3.0, 0.0, 0.0));
+        trans = glm::translate(trans, translation);
         rotation = glm::toMat4(q);
         init_rot = glm::rotate(init_rot, glm::radians(90.0f), glm::vec3(1.0, 0.0, 0.0));
         model = trans * rotation * init_rot;
