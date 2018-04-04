@@ -83,7 +83,7 @@ int Render::run()
 
     // load models
     // -----------
-    Model ourModel("models/TargetSatelliteModel/TargetSatellite.obj");
+    Model ourModel("models/target/target.obj");
     
     // draw in wireframe
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -128,9 +128,10 @@ int Render::run()
             pitch = "Pitch: " + std::to_string(euler.y*180/PI);
             roll = "Roll: " + std::to_string(euler.z*180/PI);
             q = glm::inverse(q);
+            q = glm::rotate(q, glm::radians(90.0f), glm::vec3(1.0, 0.0, 0.0));
         }
         glm::mat4 model, rotation, trans, init_rot;
-        trans = glm::translate(trans, translation);
+        trans = glm::translate(trans, glm::vec3(3.0, 0.0, 0.0));
         rotation = glm::toMat4(q);
         init_rot = glm::rotate(init_rot, glm::radians(-90.0f), glm::vec3(0.0, 1.0, 0.0));
         model = trans * rotation * init_rot;
