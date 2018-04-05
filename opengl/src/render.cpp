@@ -82,7 +82,7 @@ int Render::run()
 
     // load models
     // -----------
-    Model ourModel("models/target/target.obj");
+    Model ourModel("models/target/target_test.obj");
     
     // draw in wireframe
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -127,14 +127,13 @@ int Render::run()
             pitch = "Pitch: " + std::to_string(euler.y*180/PI) + "\370";
             roll = "Roll: " + std::to_string(euler.z*180/PI) + "\370";
             q = glm::inverse(q);
-            q = glm::rotate(q, glm::radians(90.0f), glm::vec3(1.0, 0.0, 0.0));
         }
-        glm::mat4 model, rotation, trans, init_rot;
+        glm::mat4 model, rotation, trans, rot2;
         // Create transformation matrix
         trans = glm::translate(trans, translation);
         rotation = glm::toMat4(q);
-        init_rot = glm::rotate(init_rot, glm::radians(-90.0f), glm::vec3(0.0, 1.0, 0.0));
-        model = trans * rotation * init_rot;
+        rot2 = glm::rotate(rot2, glm::radians(-90.0f), glm::vec3(0.0, 1.0, 0.0));
+        model = trans * rotation * rot2;
         // Render model
         ourShader.setMat4("model", model);
         ourModel.Draw(ourShader);
