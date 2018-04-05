@@ -88,7 +88,7 @@ int Render::run()
     // draw in wireframe
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glm::quat q;
-    glm::vec3 translation;
+    glm::vec3 translation, textColor(0.5, 0.8f, 0.2f);
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
@@ -143,12 +143,13 @@ int Render::run()
         y = "Y: " + std::to_string(translation.y);
         z = "Z: " + std::to_string(translation.z);
 
-        text.RenderText(textshader, yaw.c_str(), 25.0f, 75.0f, 0.5f, glm::vec3(0.5, 0.8f, 0.2f));
-        text.RenderText(textshader, pitch.c_str(), 25.0f, 50.0f, 0.5f, glm::vec3(0.5, 0.8f, 0.2f));
-        text.RenderText(textshader, roll.c_str(), 25.0f, 25.0f, 0.5f, glm::vec3(0.5, 0.8f, 0.2f));
-        text.RenderText(textshader, x.c_str(), 600.0f, 75.0f, 0.5f, glm::vec3(0.5, 0.8f, 0.2f));
-        text.RenderText(textshader, y.c_str(), 600.0f, 50.0f, 0.5f, glm::vec3(0.5, 0.8f, 0.2f));
-        text.RenderText(textshader, z.c_str(), 600.0f, 25.0f, 0.5f, glm::vec3(0.5, 0.8f, 0.2f));
+
+        text.RenderText(textshader, yaw.c_str(), 25.0f, 75.0f, 0.5f, textColor);
+        text.RenderText(textshader, pitch.c_str(), 25.0f, 50.0f, 0.5f, textColor);
+        text.RenderText(textshader, roll.c_str(), 25.0f, 25.0f, 0.5f, textColor);
+        text.RenderText(textshader, x.c_str(), 600.0f, 75.0f, 0.5f, textColor);
+        text.RenderText(textshader, y.c_str(), 600.0f, 50.0f, 0.5f, textColor);
+        text.RenderText(textshader, z.c_str(), 600.0f, 25.0f, 0.5f, textColor);
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
         glfwSwapBuffers(window);
