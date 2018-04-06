@@ -3,7 +3,9 @@
 #include <ctime>
 #include "flood.h"
 #include "frames.h"
+#if RENDER
 #include "render.h"
+#endif
 
 FLOOD::FLOOD() {
 	numFaces = loadSTL(&faces);
@@ -34,10 +36,14 @@ FLOOD::~FLOOD() {
 void FLOOD::run() {
 	std::thread frames(&FLOOD::getFrame, this); // Thread to read frames in
 	std::thread icp(&FLOOD::calcPose, this); // Thread to calculate POSE
+#if RENDER
 	std::thread animate(&FLOOD::render, this);
+#endif
 	frames.join(); // Cleanup threads
 	icp.join();
-	animate.join();
+#if RENDER
+		animate.join();
+#endif
 }
 
 void FLOOD::calcPose() {
@@ -188,7 +194,9 @@ void FLOOD::printTrans(float T[4][4], float translation[3], FILE *pos, FILE *rot
 	}
 }
 
+#if RENDER
 void FLOOD::render() {
 	Render scene(shared_array, &done, &sa_lock, &exit);
 	scene.run();
 }
+#endif

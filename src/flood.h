@@ -34,7 +34,9 @@ public:
 private:
 	void calcPose();
 	void getFrame();
+#if RENDER
 	void render();
+#endif
 	void printQuat(quat q, FILE *f);
 	void printTrans(float T[4][4], float translation[3], FILE *pos, FILE *rot);
 	node *root;
