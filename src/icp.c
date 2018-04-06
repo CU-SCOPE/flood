@@ -69,7 +69,7 @@ void calcTransform(point4D *scan, point4D *model, float T[4][4], unsigned int nu
 		numPts	- Number of points in scan/model
 	*/
 	unsigned int i;
-	float W[3][3] = {0.0};
+	float W[3][3] = {{0.0}};
 	point3D centScan, centModel;
 	point4D tempScan[numPts], tempModel[numPts];
 	// Subtract centroid from each point cloud
@@ -91,13 +91,9 @@ void calcTransform(point4D *scan, point4D *model, float T[4][4], unsigned int nu
 	// Account for reflection case
 	det = determinant(R);
 	if(det < 0) {
-		float tmp[3][3], VT[3][3], U[3][3], B[3][3] = {0};
-		eye3D(B);
-		B[2][2] = det;
-		transpose(V,VT);
-		transpose(UT,U);
-		matMul3D(U, B, tmp);
-		matMul3D(tmp, VT, R);
+		V[0][2] *= -1; V[1][2] *= -1; V[2][2] *= -1;
+		matMul3D(V, UT, R);
+		printf("%f\n", determinant(R));
 	}
 	// Rotate translation vector
 	matMulVec3D(R, centScan.point, newCent);

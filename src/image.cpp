@@ -339,10 +339,10 @@ o3d3xx::ImageBuffer::Organize()
               pt.point[3] = 1.0f;
               if(pt.point[0] > this->position[0] + this->dims[0] || pt.point[0] < this->position[0] - this->dims[0])
                 continue;
-              if(pt.point[1] > this->position[1] + this->dims[1] || pt.point[1] < this->position[1] - this->dims[1])
+              /*if(pt.point[1] > this->position[1] + this->dims[1] || pt.point[1] < this->position[1] - this->dims[1])
                 continue;
               if(pt.point[2] > this->position[2] + this->dims[2] || pt.point[2] < this->position[2] - this->dims[2])
-                continue;
+                continue;*/
               fprintf(f, "%d  %d  %d\n", x_, y_, z_);
               
             }
@@ -368,10 +368,6 @@ o3d3xx::ImageBuffer::Organize()
           this->extrinsics_[i] =
             o3d3xx::mkval<float>(this->bytes_.data()+extidx);
         }
-    }
-  else
-    {
-      // LOG(WARNING) << "Extrinsics are invalid!";
     }
 
   //
@@ -437,12 +433,24 @@ o3d3xx::ImageBuffer::Organize()
 	  this->illu_temp_ = 0;
 	}
     }
-  else
-    {
-      // LOG(WARNING) << "Checking for illu temp and exposure times skipped (cant trust extidx)";
-    }
 
 
   fclose(f);
   this->_SetDirty(false);
+  // Perform sub sampling if image has more than 5000 points
+  num_points = xyz_image_.size();
+  if(num_points > 5000) {
+    std::vector<point4D> temp_points;
+    temp_points.reserve(num_points);
+    if(num_points < 10000) {
+      for(std::size_t i = 0; i < num_points; i+=2) {
+        temp_points.push_back(xyz_image_[i]);
+      }
+    } else {
+      for(std::size_t i = 0; i < num_points; i+=3) {
+        temp_points.push_back(xyz_image_[i]);
+      }
+    }
+    xyz_image_ = temp_points;
+  } 
 }

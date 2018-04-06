@@ -2,12 +2,13 @@ add_library(src kd_tree.c stl.c icp.c flood.cpp image.cpp cluster.cpp)
 target_link_libraries (src ${CMAKE_THREAD_LIBS_INIT})
 find_package(Threads)
 target_link_libraries(src m)
+
 if(CMAKE_BUILD_TYPE MATCHES Debug)
     target_compile_definitions(src PUBLIC DEBUG=1)
     target_compile_options(src PUBLIC -ggdb -std=c++11)
 else(CMAKE_BUILD_TYPE MATCHES Debug)
     target_compile_definitions(src PUBLIC DEBUG=0)
-    target_compile_options(src PUBLIC -O3 -std=c++11 -pthread -lglog -fPIC)
+    target_compile_options(src PUBLIC -O3 -std=c++11 -pthread -lglog -fPIC -lglfw3)
 endif(CMAKE_BUILD_TYPE MATCHES Debug)
 
 set(CMAKE_MODULE_PATH

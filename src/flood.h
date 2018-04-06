@@ -5,6 +5,7 @@
 #include <stdbool.h>
 #include <string>
 #include <thread>
+#include <semaphore.h>
 #include <atomic>
 #include "kd_tree.h"
 #include "icp.h"
@@ -18,21 +19,24 @@
 #if DEBUG
 #define NUM_FILES			10
 #else
-#define NUM_FILES			10
+#define NUM_FILES			179
 #endif
-#define FRAME_DIRECTORIES	"./"
-#define THRESH				0.013
+#define FRAME_DIRECTORIES	"test/"
+#define THRESH				0.01
 
 class FLOOD {
 public:
 	FLOOD();
 	~FLOOD();
 	void run();
+	void initializePose(quat qInit, float t[4], float Temp[4][4]);
 	void getPosition(float position);
 private:
 	void calcPose();
 	void getFrame();
-	void initializePose(quat q, float t[4], float Temp[4][4]);
+	void render();
+	void printQuat(quat q, FILE *f);
+	void printTrans(float T[4][4], float translation[3], FILE *pos, FILE *rot);
 	node *root;
 	face *faces;
 	point4D scan[MAX_POINTS];
@@ -42,7 +46,10 @@ private:
 	std::atomic<int> numPts;
 	unsigned int numFaces;
 	bool finding;
-	pthread_mutex_t lock;
+	pthread_mutex_t lock, sa_lock;
+	sem_t frame1;
+	std::atomic<bool> done, exit;
+	float shared_array[7];
 };
 
 #endif
