@@ -302,7 +302,7 @@ o3d3xx::ImageBuffer::Organize()
   std::int16_t x_, y_, z_;
   float e_x, e_y, e_z;
   point4D pt;
-  std::string fname = "out.txt";
+  std::string fname = "clouds/cloud_big_1_2-" + std::to_string(this->num) + ".txt";
   FILE *f = fopen(fname.c_str(), "w");
   this->num++;
   for (std::size_t i = 0; i < num_points;
@@ -337,12 +337,12 @@ o3d3xx::ImageBuffer::Organize()
               pt.point[1] = y_ / 1000.0f;
               pt.point[2] = z_ / 1000.0f;
               pt.point[3] = 1.0f;
-              if(pt.point[0] > this->position[0] + this->dims[0] || pt.point[0] < this->position[0] - this->dims[0])
+              if(pt.point[0] > this->position[0] + this->dims[0] || pt.point[0] < this->position[0] - this->dims[0] - 0.2)
                 continue;
-              /*if(pt.point[1] > this->position[1] + this->dims[1] || pt.point[1] < this->position[1] - this->dims[1])
+              if(pt.point[1] > this->position[1] + this->dims[1] || pt.point[1] < this->position[1] - this->dims[1])
                 continue;
               if(pt.point[2] > this->position[2] + this->dims[2] || pt.point[2] < this->position[2] - this->dims[2])
-                continue;*/
+                continue;
               fprintf(f, "%d  %d  %d\n", x_, y_, z_);
               
             }

@@ -15,8 +15,8 @@ FLOOD::FLOOD() {
 	done = false;
 	exit = false;
 	// Define quaternion for 45 degree rotation about each axis
-	rotx.w = 0.924; roty.w = 0.924; rotz.w = 0.924;
-	rotx.x = 0.383; roty.x = 0.0;   rotz.x = 0.0;
+	rotx.w = 0.985; roty.w = 0.924; rotz.w = 0.924;
+	rotx.x = 0.174; roty.x = 0.0;   rotz.x = 0.0;
 	rotx.y = 0.0;   roty.y = 0.383; rotz.y = 0.0;
 	rotx.z = 0.0;   roty.z = 0.0;   rotz.z = 0.383;
 	pthread_mutex_init(&lock, NULL);
@@ -60,7 +60,7 @@ void FLOOD::calcPose() {
 #if TO_FILE
     // Output results
     pos = dir + "position_act.txt";
-    rot = dir + "rotation_act.txt";
+    rot = dir + "orientation_small_1_1.txt";
     FILE *fpos = std::fopen(pos.c_str(), "w");
     FILE *frot = std::fopen(rot.c_str(), "w");
 #endif
@@ -75,29 +75,26 @@ void FLOOD::calcPose() {
 			tm += (double) (end-start) / CLOCKS_PER_SEC * 1000.0;
 		}
 		else {
+			float best = 100;
+			float Temp[4][4];
 			current = q;
 			looking = clock();
 			point4D initState[numPts];
-			float mindist = 100, Transf[4][4] = {{0}};
 			memcpy(initState, scan, numPts*sizeof(point4D));
-			initializePose(current, translation, Transf);
-			error = icp(initState, root, Transf, numPts, MAX_ITERATIONS_FIND);
-			for(int j=0; j<6; j++) {
-				if(error < mindist) {
-					mindist = error;
-					memcpy(T, Transf, 16*sizeof(float));
+			initializePose(current, translation, Temp);
+			error = icp(initState, root, Temp, numPts, MAX_ITERATIONS_FIND);
+			for(int j=0; j<18; j++) {
+				if(error < best) {
+					printf("here\n");
+					best = error;
+					memcpy(T, Temp, 16*sizeof(float));
 				}
 				memcpy(initState, scan, numPts*sizeof(point4D));
 				temp = multQuat(rotx, current);
 				current = temp;
-				initializePose(current, translation, Transf);
-				error = icp(initState, root, Transf, numPts, MAX_ITERATIONS_FIND);
+				initializePose(current, translation, Temp);
+				error = icp(initState, root, Temp, numPts, MAX_ITERATIONS_FIND);
 			}
-			// if(error > THRESH) {
-			// 	printf("DID NOT CONVERGE!!!\n");
-			// 	pthread_mutex_unlock(&lock);
-			// 	continue;
-			// }
 			found = clock();
 			acq_time = (double) (found-looking) / CLOCKS_PER_SEC;
 			finding = false;
@@ -165,6 +162,14 @@ void FLOOD::getFrame() {
 
 void FLOOD::getPosition(float position) {
 	translation[0] = -position; translation[1] = 0; translation[2] = 0; translation[3] = 1;
+	pthread_mutex_lock(&sa_lock);
+	shared_array[0] = 1; shared_array[1] = 0;
+	shared_array[2] = 0; shared_array[3] = 0;
+	shared_array[4] = translation[0];
+	shared_array[5] = translation[1];
+	shared_array[6] = translation[2];
+	done = true;
+	pthread_mutex_unlock(&sa_lock);
 }
 
 void FLOOD::printQuat(quat qt, FILE *f) {
@@ -181,9 +186,9 @@ void FLOOD::printTrans(float T[4][4], float translation[3], FILE *pos, FILE *rot
 	pthread_mutex_lock(&sa_lock);
 	shared_array[0] = qt.w; shared_array[1] = qt.x;
 	shared_array[2] = qt.y; shared_array[3] = qt.z;
-	shared_array[4] = translation[2];
-	shared_array[5] = translation[0];
-	shared_array[6] = translation[1];
+	shared_array[4] = translation[0];
+	shared_array[5] = translation[1];
+	shared_array[6] = translation[2];
 	done = true;
 	pthread_mutex_unlock(&sa_lock);
 	printQuat(qt, rot);
