@@ -73,6 +73,7 @@ void FLOOD::calcPose() {
 			error = icp(scan, root, T, numPts, MAX_ITERATIONS_KNOWN);
 			end = clock();
 			tm += (double) (end-start) / CLOCKS_PER_SEC * 1000.0;
+			num++
 		}
 		else {
 			float best = 100;
@@ -136,7 +137,7 @@ void FLOOD::getFrame() {
 	o3d3xx::FrameGrabber::Ptr fg = std::make_shared<o3d3xx::FrameGrabber>(cam);
 	o3d3xx::ImageBuffer::Ptr img = std::make_shared<o3d3xx::ImageBuffer>();
 	int fileNum = 1, val = 0;
-	float t[3], dims[3] = {0.25, 0.7, 0.7};
+	float t[3], dims[3] = {0.15, 0.7, 0.7};
 	t[0] = -translation[0]; t[1] = -translation[1]; t[2] = -translation[2];
 	img->setPosition(t, dims);
 	std::vector<point4D> v;

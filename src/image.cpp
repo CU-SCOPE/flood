@@ -21,10 +21,6 @@
 #include <limits>
 #include <string>
 #include <vector>
-// #include <glog/logging.h>
-// #include <opencv2/opencv.hpp>
-// #include <pcl/point_cloud.h>
-// #include <pcl/point_types.h>
 #include "o3d3xx_camera/err.h"
 #include "o3d3xx_framegrabber/byte_buffer.hpp"
 
@@ -61,40 +57,7 @@ o3d3xx::ImageBuffer::~ImageBuffer()
   // DLOG(INFO) << "Image buffer dtor";
 }
 
-/*cv::Mat
-o3d3xx::ImageBuffer::DepthImage()
-{
-  this->Organize();
-  return this->depth_;
-}
 
-cv::Mat
-o3d3xx::ImageBuffer::UnitVectors()
-{
-  this->Organize();
-  return this->uvec_;
-}
-
-cv::Mat
-o3d3xx::ImageBuffer::AmplitudeImage()
-{
-  this->Organize();
-  return this->amp_;
-}
-
-cv::Mat
-o3d3xx::ImageBuffer::RawAmplitudeImage()
-{
-  this->Organize();
-  return this->raw_amp_;
-}
-
-cv::Mat
-o3d3xx::ImageBuffer::ConfidenceImage()
-{
-  this->Organize();
-  return this->conf_;
-}*/
 
 std::vector<point4D> 
 o3d3xx::ImageBuffer::XYZImage()
@@ -103,13 +66,6 @@ o3d3xx::ImageBuffer::XYZImage()
   return this->xyz_image_;
 }
 
-/*pcl::PointCloud<o3d3xx::PointT>::Ptr
-o3d3xx::ImageBuffer::Cloud()
-{
-  this->Organize();
-  return this->cloud_;
-}
-*/
 std::vector<float>
 o3d3xx::ImageBuffer::Extrinsics()
 {
@@ -212,14 +168,6 @@ o3d3xx::ImageBuffer::Organize()
     (xidx != INVALID_IDX) && (yidx != INVALID_IDX) && (zidx != INVALID_IDX);
   bool EXTRINSICS_OK = extidx != INVALID_IDX;
 
-  // DLOG(INFO) << "xidx=" << xidx
-  //            << ", yidx=" << yidx
-  //            << ", zidx=" << zidx
-  //            << ", aidx=" << aidx
-  //            << ", raw_aidx=" << raw_aidx
-  //            << ", cidx=" << cidx
-  //            << ", didx=" << didx
-  //            << ", uidx=" << uidx;
 
   // Get how many bytes to increment in the buffer for each pixel
   // NOTE: These can be discovered dynamically, however, for now we use our a
@@ -244,26 +192,13 @@ o3d3xx::ImageBuffer::Organize()
 
   std::uint32_t num_points = width * height;
 
-  // DLOG(INFO) << "width=" << width
-  //            << ", height=" << height
-  //            << ", num_points=" << num_points;
 
   //
   // setup images
   //
-  /*this->cloud_->header.frame_id = "o3d3xx";
-  this->cloud_->width = width;
-  this->cloud_->height = height;
-  this->cloud_->is_dense = true;
-  this->cloud_->points.resize(num_points);*/
 
   this->xyz_image_.reserve(height * width);
   this->xyz_image_.clear();
-  /*this->uvec_.create(height, width, CV_32FC3);
-  this->conf_.create(height, width, CV_8UC1);
-  this->depth_.create(height, width, CV_16UC1);
-  this->amp_.create(height, width, CV_16UC1);
-  this->raw_amp_.create(height, width, CV_16UC1);*/
 
   // move index pointers to where pixel data starts -- we assume
   // (I think safely) that all header sizes will be uniform in the data stream,
@@ -293,11 +228,7 @@ o3d3xx::ImageBuffer::Organize()
   int xyz_col = 0;
   int uvec_col = 0;
 
-  // std::uint16_t* depth_row_ptr;
-  // std::uint16_t* amp_row_ptr;
-  // std::uint16_t* raw_amp_row_ptr;
   std::uint8_t conf_row_ptr;
-  // float* uvec_row_ptr;
 
   std::int16_t x_, y_, z_;
   float e_x, e_y, e_z;
@@ -310,16 +241,11 @@ o3d3xx::ImageBuffer::Organize()
          cidx += cincr, aidx += aincr, didx += dincr,
          raw_aidx += raw_aincr, uidx += uincr)
     {
-      // o3d3xx::PointT& pt = this->cloud_->points[i];
       col = i % width;
 
       conf_row_ptr = this->bytes_.at(cidx);
       if ((conf_row_ptr & 0x1) == 1)
         {
-          // pt.x = pt.y = pt.z = bad_point;
-          // this->cloud_->is_dense = false;
-
-          // pt.point[0] = pt.point[1] = pt.point[2] = bad_point;
           continue;
         }
       else
@@ -349,7 +275,6 @@ o3d3xx::ImageBuffer::Organize()
           else
             {
                 continue;
-              // pt.point[0] = pt.point[1] = pt.point[2] = bad_point;
             }
 
           // keep depth image data as mm
