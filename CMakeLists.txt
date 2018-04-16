@@ -38,6 +38,16 @@ add_executable(${TARGET} src/main.cpp)
 target_link_libraries(${TARGET} m)
 target_link_libraries (${TARGET} src)
 target_link_libraries(${TARGET} svd)
+
+if(CMAKE_BUILD_TYPE MATCHES Debug)
+    target_compile_definitions(${TARGET} PUBLIC DEBUG=1)
+    target_compile_options(${TARGET} PUBLIC -ggdb -std=c++11)
+else(CMAKE_BUILD_TYPE MATCHES Debug)
+    target_compile_definitions(${TARGET} PUBLIC DEBUG=0)
+    target_compile_options(${TARGET} PUBLIC -O3 -std=c++11 -pthread -lglog -fPIC -lglfw3)
+endif(CMAKE_BUILD_TYPE MATCHES Debug)
+
+
 if(RENDER)
 	target_link_libraries(${TARGET} render)
 endif(RENDER)

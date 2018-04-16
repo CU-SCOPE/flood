@@ -5,7 +5,7 @@
 #include <iostream>
 #include "kd_tree.h"
 
-#define CLUSTER_THRESH		0.1
+#define CLUSTER_THRESH		0.6
 
 std::vector<point4D> hcluster(std::vector<point4D> v);
 static inline float calc_dist(point4D a, point4D b);

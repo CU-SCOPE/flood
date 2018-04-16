@@ -22,7 +22,7 @@
 #define NUM_FILES			179
 #endif
 #define FRAME_DIRECTORIES	"test/"
-#define THRESH				0.025
+#define THRESH				0.03
 
 class FLOOD {
 public:
@@ -49,7 +49,7 @@ private:
 	unsigned int numFaces;
 	bool finding;
 	pthread_mutex_t lock, sa_lock;
-	sem_t frame1;
+	sem_t frame1, new_frame;
 	std::atomic<bool> done, exit;
 	float shared_array[7];
 };

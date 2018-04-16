@@ -91,9 +91,11 @@ void calcTransform(point4D *scan, point4D *model, float T[4][4], unsigned int nu
 	// Account for reflection case
 	det = determinant(R);
 	if(det < 0) {
-		V[0][2] *= -1; V[1][2] *= -1; V[2][2] *= -1;
-		matMul3D(V, UT, R);
-		printf("%f\n", determinant(R));
+		float temp[3][3], B[3][3] = {{0}};
+		eye3D(B);
+		B[2][2] = det;
+		matMul3D(V, B, temp);
+		matMul3D(temp, UT, R);
 	}
 	// Rotate translation vector
 	matMulVec3D(R, centScan.point, newCent);
@@ -138,8 +140,5 @@ float icp(point4D *scan, node *root, float T[4][4], unsigned int numPts, unsigne
 		transform(T, scan, numPts);
 	}
 	calcTransform(initState, scan, T, numPts);
-#if DEBUG
-	printTrans(T);
-#endif
 	return error;
 }

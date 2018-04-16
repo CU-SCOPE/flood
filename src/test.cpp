@@ -4,7 +4,7 @@
 int main() {
 	int i;
 	std::vector<point4D> v, out;
-	FILE *f = fopen("../build/exe/pc_target/out0.txt", "r");
+	FILE *f = fopen("../build/exe/pc_target/clouds/cloud_big_3_4-320.txt", "r");
 	do {
 		point4D current;
 		fscanf(f, "%f  %f  %f", &current.point[0], &current.point[1], &current.point[2]);

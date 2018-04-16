@@ -65,6 +65,16 @@ file(GLOB SOURCE
 add_library(render ${SOURCE})
 target_compile_options(render PUBLIC -ldl -lXmu -lXt -lSM -lICE -lXext -lX11 -lXi -lXext -lX11 -ggdb -std=c++11)
 target_link_libraries(render ${LIBS})
+
+if(CMAKE_BUILD_TYPE MATCHES Debug)
+    target_compile_definitions(render PUBLIC DEBUG=1)
+    target_compile_options(render PUBLIC -ggdb -std=c++11)
+else(CMAKE_BUILD_TYPE MATCHES Debug)
+    target_compile_definitions(render PUBLIC DEBUG=0)
+    target_compile_options(render PUBLIC -O3 -std=c++11 -pthread -lglog -fPIC -lglfw3)
+endif(CMAKE_BUILD_TYPE MATCHES Debug)
+
+
 # copy shader files to build directory
 file(GLOB SHADERS
          "src/*.vs"

@@ -10,6 +10,7 @@ extern "C" {
 #include "vec_math.h"
 
 #define TO_FILE		1
+#define PI			3.14159
 
 typedef struct quat {
 	float w;
@@ -97,6 +98,16 @@ static inline quat multQuat(quat q1, quat q2) {
 	result.y = (q2.w * q1.y) + (q2.y * q1.w) + (q2.z * q1.x) - (q2.x * q1.z);
 	result.z = (q2.w * q1.z) + (q2.z * q1.w) + (q2.x * q1.y) - (q2.y * q1.x);
 	return result;
+}
+
+static inline float degreeRot(quat q1, quat q2) {
+	quat rot;
+	float length;
+	normalizeQuat(&q2);
+	q2.x = -q2.x; q2.y = -q2.y; q2.z = -q2.z;
+	rot = multQuat(q1, q2);
+	length = sqrtf(rot.w * rot.w + rot.x * rot.x + rot.y * rot.y + rot.z * rot.z);
+	return 2*atan2(length, rot.w);
 }
 
 static inline void quat2trans(float T[4][4], quat q, float t[4]) {

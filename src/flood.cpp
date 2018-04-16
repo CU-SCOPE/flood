@@ -3,6 +3,7 @@
 #include <ctime>
 #include "flood.h"
 #include "frames.h"
+#include <unistd.h>
 #if RENDER
 #include "render.h"
 #endif
@@ -16,12 +17,13 @@ FLOOD::FLOOD() {
 	exit = false;
 	// Define quaternion for 45 degree rotation about each axis
 	rotx.w = 0.985; roty.w = 0.924; rotz.w = 0.924;
-	rotx.x = 0.174; roty.x = 0.0;   rotz.x = 0.0;
+	rotx.x = 0.383; roty.x = 0.0;   rotz.x = 0.0;
 	rotx.y = 0.0;   roty.y = 0.383; rotz.y = 0.0;
 	rotx.z = 0.0;   roty.z = 0.0;   rotz.z = 0.383;
 	pthread_mutex_init(&lock, NULL);
 	pthread_mutex_init(&sa_lock, NULL);
 	sem_init(&frame1, 0, 0);
+	sem_init(&new_frame, 0, 1);
 };
 
 FLOOD::~FLOOD() {
@@ -31,6 +33,7 @@ FLOOD::~FLOOD() {
 	pthread_mutex_destroy(&lock);
 	pthread_mutex_destroy(&sa_lock);
 	sem_destroy(&frame1);
+	sem_destroy(&new_frame);
 };
 
 void FLOOD::run() {
@@ -51,16 +54,14 @@ void FLOOD::calcPose() {
 	quat current, temp;
 	// Initialize timer
 	clock_t start, end, looking, found;
-	float error, RT[3][3], t[3];
+	float error, prev_error, RT[3][3], t[3];
 	double tm = 0, acq_time;
 	// Read all trajectories being tested
     std::string dir = FRAME_DIRECTORIES, pos, rot;
-    std::string filename = dir + "position.txt";
-	FILE *f = std::fopen(filename.c_str(), "r"); 
 #if TO_FILE
     // Output results
-    pos = dir + "position_act.txt";
-    rot = dir + "orientation_small_1_1.txt";
+    pos = dir + "position_big_1_3.txt";
+    rot = dir + "orientation_big_1_3.txt";
     FILE *fpos = std::fopen(pos.c_str(), "w");
     FILE *frot = std::fopen(rot.c_str(), "w");
 #endif
@@ -73,19 +74,22 @@ void FLOOD::calcPose() {
 			error = icp(scan, root, T, numPts, MAX_ITERATIONS_KNOWN);
 			end = clock();
 			tm += (double) (end-start) / CLOCKS_PER_SEC * 1000.0;
+			num++;
+			if(error > 0.03){
+				finding = true;
+			}
 		}
 		else {
 			float best = 100;
-			float Temp[4][4];
+			float Temp[4][4] = {{0}};
 			current = q;
 			looking = clock();
 			point4D initState[numPts];
 			memcpy(initState, scan, numPts*sizeof(point4D));
 			initializePose(current, translation, Temp);
 			error = icp(initState, root, Temp, numPts, MAX_ITERATIONS_FIND);
-			for(int j=0; j<18; j++) {
+			for(int j=0; j<7; j++) {
 				if(error < best) {
-					printf("here\n");
 					best = error;
 					memcpy(T, Temp, 16*sizeof(float));
 				}
@@ -105,6 +109,7 @@ void FLOOD::calcPose() {
 		RT[2][0] = T[0][2]; RT[2][1] = T[1][2]; RT[2][2] = T[2][2];
 		t[0] = T[0][3]; t[1] = T[1][3]; t[2] = T[2][3];
 		matMulVec3D(RT, t, translation);
+		prev_error = error;
 		// Print results
 #if TO_FILE
 		printf("%f\n", error);
@@ -113,13 +118,13 @@ void FLOOD::calcPose() {
 		printf("%f\n", error);
 		printTrans(T, translation, NULL, NULL);
 #endif
+		sem_post(&new_frame);
 		pthread_mutex_unlock(&lock);
 	}
 #if TO_FILE
 	std::fclose(fpos);
 	std::fclose(frot);
 #endif
-	std::fclose(f);
 	tm /= num;
 	printf("Time to acquire: %fs\n", acq_time);
 	printf("Average time: %fms\n", tm);
@@ -130,31 +135,48 @@ void FLOOD::initializePose(quat qInit, float t[4], float Temp[4][4]) {
 }
 
 void FLOOD::getFrame() {
-	o3d3xx::Logging::Init();
-	o3d3xx::Camera::Ptr cam = std::make_shared<o3d3xx::Camera>();
-	// Start framegrabber
-	o3d3xx::FrameGrabber::Ptr fg = std::make_shared<o3d3xx::FrameGrabber>(cam);
-	o3d3xx::ImageBuffer::Ptr img = std::make_shared<o3d3xx::ImageBuffer>();
-	int fileNum = 1, val = 0;
-	float t[3], dims[3] = {0.25, 0.7, 0.7};
-	t[0] = -translation[0]; t[1] = -translation[1]; t[2] = -translation[2];
-	img->setPosition(t, dims);
-	std::vector<point4D> v;
+	int num = 0, val = 0;
+	float temp[3];
 	while(!exit) {
-		if (! fg->WaitForFrame(img.get(), 1000)) {
-			std::cerr << "Timeout waiting for camera!" << std::endl;
-			continue;
+		std::string fname = "clouds2/cloud_big_1_3-" + std::to_string(num) + "_test.txt";
+		if(access(fname.c_str(), F_OK) < 0){
+			exit = true;
+			break;
 		}
-		v = img->XYZImage();
+		num++;
+		FILE *f = fopen(fname.c_str(), "r");
+		std::vector<point4D> v;
+		v.reserve(10000);
+		while(!feof(f)) {
+			point4D point;
+			if(fscanf(f, "%f  %f  %f", &temp[0], &temp[1], &temp[2]) != 3)
+				continue;
+			point.point[0] = temp[0]/1000.0f; point.point[1] = temp[1]/1000.0f; point.point[2] = temp[2]/1000.0f;
+			point.point[3] = 1.0f;
+			v.push_back(point);
+		}
+		fclose(f);
+		v.pop_back();
+		val = v.size();
+		if(val > 5000) {
+			std::vector<point4D> temp_points;
+			temp_points.reserve(val);
+			if(val < 10000) {
+				for(std::size_t i = 0; i < val; i+=2) {
+					temp_points.push_back(v[i]);
+				}
+			} else {
+				for(std::size_t i = 0; i < val; i+=3) {
+					temp_points.push_back(v[i]);
+				}
+			}
+			v = temp_points;
+		}
 		v = hcluster(v);
+		sem_wait(&new_frame);
 		pthread_mutex_lock(&lock);
 		numPts = v.size();
-		val = numPts;
-		printf("%d\n", val);
 		std::copy(v.begin(), v.end(), scan); // Copy new frame to image buffer
-		++fileNum;
-		t[0] = -translation[0]; t[1] = -translation[1]; t[2] = -translation[2];
-		img->setPosition(t, dims);
 		sem_post(&frame1);
 		pthread_mutex_unlock(&lock);
 	}
