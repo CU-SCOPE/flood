@@ -2,7 +2,6 @@
 #include <cstdlib>
 #include <ctime>
 #include "flood.h"
-#include "frames.h"
 #if RENDER
 #include "render.h"
 #endif

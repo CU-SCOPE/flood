@@ -6,6 +6,7 @@
 #include <string>
 #include <thread>
 #include <semaphore.h>
+#include <pthread.h>
 #include <atomic>
 #include "kd_tree.h"
 #include "icp.h"
