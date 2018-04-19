@@ -23,13 +23,9 @@ include_directories ("${PROJECT_SOURCE_DIR}/src")
 include_directories ("${PROJECT_SOURCE_DIR}/svd")
 add_subdirectory (src) 
 add_subdirectory(svd)
-if(CMAKE_TOOLCHAIN_FILE)
-	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${flood_SOURCE_DIR}/build/exe/rpi_target)
-	set(TARGET rpiExe)
-else(CMAKE_TOOLCHAIN_FILE)
-	set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${flood_SOURCE_DIR}/build/exe/pc_target)
-	set(TARGET pcExe)
-endif(CMAKE_TOOLCHAIN_FILE)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${flood_SOURCE_DIR}/build/bin)
+set(TARGET flood)
+
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
 
@@ -41,3 +37,7 @@ target_link_libraries(${TARGET} svd)
 if(RENDER)
 	target_link_libraries(${TARGET} render)
 endif(RENDER)
+
+add_custom_command(TARGET flood POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy_directory
+                       ${CMAKE_SOURCE_DIR}/resources $<TARGET_FILE_DIR:flood>)

@@ -55,12 +55,10 @@ void FLOOD::calcPose() {
 	double tm = 0, acq_time;
 	// Read all trajectories being tested
     std::string dir = FRAME_DIRECTORIES, pos, rot;
-    std::string filename = dir + "position.txt";
-	FILE *f = std::fopen(filename.c_str(), "r"); 
 #if TO_FILE
     // Output results
-    pos = dir + "position_act.txt";
-    rot = dir + "orientation_small_1_1.txt";
+    pos = "position_act.txt";
+    rot = "orientation_small_1_1.txt";
     FILE *fpos = std::fopen(pos.c_str(), "w");
     FILE *frot = std::fopen(rot.c_str(), "w");
 #endif
@@ -73,7 +71,7 @@ void FLOOD::calcPose() {
 			error = icp(scan, root, T, numPts, MAX_ITERATIONS_KNOWN);
 			end = clock();
 			tm += (double) (end-start) / CLOCKS_PER_SEC * 1000.0;
-			num++
+			num++;
 		}
 		else {
 			float best = 100;
@@ -120,7 +118,6 @@ void FLOOD::calcPose() {
 	std::fclose(fpos);
 	std::fclose(frot);
 #endif
-	std::fclose(f);
 	tm /= num;
 	printf("Time to acquire: %fs\n", acq_time);
 	printf("Average time: %fms\n", tm);
