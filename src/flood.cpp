@@ -50,28 +50,31 @@ void FLOOD::calcPose() {
 	unsigned int i, j, num = 0;
 	quat current, temp;
 	// Initialize timer
-	clock_t start, end, looking, found;
+	clock_t looking, found;
+	auto start = std::chrono::system_clock::now();
+	auto end = std::chrono::system_clock::now();
+	std::chrono::duration<double> elapsed_seconds = end-start;
 	float error, RT[3][3], t[3];
 	double tm = 0, acq_time;
 	// Read all trajectories being tested
     std::string dir = FRAME_DIRECTORIES, pos, rot;
 #if TO_FILE
     // Output results
-    pos = "position_act.txt";
-    rot = "orientation_small_1_1.txt";
+    pos = "positon_big_3_9.txt";
+    rot = "orientation_big_3_9.txt";
     FILE *fpos = std::fopen(pos.c_str(), "w");
     FILE *frot = std::fopen(rot.c_str(), "w");
 #endif
 	q.w = 1; q.x = 0; q.y = 0; q.z = 0;
 	while(!exit) {
+		start = std::chrono::system_clock::now();
 		sem_wait(&frame1);
 		pthread_mutex_lock(&lock);
 		if(!finding) {
-			start = clock();
 			error = icp(scan, root, T, numPts, MAX_ITERATIONS_KNOWN);
-			end = clock();
-			tm += (double) (end-start) / CLOCKS_PER_SEC * 1000.0;
 			num++;
+			if(error > 0.02)
+				finding = true;
 		}
 		else {
 			float best = 100;
@@ -105,8 +108,12 @@ void FLOOD::calcPose() {
 		t[0] = T[0][3]; t[1] = T[1][3]; t[2] = T[2][3];
 		matMulVec3D(RT, t, translation);
 		// Print results
+		end = std::chrono::system_clock::now();
+		elapsed_seconds = end-start;
 #if TO_FILE
 		printf("%f\n", error);
+		fprintf(fpos, "%f  ", elapsed_seconds);
+		fprintf(frot, "%f  ", elapsed_seconds);
 		printTrans(T, translation, fpos, frot);
 #else
 		printf("%f\n", error);

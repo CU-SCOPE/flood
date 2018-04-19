@@ -233,7 +233,7 @@ o3d3xx::ImageBuffer::Organize()
   std::int16_t x_, y_, z_;
   float e_x, e_y, e_z;
   point4D pt;
-  std::string fname = "clouds/cloud_big_1_2-" + std::to_string(this->num) + ".txt";
+  std::string fname = "clouds/cloud_big_3_9-" + std::to_string(this->num) + ".txt";
   FILE *f = fopen(fname.c_str(), "w");
   this->num++;
   for (std::size_t i = 0; i < num_points;
@@ -257,13 +257,13 @@ o3d3xx::ImageBuffer::Organize()
               x_ = o3d3xx::mkval<std::int16_t>(this->bytes_.data()+zidx);
               y_ = -o3d3xx::mkval<std::int16_t>(this->bytes_.data()+xidx);
               z_ = -o3d3xx::mkval<std::int16_t>(this->bytes_.data()+yidx);
-
+              // this->position[0] += .05;
               // convert units to meters for the point cloud
               pt.point[0] = x_ / 1000.0f;
               pt.point[1] = y_ / 1000.0f;
               pt.point[2] = z_ / 1000.0f;
               pt.point[3] = 1.0f;
-              if(pt.point[0] > this->position[0] + this->dims[0] || pt.point[0] < this->position[0] - this->dims[0] - 0.2)
+              if(pt.point[0] > this->position[0] + 0.05 || pt.point[0] < this->position[0] - this->dims[0] - 0.5)
                 continue;
               if(pt.point[1] > this->position[1] + this->dims[1] || pt.point[1] < this->position[1] - this->dims[1])
                 continue;
