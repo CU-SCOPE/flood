@@ -21,7 +21,6 @@ std::vector<point4D> hcluster(std::vector<point4D> v) {
 			dists[i][j] = calc_dist(v[i], v[j]);
 			dists[j][i] = dists[i][j];
 			if(dists[i][j] < mins[i]) {
-				// mindist = dists[i][j];
 				inds[i] = j;
 				mins[i] = dists[i][j];
 			}

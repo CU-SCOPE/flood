@@ -12,7 +12,7 @@ else(CMAKE_BUILD_TYPE MATCHES Debug)
 endif(CMAKE_BUILD_TYPE MATCHES Debug)
 
 set(CMAKE_MODULE_PATH
-    /home/zach/Documents/senior_projects/libo3d3xx/cmake/modules
+    ${PROJECT_SOURCE_DIR}/cmake/modules
     ${CMAKE_MODULE_PATH}
     )
 
