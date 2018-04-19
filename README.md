@@ -4,13 +4,26 @@ Initial C implementation of orientation algorithm
 
 ## Usage
 ### Building
-To build the program you must first have the [libo3d3xx](https://github.com/lovepark/libo3d3xx) library installed for communicating with the Lidar. Only the camera and framegrabber modules are necessary, however the o3d3xx-viewer command line program in the image module is very useful for testing. You will also need cmake for generating makefiles. You will need to either install the libo3d3xx cmake modules in your path, or change the following line in the file 'src/CMakeLists.txt':
+#### Core
+To build the program you must first have the [libo3d3xx](https://github.com/lovepark/libo3d3xx) library installed for communicating with the Lidar. Only the camera and framegrabber modules are necessary, however the o3d3xx-viewer command line program in the image module is very useful for testing.`
+`
+To build flood navigate to the base directory in a terminal, and run the following commands:
 
 `
-set(CMAKE_MODULE_PATH
-    /home/zach/Documents/senior_projects/libo3d3xx/cmake/modules
-    ${CMAKE_MODULE_PATH}
-    )
+mkdir build
+cd build
+cmake ..
+make
 `
+The executable will then be located in the `build/bin` directory.
 
-Just change the path here to point to the 'cmake/modules' directory in the source code of libo3d3xx. Once this is done you simply need to create a build directory, then run `cmake ..` from inside the directory. This will build the executable in the directory `build/exe/pc_target`
+#### Rendering
+A real time 3D rendering of orientation estimates is available in this program. To use this OpenGL drivers of 3.3 or later are required, as well as [glfw](https://github.com/glfw/glfw) for window management, [assimp](https://github.com/assimp/assimp) for model and texture loading, and [glm](https://glm.g-truc.net/0.9.8/index.html) for basic linear algebra. Once each of these is installed you can compile with rendering enabled. This can be done simply by replacing the cmake command above with:
+
+`
+cmake -DRENDER=True ..
+`
+If these modules are installed correctly you should then be able to run make and build the program.
+
+### Running
+To run the program, navigate to the `build/bin` directory and run the command `./flood {position}` replacing {position} of course with the initial x-position of the tarhttps://glm.g-truc.net/0.9.8/index.htmlget satellite.
