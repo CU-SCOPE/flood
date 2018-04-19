@@ -47,7 +47,7 @@ void FLOOD::run() {
 }
 
 void FLOOD::calcPose() {
-	unsigned int i, j, num = 0;
+	unsigned int i, j;
 	quat current, temp;
 	// Initialize timer
 	clock_t looking, found;
@@ -72,7 +72,6 @@ void FLOOD::calcPose() {
 		pthread_mutex_lock(&lock);
 		if(!finding) {
 			error = icp(scan, root, T, numPts, MAX_ITERATIONS_KNOWN);
-			num++;
 			if(error > 0.02)
 				finding = true;
 		}
@@ -87,7 +86,6 @@ void FLOOD::calcPose() {
 			error = icp(initState, root, Temp, numPts, MAX_ITERATIONS_FIND);
 			for(int j=0; j<18; j++) {
 				if(error < best) {
-					printf("here\n");
 					best = error;
 					memcpy(T, Temp, 16*sizeof(float));
 				}
@@ -125,9 +123,7 @@ void FLOOD::calcPose() {
 	std::fclose(fpos);
 	std::fclose(frot);
 #endif
-	tm /= num;
 	printf("Time to acquire: %fs\n", acq_time);
-	printf("Average time: %fms\n", tm);
 }
 
 void FLOOD::initializePose(quat qInit, float t[4], float Temp[4][4]) {
