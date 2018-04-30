@@ -7,6 +7,7 @@
 #endif
 
 FLOOD::FLOOD() {
+	// Load model into kd-tree
 	numFaces = loadSTL(&faces);
 	root = initTree(faces, numFaces);
 	// POSE is unkown at start
@@ -14,8 +15,8 @@ FLOOD::FLOOD() {
 	done = false;
 	exit = false;
 	// Define quaternion for 45 degree rotation about each axis
-	rotx.w = 0.985; roty.w = 0.924; rotz.w = 0.924;
-	rotx.x = 0.174; roty.x = 0.0;   rotz.x = 0.0;
+	rotx.w = 0.924; roty.w = 0.924; rotz.w = 0.924;
+	rotx.x = 0.383; roty.x = 0.0;   rotz.x = 0.0;
 	rotx.y = 0.0;   roty.y = 0.383; rotz.y = 0.0;
 	rotx.z = 0.0;   roty.z = 0.0;   rotz.z = 0.383;
 	pthread_mutex_init(&lock, NULL);
@@ -25,8 +26,10 @@ FLOOD::FLOOD() {
 
 FLOOD::~FLOOD() {
 	printf("Exiting\n");
+	// Free model/tree
 	freeModel(faces);
 	deleteTree(root,0);
+	// Release mutex/semaphore rescources
 	pthread_mutex_destroy(&lock);
 	pthread_mutex_destroy(&sa_lock);
 	sem_destroy(&frame1);
@@ -36,7 +39,7 @@ void FLOOD::run() {
 	std::thread frames(&FLOOD::getFrame, this); // Thread to read frames in
 	std::thread icp(&FLOOD::calcPose, this); // Thread to calculate POSE
 #if RENDER
-	std::thread animate(&FLOOD::render, this);
+	std::thread animate(&FLOOD::render, this); // Thread to render results in real time
 #endif
 	frames.join(); // Cleanup threads
 	icp.join();
@@ -66,24 +69,29 @@ void FLOOD::calcPose() {
 #endif
 	q.w = 1; q.x = 0; q.y = 0; q.z = 0;
 	while(!exit) {
+		// start timing current iteration
 		start = std::chrono::system_clock::now();
+		// Wait for new frame
 		sem_wait(&frame1);
 		pthread_mutex_lock(&lock);
+		// Calculate pose using known state
 		if(!finding) {
 			error = icp(scan, root, T, numPts, MAX_ITERATIONS_KNOWN);
-			if(error > 0.02)
+			if(error > 0.035)
 				finding = true;
-		}
-		else {
+		} else {  // Calculate pose with unknown state
 			float best = 100;
 			float Temp[4][4];
 			current = q;
 			looking = clock();
 			point4D initState[numPts];
+			// Remember initial state to do multiple trials
 			memcpy(initState, scan, numPts*sizeof(point4D));
 			initializePose(current, translation, Temp);
+			// Trial with no rotation
 			error = icp(initState, root, Temp, numPts, MAX_ITERATIONS_FIND);
-			for(int j=0; j<18; j++) {
+			// Rotate about x axis and try each result
+			for(int j=0; j<7; j++) {
 				if(error < best) {
 					best = error;
 					memcpy(T, Temp, 16*sizeof(float));
@@ -108,6 +116,7 @@ void FLOOD::calcPose() {
 		end = std::chrono::system_clock::now();
 		elapsed_seconds = end-start;
 #if TO_FILE
+		// Print current translation vector and quaternion
 		printf("%f\n", error);
 		fprintf(fpos, "%f  ", elapsed_seconds);
 		fprintf(frot, "%f  ", elapsed_seconds);
@@ -116,6 +125,7 @@ void FLOOD::calcPose() {
 		printf("%f\n", error);
 		printTrans(T, translation, NULL, NULL);
 #endif
+		// Done using current frame
 		pthread_mutex_unlock(&lock);
 	}
 #if TO_FILE
@@ -130,12 +140,14 @@ void FLOOD::initializePose(quat qInit, float t[4], float Temp[4][4]) {
 }
 
 void FLOOD::getFrame() {
+	// Start camera camera driver
 	o3d3xx::Logging::Init();
 	o3d3xx::Camera::Ptr cam = std::make_shared<o3d3xx::Camera>();
 	// Start framegrabber
 	o3d3xx::FrameGrabber::Ptr fg = std::make_shared<o3d3xx::FrameGrabber>(cam);
 	o3d3xx::ImageBuffer::Ptr img = std::make_shared<o3d3xx::ImageBuffer>();
 	int fileNum = 1, val = 0;
+	// Initialize translation/dimensions to filter frame from LiDAR using bounding box
 	float t[3], dims[3] = {0.15, 0.7, 0.7};
 	t[0] = -translation[0]; t[1] = -translation[1]; t[2] = -translation[2];
 	img->setPosition(t, dims);
@@ -145,14 +157,13 @@ void FLOOD::getFrame() {
 			std::cerr << "Timeout waiting for camera!" << std::endl;
 			continue;
 		}
-		v = img->XYZImage();
-		v = hcluster(v);
-		pthread_mutex_lock(&lock);
+		v = img->XYZImage(); // Get frame
+		v = hcluster(v); // Run clustering algorithm 
+		pthread_mutex_lock(&lock); // Wait for until pose has been calculated using previous frame
 		numPts = v.size();
-		val = numPts;
-		printf("%d\n", val);
 		std::copy(v.begin(), v.end(), scan); // Copy new frame to image buffer
 		++fileNum;
+		// Update bounding box position
 		t[0] = -translation[0]; t[1] = -translation[1]; t[2] = -translation[2];
 		img->setPosition(t, dims);
 		sem_post(&frame1);
@@ -161,7 +172,9 @@ void FLOOD::getFrame() {
 }
 
 void FLOOD::getPosition(float position) {
+	// Set initial position, and pass to renderer
 	translation[0] = -position; translation[1] = 0; translation[2] = 0; translation[3] = 1;
+#ifdef RENDER
 	pthread_mutex_lock(&sa_lock);
 	shared_array[0] = 1; shared_array[1] = 0;
 	shared_array[2] = 0; shared_array[3] = 0;
@@ -170,6 +183,7 @@ void FLOOD::getPosition(float position) {
 	shared_array[6] = translation[2];
 	done = true;
 	pthread_mutex_unlock(&sa_lock);
+#endif
 }
 
 void FLOOD::printQuat(quat qt, FILE *f) {
@@ -182,7 +196,10 @@ void FLOOD::printQuat(quat qt, FILE *f) {
 
 void FLOOD::printTrans(float T[4][4], float translation[3], FILE *pos, FILE *rot) {
 	quat qt;
+	// Convert translation matrix to quaternion
 	trans2quat(T, &qt);
+#ifdef RENDER
+	// Pass quaternion/position to renderer
 	pthread_mutex_lock(&sa_lock);
 	shared_array[0] = qt.w; shared_array[1] = qt.x;
 	shared_array[2] = qt.y; shared_array[3] = qt.z;
@@ -191,6 +208,7 @@ void FLOOD::printTrans(float T[4][4], float translation[3], FILE *pos, FILE *rot
 	shared_array[6] = translation[2];
 	done = true;
 	pthread_mutex_unlock(&sa_lock);
+#endif
 	printQuat(qt, rot);
 	if(pos) {
 		fprintf(pos, "%f  %f  %f\n", translation[0], translation[1], translation[2]);
