@@ -26,4 +26,4 @@ cmake -DRENDER=True ..
 If these modules are installed correctly you should then be able to run make and build the program.
 
 ### Running
-To run the program, navigate to the `build/bin` directory and run the command `./flood {position}` replacing {position} of course with the initial x-position of the tarhttps://glm.g-truc.net/0.9.8/index.htmlget satellite.
+To run the program, navigate to the `build/bin` directory and run the command `./flood {position}` replacing {position} of course with the initial x-position of the target satellite.
